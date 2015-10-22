@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
+  <asset>
+    <contributor>
+      <author>Blender User</author>
+      <authoring_tool>Blender 2.76.0 commit date:2015-09-23, commit time:14:02, hash:e24ea81</authoring_tool>
+    </contributor>
+    <created>2015-10-21T11:10:31</created>
+    <modified>2015-10-21T11:10:31</modified>
+    <unit name="meter" meter="1"/>
+    <up_axis>Z_UP</up_axis>
+  </asset>
+  <library_images/>
+  <library_controllers/>
+  <library_visual_scenes>
+    <visual_scene id="Scene" name="Scene">
+      <node id="metarig" name="metarig" type="NODE">
+        <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
+        <node id="hips" name="hips" sid="hips" type="JOINT">
+          <matrix sid="transform">1 0 0 0 0 -0.2135963 -0.976922 0.0552 0 0.976922 -0.2135963 1.0099 0 0 0 1</matrix>
+          <node id="spine" name="spine" sid="spine" type="JOINT">
+            <matrix sid="transform">1 0 0 0 0 0.9940229 0.1091721 0.1779057 0 -0.1091721 0.9940228 0 0 0 0 1</matrix>
+            <node id="chest" name="chest" sid="chest" type="JOINT">
+              <matrix sid="transform">1 0 0 0 0 0.9901297 0.1401538 0.15899 0 -0.1401538 0.9901298 0 0 0 0 1</matrix>
+              <node id="neck" name="neck" sid="neck" type="JOINT">
+                <matrix sid="transform">1 0 0 0 0 0.9492317 -0.3145778 0.3165911 0 0.3145779 0.9492317 0 0 0 0 1</matrix>
+                <node id="head" name="head" sid="head" type="JOINT">
+                  <matrix sid="transform">1 0 0 0 0 0.9595885 0.2814068 0.128284 0 -0.2814068 0.9595886 0 0 0 0 1</matrix>
+                </node>
+              </node>
+              <node id="shoulder_L" name="shoulder.L" sid="shoulder_L" type="JOINT">
+                <matrix sid="transform">0.5070949 0.8618901 5.2914e-4 0.0183 -0.03002033 0.01704887 0.9994039 0.2607505 0.8613673 -0.5068085 0.03451961 0.07790686 0 0 0 1</matrix>
+                <node id="upper_arm_L" name="upper_arm.L" sid="upper_arm_L" type="JOINT">
+                  <matrix sid="transform">-0.2406787 0.2497259 0.937929 0.007791556 -0.4150006 0.8470729 -0.332027 0.200791 -0.8774098 -0.4691529 -0.100236 -0.02038491 0 0 0 1</matrix>
+                  <node id="forearm_L" name="forearm.L" sid="forearm_L" type="JOINT">
+                    <matrix sid="transform">0.9965553 0.08125445 -0.01658422 0 -0.08181435 0.9306066 -0.3567603 0.2885098 -0.01355501 0.3568883 0.9340487 0 0 0 0 1</matrix>
+                    <node id="hand_L" name="hand.L" sid="hand_L" type="JOINT">
+                      <matrix sid="transform">-0.009376768 0.05612996 0.9983793 -1.19209e-7 -0.04983586 0.9971563 -0.05652928 0.2628354 -0.9987134 -0.05028515 -0.006552815 1.67638e-8 0 0 0 1</matrix>
+                    </node>
+                  </node>
+                </node>
+              </node>
+              <node id="shoulder_R" name="shoulder.R" sid="shoulder_R" type="JOINT">
+                <matrix sid="transform">0.5070949 -0.8618901 -5.2914e-4 -0.0183 0.03002033 0.01704887 0.9994039 0.2607505 -0.8613673 -0.5068085 0.03451961 0.07790686 0 0 0 1</matrix>
+                <node id="upper_arm_R" name="upper_arm.R" sid="upper_arm_R" type="JOINT">
+                  <matrix sid="transform">-0.2406787 -0.2497259 -0.937929 -0.007791556 0.4150006 0.8470729 -0.332027 0.200791 0.8774098 -0.4691529 -0.100236 -0.02038491 0 0 0 1</matrix>
+                  <node id="forearm_R" name="forearm.R" sid="forearm_R" type="JOINT">
+                    <matrix sid="transform">0.9965553 -0.08125445 0.01658422 0 0.08181435 0.9306066 -0.3567603 0.2885098 0.01355501 0.3568883 0.9340487 0 0 0 0 1</matrix>
+                    <node id="hand_R" name="hand.R" sid="hand_R" type="JOINT">
+                      <matrix sid="transform">-0.009376768 -0.05612996 -0.9983793 1.19209e-7 0.04983586 0.9971563 -0.05652928 0.2628354 0.9987134 -0.05028515 -0.006552815 1.67638e-8 0 0 0 1</matrix>
+                    </node>
+                  </node>
+                </node>
+              </node>
+            </node>
+          </node>
+          <node id="thigh_L" name="thigh.L" sid="thigh_L" type="JOINT">
+            <matrix sid="transform">1 0 0 0.098 0 -0.9577366 -0.2876471 0.06980884 0 0.2876471 -0.957741 0.02854791 0 0 0 1</matrix>
+            <node id="shin_L" name="shin.L" sid="shin_L" type="JOINT">
+              <matrix sid="transform">1 -9.1858e-11 -4.63393e-10 0 4.52251e-11 0.9846732 -0.1744096 0.5363693 8.01044e-12 0.1744095 0.9846731 0 0 0 0 1</matrix>
+              <node id="foot_L" name="foot.L" sid="foot_L" type="JOINT">
+                <matrix sid="transform">1 2.03822e-11 4.11586e-11 0 -4.59289e-11 0.4437768 0.8961373 0.4542147 0 -0.8961374 0.443777 -3.72529e-9 0 0 0 1</matrix>
+                <node id="toe_L" name="toe.L" sid="toe_L" type="JOINT">
+                  <matrix sid="transform">-1 3.55271e-15 8.74228e-8 0 -4.63341e-8 0.847997 -0.5300009 0.1292451 -7.41343e-8 -0.5300007 -0.8479971 0 0 0 0 1</matrix>
+                </node>
+              </node>
+            </node>
+          </node>
+          <node id="thigh_R" name="thigh.R" sid="thigh_R" type="JOINT">
+            <matrix sid="transform">1 0 0 -0.098 0 -0.9577366 -0.2876471 0.06980884 0 0.2876471 -0.957741 0.02854791 0 0 0 1</matrix>
+            <node id="shin_R" name="shin.R" sid="shin_R" type="JOINT">
+              <matrix sid="transform">1 9.1858e-11 4.63393e-10 0 -4.52251e-11 0.9846732 -0.1744096 0.5363693 -8.01044e-12 0.1744095 0.9846731 0 0 0 0 1</matrix>
+              <node id="foot_R" name="foot.R" sid="foot_R" type="JOINT">
+                <matrix sid="transform">1 -2.03822e-11 -4.11586e-11 0 4.59289e-11 0.4437768 0.8961373 0.4542147 0 -0.8961374 0.443777 -3.72529e-9 0 0 0 1</matrix>
+                <node id="toe_R" name="toe.R" sid="toe_R" type="JOINT">
+                  <matrix sid="transform">-1 -3.55271e-15 -8.74228e-8 0 4.63341e-8 0.847997 -0.5300009 0.1292451 7.41343e-8 -0.5300007 -0.8479971 0 0 0 0 1</matrix>
+                </node>
+              </node>
+            </node>
+          </node>
+        </node>
+      </node>
+    </visual_scene>
+  </library_visual_scenes>
+  <scene>
+    <instance_visual_scene url="#Scene"/>
+  </scene>
+</COLLADA>

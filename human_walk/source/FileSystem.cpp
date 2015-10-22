@@ -137,13 +137,18 @@ int FileSystem::findLastOpen(std::vector<bool> &closed)
 	return -1;
 }
 
-bool FileSystem::loadModelAndSkeletonDae(const char *path, Model &m, Skeleton &s)
+bool FileSystem::loadModelAndSkeletonDae(const char *path, WeightedModel &m, Skeleton &s)
 {
+	size_t pos;
 	std::string line;
 	std::ifstream fileStream(path);
 	std::vector<bool> closed;
 
-	std::vector<float> v, n, t;
+	std::vector<float> v, n, t, w;
+	std::vector<std::string> jointNames;
+	std::vector<glm::mat4> bindPoses;
+	std::vector<std::vector<int> > weightJoints, weightWeights;
+	std::vector<int> vcount;
 
 	if (fileStream.is_open())
 	{
@@ -219,6 +224,68 @@ bool FileSystem::loadModelAndSkeletonDae(const char *path, Model &m, Skeleton &s
 			}
 		}
 
+		while (line.find("<library_controllers>") == std::string::npos) {
+			getline(fileStream, line);
+		}
+
+		//load vertex weights
+		while (fileStream.good())
+		{
+			getline(fileStream, line);
+
+			if ((pos = line.find("<source id=")) != std::string::npos) {
+				std::string id = line;
+
+				getline(fileStream, line);
+				std::string values = line.substr((pos = line.find_first_of(">")) + 1, line.find_first_of("<", pos + 1) - (pos + 1));
+				std::vector<std::string> tokens = split(values, ' ');
+				for (unsigned int i = 0; i < tokens.size(); i++) {
+					if ((pos = id.find("-joints-array")) != std::string::npos) {
+						jointNames.push_back(tokens[i]);
+					}
+					else if ((pos = id.find("-bind_poses-array")) != std::string::npos) {
+						glm::mat4 m;
+						for (int j = 0; j < 16; j++) {
+							m[j / 4][j % 4] = (float)atof(tokens[i].c_str());
+							i++;
+						}
+						i--;
+						bindPoses.push_back(m);
+					}
+					else if ((pos = id.find("-weights-array")) != std::string::npos) {
+						w.push_back((float)atof(tokens[i].c_str()));
+					}
+				}
+			}	
+		}
+
+		while (line.find("<vertex_weights") == std::string::npos) {
+			getline(fileStream, line);
+		}
+		while (line.find("<vcount>") == std::string::npos) {
+			getline(fileStream, line);
+		}
+		std::string values = line.substr((pos = line.find_first_of(">")) + 1, line.find_first_of("<", pos + 1) - (pos + 1));
+		std::vector<std::string> tokens = split(values, ' ');
+		for (unsigned int i = 0; i < tokens.size(); i++) {
+			vcount.push_back(atoi(tokens[i].c_str()));
+		}
+		while (line.find("<v>") == std::string::npos) {
+			getline(fileStream, line);
+		}
+		values = line.substr((pos = line.find_first_of(">")) + 1, line.find_first_of("<", pos + 1) - (pos + 1));
+		tokens = split(values, ' ');
+		int k = 0;
+		weightJoints.resize(m.getSize());
+		weightWeights.resize(m.getSize());
+		for (unsigned int i = 0; i < vcount.size(); i++) {
+			weightJoints.push_back(std::vector<int>());
+			weightWeights.push_back(std::vector<int>());
+			for (unsigned int j = 0; j < vcount[i]; j++) {
+				weightJoints[i].push_back(atoi(tokens[k].c_str())); k++;
+				weightWeights[i].push_back(atoi(tokens[k].c_str())); k++;
+			}
+		}
 
 		while (line.find("<library_visual_scenes>") == std::string::npos) {
 			getline(fileStream, line);
@@ -232,7 +299,6 @@ bool FileSystem::loadModelAndSkeletonDae(const char *path, Model &m, Skeleton &s
 		while (fileStream.good())
 		{
 			getline(fileStream, line);
-			size_t pos;
 
 			if (line.find("</node>") != std::string::npos) {
 				int last = findLastOpen(closed);
@@ -250,7 +316,7 @@ bool FileSystem::loadModelAndSkeletonDae(const char *path, Model &m, Skeleton &s
 				std::string matrix = line.substr((pos = line.find_first_of(">")) + 1, line.find_first_of("<", pos + 1) - (pos + 1));
 				std::vector<std::string> tokens = split(matrix, ' ');
 				glm::mat4 m;
-				for (int i = 0; i < 16; i++)
+				for (unsigned int i = 0; i < 16; i++)
 					m[i / 4][i % 4] = (float)atof(tokens[i].c_str());
 				s.addBone(glm::transpose(m), findLastOpen(closed), name.c_str());
 
@@ -258,7 +324,23 @@ bool FileSystem::loadModelAndSkeletonDae(const char *path, Model &m, Skeleton &s
 			}
 		}
 
+		//add inverse bind pose matrices
+		for (unsigned int i = 0; i < bindPoses.size(); i++) {
+			s.getBone(s.getBoneByName(jointNames[i].c_str()))->inverseBindMatrix = bindPoses[i];
+		}
+
 		s.fixScale();
+
+		std::vector<int> jointNamesIndices;
+		for (unsigned int i = 0; i < jointNames.size(); i++) {
+			jointNamesIndices.push_back(s.getBoneByName(jointNames[i].c_str()));
+		}
+
+		for (unsigned int i = 0; i < m.getSize(); i++) {
+			for (unsigned int j = 0; j < weightWeights[i].size(); j++) {
+				m.addWeight(i, w[weightWeights[i][j]], jointNamesIndices[weightJoints[i][j]]);
+			}
+		}
 
 		fileStream.close();
 		return true;

@@ -22,7 +22,7 @@ private:
 public:
 	bool loadFile(const char *path, std::string &buffer);
 	bool parseObj(const char *path, Model &m);
-	bool loadModelAndSkeletonDae(const char *path, Model &m, Skeleton &s);
+	bool loadModelAndSkeletonDae(const char *path, WeightedModel &m, Skeleton &s);
 };
 
 #endif //FILE_SYSTEM_H

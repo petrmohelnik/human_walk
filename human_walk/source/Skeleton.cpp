@@ -62,3 +62,16 @@ void Skeleton::fixScale()
 	bones[0].localMat = glm::rotate(bones[0].localMat, 0.4f, glm::vec3(1.0, 0.0, 0.0));
 	bones[13].localMat = glm::rotate(bones[13].localMat, -0.6f, glm::vec3(1.0, 0.0, 0.0));
 }
+
+int Skeleton::getBoneByName(const char *n) {
+	for (unsigned int i = 0; i < bones.size(); i++) {
+		if (bones[i].name.compare(n) == 0)
+			return i;
+	}
+
+	return -1;
+}
+
+Bone* Skeleton::getBone(int i) {
+	return &bones[i];
+}

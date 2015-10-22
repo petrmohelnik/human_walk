@@ -9,6 +9,7 @@ struct Bone
 {
 	glm::mat4 localMat;
 	glm::mat4 globalMat;
+	glm::mat4 inverseBindMatrix;
 	int parent;
 	std::vector<int> childs;
 	std::string name;
@@ -26,6 +27,8 @@ public:
 	std::vector<Bone> getBones();
 	void countGlobalMatrices();
 	void fixScale();
+	int getBoneByName(const char *n);
+	Bone* getBone(int i);
 };
 
 #endif //SKELETON_H

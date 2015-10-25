@@ -1,0 +1,38 @@
+#include "riggedModelRenderer.h"
+
+RiggedModelRenderer::RiggedModelRenderer(glm::vec3 p, std::shared_ptr<Skeleton> s)
+{
+	renderer.reset(new AnimationRenderer);
+	pos = p;
+	skeleton = s;
+}
+
+bool RiggedModelRenderer::initRenderer(Model &m, GLuint p)
+{
+	if (m.getSize() < 1) {
+		std::cout << "ERROR: Model is empty!";
+		return false;
+	}
+	WeightedModel &wm = (WeightedModel &)m;
+	renderer->init(wm, p);
+	return true;
+}
+
+void RiggedModelRenderer::display(Camera &cam, std::vector<Light> &lights, glm::vec3 ambientLight)
+{
+	skeleton->countGlobalMatrices();
+
+	if (lights.size() > 0)
+		renderer->setLightPos(lights[0].pos);
+	renderer->setAmbientLight(ambientLight);
+	renderer->setP(cam.getProjection());
+	renderer->setViewPos(cam.getPos());
+	renderer->setSkeletonMatrices(skeleton->getInverseMatrices(), skeleton->getGlobalMatrices());
+
+	glm::mat4 skeletonMv = glm::mat4(1.0);
+	skeletonMv = glm::translate(skeletonMv, pos);
+
+	renderer->setMv(skeletonMv);
+
+	renderer->render();
+}

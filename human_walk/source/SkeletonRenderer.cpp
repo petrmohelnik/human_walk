@@ -1,12 +1,8 @@
 #include "SkeletonRenderer.h"
 
-SkeletonRenderer::SkeletonRenderer()
+SkeletonRenderer::SkeletonRenderer(glm::vec3 p, std::shared_ptr<Skeleton> s)
 {
 	renderer.reset(new BasicRenderer);
-}
-
-void SkeletonRenderer::init(glm::vec3 p, std::shared_ptr<Skeleton> s)
-{
 	pos = p;
 	skeleton = s;
 }
@@ -24,8 +20,7 @@ bool SkeletonRenderer::initRenderer(Model &m, GLuint p)
 
 void SkeletonRenderer::display(Camera &cam, std::vector<Light> &lights, glm::vec3 ambientLight)
 {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glEnable(GL_DEPTH_TEST);
+	glDisable(GL_DEPTH_TEST);
 
 	if (lights.size() > 0)
 		renderer->setLightPos(lights[0].pos);

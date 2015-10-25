@@ -123,12 +123,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="source\AnimationRenderer.cpp" />
     <ClCompile Include="source\Application.cpp" />
     <ClCompile Include="source\BasicRenderer.cpp" />
     <ClCompile Include="source\Camera.cpp" />
     <ClCompile Include="source\FileSystem.cpp" />
     <ClCompile Include="source\main.cpp" />
     <ClCompile Include="source\Model.cpp" />
+    <ClCompile Include="source\riggedModelRenderer.cpp" />
     <ClCompile Include="source\Scene.cpp" />
     <ClCompile Include="source\SDLHandler.cpp" />
     <ClCompile Include="source\Shader.cpp" />
@@ -136,6 +138,7 @@
     <ClCompile Include="source\SkeletonRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="source\AnimationRenderer.h" />
     <ClInclude Include="source\Application.h" />
     <ClInclude Include="source\BasicRenderer.h" />
     <ClInclude Include="source\Camera.h" />
@@ -144,6 +147,7 @@
     <ClInclude Include="source\Model.h" />
     <ClInclude Include="source\RenderedObject.h" />
     <ClInclude Include="source\Renderer.h" />
+    <ClInclude Include="source\riggedModelRenderer.h" />
     <ClInclude Include="source\Scene.h" />
     <ClInclude Include="source\SDLHandler.h" />
     <ClInclude Include="source\Shader.h" />
@@ -151,6 +155,7 @@
     <ClInclude Include="source\SkeletonRenderer.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="resource\animation.vs" />
     <None Include="resource\basic.fs" />
     <None Include="resource\basic.vs" />
   </ItemGroup>

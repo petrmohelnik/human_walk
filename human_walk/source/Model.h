@@ -21,11 +21,14 @@ public:
 class WeightedModel : public Model
 {
 private:
-	std::vector<std::vector<float> > weights;
-	std::vector<std::vector<int> > jointIndices;
+	std::vector<glm::vec4> weights;
+	std::vector<glm::ivec4> jointIndices;
 public:
-	void addVertex(glm::vec3 vertex, glm::vec3 normal, glm::vec2 texCoord);
-	void addWeight(int i, float w, int j);
+	void addVertex(glm::vec3 vertex, glm::vec3 normal, glm::vec2 texCoord, glm::vec4 w, glm::ivec4 j);
+	void initWeightVectors();
+	void addWeight(int i, glm::vec4 w, glm::ivec4 j);
+	float *getWeights();
+	int *getJointIndices();
 };
 
 #endif //MODEL_H

@@ -48,6 +48,12 @@
     <ClCompile Include="source\Skeleton.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="source\AnimationRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\riggedModelRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\SDLHandler.h">
@@ -89,12 +95,21 @@
     <ClInclude Include="source\Skeleton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="source\AnimationRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\riggedModelRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="resource\basic.fs">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="resource\basic.vs">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\animation.vs">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

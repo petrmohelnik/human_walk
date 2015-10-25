@@ -120,3 +120,14 @@ void MainScene::initCamera(float fov, int width, int height, float nearPlane, fl
 	camera.init(fov, width, height, nearPlane, farPlane, mode);
 	cameraMode = mode;
 }
+
+void MainScene::render()
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glEnable(GL_DEPTH_TEST);
+
+	for (unsigned int i = 0; i < objects.size(); i++)
+	{
+		objects[i]->display(camera, lights, ambientLight);
+	}
+}

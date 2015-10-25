@@ -29,6 +29,8 @@ public:
 	void fixScale();
 	int getBoneByName(const char *n);
 	Bone* getBone(int i);
+	std::vector<glm::mat4> getInverseMatrices();
+	std::vector<glm::mat4> getGlobalMatrices();
 };
 
 #endif //SKELETON_H

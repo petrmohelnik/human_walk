@@ -148,16 +148,16 @@ bool FileSystem::loadModelAndSkeletonDae(const char *path, WeightedModel &m, Ske
 	std::vector<std::string> jointNames;
 	std::vector<glm::mat4> bindPoses;
 	std::vector<std::vector<int> > weightJoints, weightWeights;
-	std::vector<int> vcount;
+	std::vector<int> vcount, indices;
 
 	if (fileStream.is_open())
 	{
 		getline(fileStream, line);
-		while (line.find("<library_geometries>") == std::string::npos) {
+		while (line.find("<library_geometries>") == std::string::npos && fileStream.good()) {
 			getline(fileStream, line);
 		}
 
-		while (line.find("<mesh>") == std::string::npos) {
+		while (line.find("<mesh>") == std::string::npos && fileStream.good()) {
 			getline(fileStream, line);
 		}
 
@@ -186,45 +186,22 @@ bool FileSystem::loadModelAndSkeletonDae(const char *path, WeightedModel &m, Ske
 				}
 			}
 			else if ((pos = line.find("<polylist")) != std::string::npos) {
-				while (line.find("<p>") == std::string::npos) {
+				while (line.find("<p>") == std::string::npos && fileStream.good()) {
 					getline(fileStream, line);
 				}
 
 				std::string values = line.substr((pos = line.find_first_of(">")) + 1, line.find_first_of("<", pos + 1) - (pos + 1));
 				std::vector<std::string> tokens = split(values, ' ');
-				std::vector<int> indices;
-				indices.resize(tokens.size());
+				indices.reserve(tokens.size());
 				for (unsigned int i = 0; i < tokens.size(); i++) {
 					indices.push_back(atoi(tokens[i].c_str()));
-				}
-
-				for (unsigned int i = 0; i < indices.size(); i += 3) {
-					glm::vec3 vertex, normal;
-					glm::vec2 texCoord;
-
-					vertex.x = v[indices[i] * 3];
-					vertex.y = v[indices[i] * 3 + 1];
-					vertex.z = v[indices[i] * 3 + 2];
-
-					normal.x = n[indices[i + 1] * 3];
-					normal.y = n[indices[i + 1] * 3 + 1];
-					normal.z = n[indices[i + 1] * 3 + 2];
-
-					if (t.size() > 0) {
-						texCoord.x = t[indices[i + 2] * 2];
-						texCoord.y = t[indices[i + 2] * 2 + 1];
-					}
-					else
-						texCoord = glm::vec2(0.0f);
-
-					m.addVertex(vertex, normal, texCoord);
 				}
 
 				break;
 			}
 		}
 
-		while (line.find("<library_controllers>") == std::string::npos) {
+		while (line.find("<library_controllers>") == std::string::npos && fileStream.good()) {
 			getline(fileStream, line);
 		}
 
@@ -234,16 +211,14 @@ bool FileSystem::loadModelAndSkeletonDae(const char *path, WeightedModel &m, Ske
 			getline(fileStream, line);
 
 			if ((pos = line.find("<source id=")) != std::string::npos) {
-				std::string id = line;
-
 				getline(fileStream, line);
 				std::string values = line.substr((pos = line.find_first_of(">")) + 1, line.find_first_of("<", pos + 1) - (pos + 1));
 				std::vector<std::string> tokens = split(values, ' ');
 				for (unsigned int i = 0; i < tokens.size(); i++) {
-					if ((pos = id.find("-joints-array")) != std::string::npos) {
+					if ((pos = line.find("-joints-array")) != std::string::npos) {
 						jointNames.push_back(tokens[i]);
 					}
-					else if ((pos = id.find("-bind_poses-array")) != std::string::npos) {
+					else if ((pos = line.find("-bind_poses-array")) != std::string::npos) {
 						glm::mat4 m;
 						for (int j = 0; j < 16; j++) {
 							m[j / 4][j % 4] = (float)atof(tokens[i].c_str());
@@ -252,17 +227,16 @@ bool FileSystem::loadModelAndSkeletonDae(const char *path, WeightedModel &m, Ske
 						i--;
 						bindPoses.push_back(m);
 					}
-					else if ((pos = id.find("-weights-array")) != std::string::npos) {
+					else if ((pos = line.find("-weights-array")) != std::string::npos) {
 						w.push_back((float)atof(tokens[i].c_str()));
 					}
 				}
-			}	
+			}
+			else if (line.find("<vertex_weights") != std::string::npos)
+				break;
 		}
 
-		while (line.find("<vertex_weights") == std::string::npos) {
-			getline(fileStream, line);
-		}
-		while (line.find("<vcount>") == std::string::npos) {
+		while (line.find("<vcount>") == std::string::npos && fileStream.good()) {
 			getline(fileStream, line);
 		}
 		std::string values = line.substr((pos = line.find_first_of(">")) + 1, line.find_first_of("<", pos + 1) - (pos + 1));
@@ -270,14 +244,12 @@ bool FileSystem::loadModelAndSkeletonDae(const char *path, WeightedModel &m, Ske
 		for (unsigned int i = 0; i < tokens.size(); i++) {
 			vcount.push_back(atoi(tokens[i].c_str()));
 		}
-		while (line.find("<v>") == std::string::npos) {
+		while (line.find("<v>") == std::string::npos && fileStream.good()) {
 			getline(fileStream, line);
 		}
 		values = line.substr((pos = line.find_first_of(">")) + 1, line.find_first_of("<", pos + 1) - (pos + 1));
 		tokens = split(values, ' ');
 		int k = 0;
-		weightJoints.resize(m.getSize());
-		weightWeights.resize(m.getSize());
 		for (unsigned int i = 0; i < vcount.size(); i++) {
 			weightJoints.push_back(std::vector<int>());
 			weightWeights.push_back(std::vector<int>());
@@ -287,11 +259,11 @@ bool FileSystem::loadModelAndSkeletonDae(const char *path, WeightedModel &m, Ske
 			}
 		}
 
-		while (line.find("<library_visual_scenes>") == std::string::npos) {
+		while (line.find("<library_visual_scenes>") == std::string::npos && fileStream.good()) {
 			getline(fileStream, line);
 		}
-
-		while (line.find("node id=\"metarig\"") == std::string::npos) {
+		
+		while (line.find("node id=\"metarig\"") == std::string::npos && fileStream.good()) {
 			getline(fileStream, line);
 		}
 
@@ -324,9 +296,15 @@ bool FileSystem::loadModelAndSkeletonDae(const char *path, WeightedModel &m, Ske
 			}
 		}
 
+		if (!fileStream.good()) {
+			std::cout << "File is in incorrect format " << path << std::endl;
+			return false;
+		}
+
+
 		//add inverse bind pose matrices
 		for (unsigned int i = 0; i < bindPoses.size(); i++) {
-			s.getBone(s.getBoneByName(jointNames[i].c_str()))->inverseBindMatrix = bindPoses[i];
+			s.getBone(s.getBoneByName(jointNames[i].c_str()))->inverseBindMatrix = glm::transpose(bindPoses[i]);
 		}
 
 		s.fixScale();
@@ -336,16 +314,71 @@ bool FileSystem::loadModelAndSkeletonDae(const char *path, WeightedModel &m, Ske
 			jointNamesIndices.push_back(s.getBoneByName(jointNames[i].c_str()));
 		}
 
-		for (unsigned int i = 0; i < m.getSize(); i++) {
-			for (unsigned int j = 0; j < weightWeights[i].size(); j++) {
-				m.addWeight(i, w[weightWeights[i][j]], jointNamesIndices[weightJoints[i][j]]);
+		//sort weights
+		std::vector<std::vector<float> > wSorted;
+		std::vector<std::vector<int> > jSorted;
+		for (unsigned int i = 0; i < weightJoints.size(); i++) {
+			wSorted.push_back(std::vector<float>());
+			jSorted.push_back(std::vector<int>());
+			for (unsigned int j = 0; j < weightJoints[i].size(); j++) {
+				if (j == 0) {
+					wSorted[i].push_back(w[weightWeights[i][j]]);
+					jSorted[i].push_back(jointNamesIndices[weightJoints[i][j]]);
+				}
+				else {
+					for (unsigned int k = 0; k < wSorted[i].size(); k++) {
+						if (w[weightWeights[i][j]] > wSorted[i][k]) {
+							wSorted[i].insert(wSorted[i].begin() + k, w[weightWeights[i][j]]);
+							jSorted[i].insert(jSorted[i].begin() + k, jointNamesIndices[weightJoints[i][j]]);
+							break;
+						}
+						if (k == wSorted[i].size() - 1) {
+							wSorted[i].push_back(w[weightWeights[i][j]]);
+							jSorted[i].push_back(jointNamesIndices[weightJoints[i][j]]);
+							break;
+						}
+					}
+				}
 			}
+		}
+
+		//push in faces
+		for (unsigned int i = 0; i < indices.size(); i += 3) {
+			glm::vec3 vertex, normal;
+			glm::vec2 texCoord;
+			glm::vec4 weights;
+			glm::ivec4 joints;
+
+			vertex.x = v[indices[i] * 3];
+			vertex.y = v[indices[i] * 3 + 1];
+			vertex.z = v[indices[i] * 3 + 2];
+			weights = glm::vec4(0.0f); joints = glm::ivec4(0);
+
+			for (unsigned int j = 0; j < weightWeights[indices[i]].size(); j++) {
+				if (j >= 4)
+					break;
+				weights[j] = wSorted[indices[i]][j];
+				joints[j] = jSorted[indices[i]][j];
+			}
+
+			normal.x = n[indices[i + 1] * 3];
+			normal.y = n[indices[i + 1] * 3 + 1];
+			normal.z = n[indices[i + 1] * 3 + 2];
+
+			if (t.size() > 0) {
+				texCoord.x = t[indices[i + 2] * 2];
+				texCoord.y = t[indices[i + 2] * 2 + 1];
+			}
+			else
+				texCoord = glm::vec2(0.0f);
+
+			m.addVertex(vertex, normal, texCoord, weights, joints);
 		}
 
 		fileStream.close();
 		return true;
 	}
-
+	
 	std::cout << "Unable to open file " << path << std::endl;
 	return false;
 }

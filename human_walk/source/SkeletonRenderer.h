@@ -19,8 +19,7 @@ private:
 	glm::vec3 pos;
 	std::shared_ptr<Skeleton> skeleton;
 public:
-	SkeletonRenderer();
-	void init(glm::vec3 p, std::shared_ptr<Skeleton> s);
+	SkeletonRenderer(glm::vec3 p, std::shared_ptr<Skeleton> s);
 	bool initRenderer(Model &m, GLuint p);
 	void display(Camera &cam, std::vector<Light> &lights, glm::vec3 ambientLight);
 };

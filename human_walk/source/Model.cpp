@@ -27,17 +27,33 @@ int Model::getSize()
 	return v.size();
 }
 
-void WeightedModel::addVertex(glm::vec3 vertex, glm::vec3 normal, glm::vec2 texCoord)
+void WeightedModel::addVertex(glm::vec3 vertex, glm::vec3 normal, glm::vec2 texCoord, glm::vec4 w, glm::ivec4 j)
 {
 	v.push_back(vertex);
 	n.push_back(normal);
 	t.push_back(texCoord);
-	weights.push_back(std::vector<float>());
-	jointIndices.push_back(std::vector<int>());
+	weights.push_back(w);
+	jointIndices.push_back(j);
 }
 
-void WeightedModel::addWeight(int i, float w, int j)
+void WeightedModel::initWeightVectors()
 {
-	weights[i].push_back(w);
-	jointIndices[i].push_back(j);
+	weights.reserve(getSize());
+	jointIndices.reserve(getSize());
+}
+
+void WeightedModel::addWeight(int i, glm::vec4 w, glm::ivec4 j)
+{
+	weights.push_back(w);
+	jointIndices.push_back(j);
+}
+
+float *WeightedModel::getWeights()
+{
+	return &weights[0].x;
+}
+
+int *WeightedModel::getJointIndices()
+{
+	return &jointIndices[0].x;
 }

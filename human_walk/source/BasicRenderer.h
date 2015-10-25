@@ -8,7 +8,7 @@
 
 class BasicRenderer : public Renderer
 {
-private:
+protected:
 	GLuint mvpUniform;
 	GLuint mvUniform;
 	GLuint ti_mvUniform;
@@ -23,7 +23,7 @@ private:
 	glm::vec3 ambientLight;
 public:
 	void init(Model &m, GLuint p);
-	void render();
+	virtual void render();
 	void setMv(glm::mat4 m);
 	void setP(glm::mat4 m);
 	void setViewPos(glm::vec3 v);

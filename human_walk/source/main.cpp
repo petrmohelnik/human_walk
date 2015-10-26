@@ -103,16 +103,16 @@ int main(int argc, char **argv)
 	}
 	WeightedModel m2;
 	std::shared_ptr<Skeleton> skeleton(new Skeleton);
-	if (!f.loadModelAndSkeletonDae("resource/rig.dae", m2, *skeleton.get())) {
+	if (!f.loadModelAndSkeletonDae("resource/joker.dae", m2, *skeleton.get())) {
 		cin.get();
 		return -1;
 	}
-	std::shared_ptr<SkeletonRenderer> skeletonRenderer(new SkeletonRenderer(glm::vec3(0.0, -1.0f, 0.0), skeleton));
+	std::shared_ptr<SkeletonRenderer> skeletonRenderer(new SkeletonRenderer(glm::vec3(0.0, 0.0f, -2.0), skeleton));
 	if (!skeletonRenderer->initRenderer(m, s.getProgram("basic_program"))) {
 		cin.get();
 		return -1;
 	}
-	std::shared_ptr<RiggedModelRenderer> riggedModelRenderer(new RiggedModelRenderer(glm::vec3(0.0, -1.0f, 0.0), skeleton));
+	std::shared_ptr<RiggedModelRenderer> riggedModelRenderer(new RiggedModelRenderer(glm::vec3(0.0, 0.0f, -2.0), skeleton));
 	if (!riggedModelRenderer->initRenderer(m2, s.getProgram("animation_program"))) {
 		cin.get();
 		return -1;

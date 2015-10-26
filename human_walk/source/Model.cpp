@@ -57,3 +57,13 @@ int *WeightedModel::getJointIndices()
 {
 	return &jointIndices[0].x;
 }
+
+void WeightedModel::setBindMatrix(glm::mat4 m)
+{
+	bindMatrix = m;
+}
+
+glm::mat4 WeightedModel::getBindMatrix()
+{
+	return bindMatrix;
+}

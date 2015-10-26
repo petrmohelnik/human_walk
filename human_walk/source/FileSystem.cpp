@@ -140,10 +140,11 @@ int FileSystem::findLastOpen(std::vector<bool> &closed)
 bool FileSystem::loadModelAndSkeletonDae(const char *path, WeightedModel &m, Skeleton &s)
 {
 	size_t pos;
-	std::string line;
+	std::string line, armatureName;
 	std::ifstream fileStream(path);
 	std::vector<bool> closed;
 
+	glm::mat4 bindShapeMatrix;
 	std::vector<float> v, n, t, w;
 	std::vector<std::string> jointNames;
 	std::vector<glm::mat4> bindPoses;
@@ -175,12 +176,18 @@ bool FileSystem::loadModelAndSkeletonDae(const char *path, WeightedModel &m, Ske
 				std::vector<std::string> tokens = split(values, ' ');
 				for (unsigned int i = 0; i < tokens.size(); i++) {
 					if ((pos = id.find("-positions")) != std::string::npos) {
+						if (v.capacity() < tokens.size())
+							v.reserve(tokens.size());
 						v.push_back((float)atof(tokens[i].c_str()));
 					}
 					else if ((pos = id.find("-normals")) != std::string::npos) {
+						if (n.capacity() < tokens.size())
+							n.reserve(tokens.size());
 						n.push_back((float)atof(tokens[i].c_str()));
 					}
 					else if ((pos = id.find("-map")) != std::string::npos) {
+						if (t.capacity() < tokens.size())
+							t.reserve(tokens.size());
 						t.push_back((float)atof(tokens[i].c_str()));
 					}
 				}
@@ -203,6 +210,29 @@ bool FileSystem::loadModelAndSkeletonDae(const char *path, WeightedModel &m, Ske
 
 		while (line.find("<library_controllers>") == std::string::npos && fileStream.good()) {
 			getline(fileStream, line);
+		}
+
+		while (line.find("</library_controllers>") == std::string::npos && fileStream.good()) {
+			if (line.find("<controller id") != std::string::npos) {
+				if ((pos = line.find("-skin\"")) != std::string::npos) {
+					pos = line.find("name=");
+					armatureName = line.substr((pos = line.find_first_of("\"", pos)) + 1, line.find_first_of("\"", pos + 1) - (pos + 1));
+					break;
+				}
+			}
+			getline(fileStream, line);
+		}
+
+		while (line.find("<bind_shape_matrix>") == std::string::npos && fileStream.good()) {
+			getline(fileStream, line);
+		}
+		{
+			std::string values = line.substr((pos = line.find_first_of(">")) + 1, line.find_first_of("<", pos + 1) - (pos + 1));
+			std::vector<std::string> tokens = split(values, ' ');
+			for (unsigned int i = 0; i < 16; i++)
+				bindShapeMatrix[i / 4][i % 4] = (float)atof(tokens[i].c_str());
+			bindShapeMatrix = glm::transpose(bindShapeMatrix);
+			m.setBindMatrix(bindShapeMatrix);
 		}
 
 		//load vertex weights
@@ -228,6 +258,8 @@ bool FileSystem::loadModelAndSkeletonDae(const char *path, WeightedModel &m, Ske
 						bindPoses.push_back(m);
 					}
 					else if ((pos = line.find("-weights-array")) != std::string::npos) {
+						if (w.capacity() < tokens.size())
+							w.reserve(tokens.size());
 						w.push_back((float)atof(tokens[i].c_str()));
 					}
 				}
@@ -241,6 +273,7 @@ bool FileSystem::loadModelAndSkeletonDae(const char *path, WeightedModel &m, Ske
 		}
 		std::string values = line.substr((pos = line.find_first_of(">")) + 1, line.find_first_of("<", pos + 1) - (pos + 1));
 		std::vector<std::string> tokens = split(values, ' ');
+		vcount.reserve(tokens.size());
 		for (unsigned int i = 0; i < tokens.size(); i++) {
 			vcount.push_back(atoi(tokens[i].c_str()));
 		}
@@ -250,6 +283,8 @@ bool FileSystem::loadModelAndSkeletonDae(const char *path, WeightedModel &m, Ske
 		values = line.substr((pos = line.find_first_of(">")) + 1, line.find_first_of("<", pos + 1) - (pos + 1));
 		tokens = split(values, ' ');
 		int k = 0;
+		weightJoints.reserve(vcount.size());
+		weightWeights.reserve(vcount.size());
 		for (unsigned int i = 0; i < vcount.size(); i++) {
 			weightJoints.push_back(std::vector<int>());
 			weightWeights.push_back(std::vector<int>());
@@ -263,8 +298,17 @@ bool FileSystem::loadModelAndSkeletonDae(const char *path, WeightedModel &m, Ske
 			getline(fileStream, line);
 		}
 		
-		while (line.find("node id=\"metarig\"") == std::string::npos && fileStream.good()) {
+		while (line.find("node id=\"" + armatureName + "\"") == std::string::npos && fileStream.good()) {
 			getline(fileStream, line);
+		}
+		getline(fileStream, line);
+		{
+			std::string matrix = line.substr((pos = line.find_first_of(">")) + 1, line.find_first_of("<", pos + 1) - (pos + 1));
+			std::vector<std::string> tokens = split(matrix, ' ');
+			glm::mat4 m;
+			for (unsigned int i = 0; i < 16; i++)
+				m[i / 4][i % 4] = (float)atof(tokens[i].c_str());
+			s.setRootTransformMatrix(glm::transpose(m));
 		}
 
 		//load skeleton
@@ -304,7 +348,7 @@ bool FileSystem::loadModelAndSkeletonDae(const char *path, WeightedModel &m, Ske
 
 		//add inverse bind pose matrices
 		for (unsigned int i = 0; i < bindPoses.size(); i++) {
-			s.getBone(s.getBoneByName(jointNames[i].c_str()))->inverseBindMatrix = glm::transpose(bindPoses[i]);
+			s.getBone(s.getBoneByName(jointNames[i].c_str()))->inverseBindMatrix = glm::transpose(bindPoses[i]) * bindShapeMatrix;
 		}
 
 		s.fixScale();
@@ -317,6 +361,8 @@ bool FileSystem::loadModelAndSkeletonDae(const char *path, WeightedModel &m, Ske
 		//sort weights
 		std::vector<std::vector<float> > wSorted;
 		std::vector<std::vector<int> > jSorted;
+		wSorted.reserve(weightJoints.size());
+		jSorted.reserve(weightJoints.size());
 		for (unsigned int i = 0; i < weightJoints.size(); i++) {
 			wSorted.push_back(std::vector<float>());
 			jSorted.push_back(std::vector<int>());

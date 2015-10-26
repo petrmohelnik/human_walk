@@ -23,12 +23,15 @@ class WeightedModel : public Model
 private:
 	std::vector<glm::vec4> weights;
 	std::vector<glm::ivec4> jointIndices;
+	glm::mat4 bindMatrix;
 public:
 	void addVertex(glm::vec3 vertex, glm::vec3 normal, glm::vec2 texCoord, glm::vec4 w, glm::ivec4 j);
 	void initWeightVectors();
 	void addWeight(int i, glm::vec4 w, glm::ivec4 j);
 	float *getWeights();
 	int *getJointIndices();
+	void setBindMatrix(glm::mat4 m);
+	glm::mat4 getBindMatrix();
 };
 
 #endif //MODEL_H

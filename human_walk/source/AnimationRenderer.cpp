@@ -17,8 +17,7 @@ void AnimationRenderer::init(WeightedModel &m, GLuint p)
 	viewPosUniform = glGetUniformLocation(program, "viewPos");
 	lightPosUniform = glGetUniformLocation(program, "lightPos");
 	ambientLightUniform = glGetUniformLocation(program, "ambientLight");
-	skeletonInverseUniform = glGetUniformLocation(program, "globalM");
-	skeletonGlobalUniform = glGetUniformLocation(program, "inverseM");
+	skinningMatrixUniform = glGetUniformLocation(program, "skinningMatrix");
 
 	GLint attr = glGetAttribLocation(program, "v_pos");
 	glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
@@ -65,16 +64,14 @@ void AnimationRenderer::render()
 	glUniform3f(viewPosUniform, -viewPos.x, -viewPos.y, -viewPos.z);
 	glUniform3f(lightPosUniform, lightPos.x, lightPos.y, lightPos.z);
 	glUniform3f(ambientLightUniform, ambientLight.x, ambientLight.y, ambientLight.z);
-	glUniformMatrix4fv(skeletonInverseUniform, skeletonInverse.size(), GL_FALSE, glm::value_ptr(skeletonInverse[0]));
-	glUniformMatrix4fv(skeletonGlobalUniform, skeletonGlobal.size(), GL_FALSE, glm::value_ptr(skeletonGlobal[0]));
+	glUniformMatrix4fv(skinningMatrixUniform, skinningMatrices.size(), GL_FALSE, glm::value_ptr(skinningMatrices[0]));
 
 	glBindVertexArray(vao);
 	glDrawArrays(GL_TRIANGLES, 0, indices);
 	glBindVertexArray(0);
 }
 
-void AnimationRenderer::setSkeletonMatrices(std::vector<glm::mat4> &inverse, std::vector<glm::mat4> &global)
+void AnimationRenderer::setSkinningMatrices(std::vector<glm::mat4> &m)
 {
-	skeletonInverse = inverse;
-	skeletonGlobal = global;
+	skinningMatrices = m;
 }

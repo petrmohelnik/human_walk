@@ -16,6 +16,7 @@ private:
 	std::shared_ptr<Skeleton> skeleton;
 	std::shared_ptr<AnimationRenderer> renderer;
 	glm::vec3 pos;
+	glm::mat4 bindMatrix;
 public:
 	RiggedModelRenderer(glm::vec3 p, std::shared_ptr<Skeleton> s);
 	bool initRenderer(Model &m, GLuint p);

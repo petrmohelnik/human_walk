@@ -15,7 +15,7 @@ out vec4 gl_FragColor;
 void main()
 {
 	vec3 color = vec3(0.7, 0.7, 0.7);
-	vec3 lightColor = vec3(0.5, 0.5, 0.5);
+	vec3 lightColor = vec3(1.0, 1.0, 1.0);
 	float shininess = 100.0;
 
 	vec3 viewDir = normalize(viewPos - f_pos);

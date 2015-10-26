@@ -21,6 +21,7 @@ class Skeleton
 {
 private:
 	std::vector<Bone> bones;
+	glm::mat4 rootTransform;
 public:
 	void addBone(glm::mat4 m, int p, const char *n);
 	std::vector<glm::mat4> getScaledGlobalMatrices();
@@ -31,6 +32,9 @@ public:
 	Bone* getBone(int i);
 	std::vector<glm::mat4> getInverseMatrices();
 	std::vector<glm::mat4> getGlobalMatrices();
+	std::vector<glm::mat4> getSkinningMatrices();
+	void setRootTransformMatrix(glm::mat4 m);
+	glm::mat4 getRootTransformMatrix();
 };
 
 #endif //SKELETON_H

@@ -14,6 +14,7 @@ bool RiggedModelRenderer::initRenderer(Model &m, GLuint p)
 		return false;
 	}
 	WeightedModel &wm = (WeightedModel &)m;
+	bindMatrix = wm.getBindMatrix();
 	renderer->init(wm, p);
 	return true;
 }
@@ -27,10 +28,10 @@ void RiggedModelRenderer::display(Camera &cam, std::vector<Light> &lights, glm::
 	renderer->setAmbientLight(ambientLight);
 	renderer->setP(cam.getProjection());
 	renderer->setViewPos(cam.getPos());
-	renderer->setSkeletonMatrices(skeleton->getInverseMatrices(), skeleton->getGlobalMatrices());
+	renderer->setSkinningMatrices(skeleton->getSkinningMatrices());
 
-	glm::mat4 skeletonMv = glm::mat4(1.0);
-	skeletonMv = glm::translate(skeletonMv, pos);
+	glm::mat4 skeletonMv = skeleton->getRootTransformMatrix();
+	skeletonMv = glm::translate(skeletonMv, pos);// * bindMatrix;
 
 	renderer->setMv(skeletonMv);
 

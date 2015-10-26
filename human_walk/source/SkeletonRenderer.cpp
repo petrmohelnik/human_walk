@@ -20,7 +20,7 @@ bool SkeletonRenderer::initRenderer(Model &m, GLuint p)
 
 void SkeletonRenderer::display(Camera &cam, std::vector<Light> &lights, glm::vec3 ambientLight)
 {
-	glDisable(GL_DEPTH_TEST);
+	glClear(GL_DEPTH_BUFFER_BIT);
 
 	if (lights.size() > 0)
 		renderer->setLightPos(lights[0].pos);
@@ -28,7 +28,7 @@ void SkeletonRenderer::display(Camera &cam, std::vector<Light> &lights, glm::vec
 	renderer->setP(cam.getProjection());
 	renderer->setViewPos(cam.getPos());
 
-	glm::mat4 skeletonMv = glm::mat4(1.0);
+	glm::mat4 skeletonMv = skeleton->getRootTransformMatrix();
 	skeletonMv = glm::translate(skeletonMv, pos);
 
 	skeleton->countGlobalMatrices();

@@ -8,14 +8,12 @@
 class AnimationRenderer : public BasicRenderer
 {
 private:
-	GLuint skeletonInverseUniform;
-	GLuint skeletonGlobalUniform;
-	std::vector<glm::mat4> skeletonInverse;
-	std::vector<glm::mat4> skeletonGlobal;
+	GLuint skinningMatrixUniform;
+	std::vector<glm::mat4> skinningMatrices;
 public:
 	void init(WeightedModel &m, GLuint p);
 	void render();
-	void setSkeletonMatrices(std::vector<glm::mat4> &inverse, std::vector<glm::mat4> &global);
+	void setSkinningMatrices(std::vector<glm::mat4> &m);
 };
 
 #endif //ANIMATION_RENDERER_H

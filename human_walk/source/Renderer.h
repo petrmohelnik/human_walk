@@ -2,18 +2,18 @@
 #define RENDERER_H
 
 #include <GL/glew.h>
+#include <vector>
 #include <glm/glm.hpp>
 class Model;
+class Camera;
+struct Light;
 
 class Renderer
 {
 protected:
-	GLuint vao;
-	int indices; //amount of indices in vao
-	GLuint program;
 public:
-	virtual void init(Model &m, GLuint p) = 0;
-	virtual void render() = 0;
+	virtual bool initRenderer(Model &m, GLuint p) = 0;
+	virtual void render(Camera &cam, std::vector<Light> &lights, glm::vec3 ambientLight) = 0;
 };
 
 #endif //RENDERER_H

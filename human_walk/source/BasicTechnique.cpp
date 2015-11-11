@@ -1,6 +1,6 @@
-#include "BasicRenderer.h"
+#include "BasicTechnique.h"
 
-void BasicRenderer::init(Model &m, GLuint p)
+void BasicTechnique::init(Mesh &m, GLuint p)
 {
 	program = p;
 
@@ -39,7 +39,7 @@ void BasicRenderer::init(Model &m, GLuint p)
 	glBindVertexArray(0);
 }
 
-void BasicRenderer::render()
+void BasicTechnique::draw()
 {
 	glUseProgram(program);
 
@@ -57,28 +57,28 @@ void BasicRenderer::render()
 	glBindVertexArray(0);
 }
 
-void BasicRenderer::setMv(glm::mat4 m)
+void BasicTechnique::setMv(glm::mat4 m)
 {
 	mv = m;
 	ti_mv = glm::transpose(glm::inverse(m));
 }
 
-void BasicRenderer::setP(glm::mat4 m)
+void BasicTechnique::setP(glm::mat4 m)
 {
 	p = m;
 }
 
-void BasicRenderer::setViewPos(glm::vec3 v)
+void BasicTechnique::setViewPos(glm::vec3 v)
 {
 	viewPos = v;
 }
 
-void BasicRenderer::setLightPos(glm::vec3 p)
+void BasicTechnique::setLightPos(glm::vec3 p)
 {
 	lightPos = p;
 }
 
-void BasicRenderer::setAmbientLight(glm::vec3 a)
+void BasicTechnique::setAmbientLight(glm::vec3 a)
 {
 	ambientLight = a;
 }

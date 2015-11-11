@@ -3,13 +3,23 @@
 
 #include <vector>
 #include <glm/glm.hpp>
+#include <memory>
 
-class Model
+class Material
+{
+public:
+
+private:
+
+};
+
+class Mesh
 {
 protected:
 	std::vector<glm::vec3> v;
 	std::vector<glm::vec3> n;
 	std::vector<glm::vec2> t;
+	std::shared_ptr<Material> m;
 public:
 	virtual void addVertex(glm::vec3 vertex, glm::vec3 normal, glm::vec2 texCoord);
 	float *getVertices();
@@ -18,7 +28,7 @@ public:
 	int getSize();
 };
 
-class WeightedModel : public Model
+class WeightedMesh : public Mesh
 {
 private:
 	std::vector<glm::vec4> weights;
@@ -32,6 +42,14 @@ public:
 	int *getJointIndices();
 	void setBindMatrix(glm::mat4 m);
 	glm::mat4 getBindMatrix();
+};
+
+class Model
+{
+private:
+	std::vector<std::shared_ptr<Mesh> > meshes;
+public:
+
 };
 
 #endif //MODEL_H

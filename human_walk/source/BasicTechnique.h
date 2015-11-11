@@ -1,12 +1,12 @@
-#ifndef BASIC_RENDERER_H
-#define BASIC_RENDERER_H
+#ifndef BASIC_TECHNIQUE_H
+#define BASIC_TECHNIQUE_H
 
 #include <glm/gtc/type_ptr.hpp>
 #include <GL/glew.h>
-#include "Renderer.h"
+#include "Technique.h"
 #include "Model.h"
 
-class BasicRenderer : public Renderer
+class BasicTechnique : public Technique
 {
 protected:
 	GLuint mvpUniform;
@@ -22,8 +22,8 @@ protected:
 	glm::vec3 lightPos;
 	glm::vec3 ambientLight;
 public:
-	void init(Model &m, GLuint p);
-	virtual void render();
+	void init(Mesh &m, GLuint p);
+	virtual void draw();
 	void setMv(glm::mat4 m);
 	void setP(glm::mat4 m);
 	void setViewPos(glm::vec3 v);
@@ -31,4 +31,4 @@ public:
 	void setAmbientLight(glm::vec3 a);
 };
 
-#endif //BASIC_RENDERER_H
+#endif //BASIC_TECHNIQUE_H

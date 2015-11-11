@@ -60,13 +60,18 @@ void Skeleton::fixScale()
 		}
 	}
 
-	bones[0].localMat = glm::rotate(bones[0].localMat, -1.0f, glm::vec3(1.0, 0.0, 0.0));
+	bones[0].localMat = glm::rotate(bones[0].localMat, -0.7f, glm::vec3(1.0, 0.0, 0.0));
+	bones[1].localMat = glm::rotate(bones[1].localMat, 0.7f, glm::vec3(1.0, 0.0, 0.0));
+	bones[2].localMat = glm::rotate(bones[2].localMat, -0.7f, glm::vec3(1.0, 0.0, 0.0));
+	bones[2].localMat = glm::rotate(bones[2].localMat, -0.3f, glm::vec3(0.0, 0.0, 1.0));
 	bones[4].localMat = glm::rotate(bones[4].localMat, 0.4f, glm::vec3(0.0, 1.0, 0.0));
 	bones[13].localMat = glm::rotate(bones[13].localMat, -0.6f, glm::vec3(1.0, 0.0, 0.0));
 	bones[getBoneByName("Bone_007")].localMat = glm::rotate(bones[getBoneByName("Bone_007")].localMat, 0.5f, glm::vec3(1.0, 0.0, 0.0));
+	bones[getBoneByName("Bone_009")].localMat = glm::rotate(bones[getBoneByName("Bone_009")].localMat, 1.5f, glm::vec3(0.0, 0.0, 1.0));
 	bones[getBoneByName("Bone_019")].localMat = glm::rotate(bones[getBoneByName("Bone_019")].localMat, -0.7f, glm::vec3(1.0, 0.0, 0.0));
-	bones[getBoneByName("Bone_023")].localMat = glm::rotate(bones[getBoneByName("Bone_023")].localMat, -0.7f, glm::vec3(1.0, 0.0, 0.0));
-	bones[getBoneByName("Bone_023")].localMat = glm::rotate(bones[getBoneByName("Bone_023")].localMat, -0.7f, glm::vec3(0.0, 0.0, 1.0));
+	bones[getBoneByName("Bone_023")].localMat = glm::rotate(bones[getBoneByName("Bone_023")].localMat, -0.3f, glm::vec3(1.0, 0.0, 0.0));
+	bones[getBoneByName("Bone_023")].localMat = glm::rotate(bones[getBoneByName("Bone_023")].localMat, -0.5f, glm::vec3(0.0, 0.0, 1.0));
+	bones[getBoneByName("Bone_035")].localMat = glm::rotate(bones[getBoneByName("Bone_035")].localMat, -1.2f, glm::vec3(0.0, 0.0, 1.0));
 }
 
 int Skeleton::getBoneByName(const char *n) {

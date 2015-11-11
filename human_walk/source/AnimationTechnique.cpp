@@ -1,6 +1,6 @@
-#include "AnimationRenderer.h"
+#include "AnimationTechnique.h"
 
-void AnimationRenderer::init(WeightedModel &m, GLuint p)
+void AnimationTechnique::init(WeightedMesh &m, GLuint p)
 {
 	program = p;
 
@@ -52,7 +52,7 @@ void AnimationRenderer::init(WeightedModel &m, GLuint p)
 	glBindVertexArray(0);
 }
 
-void AnimationRenderer::render()
+void AnimationTechnique::draw()
 {
 	glUseProgram(program);
 
@@ -71,7 +71,7 @@ void AnimationRenderer::render()
 	glBindVertexArray(0);
 }
 
-void AnimationRenderer::setSkinningMatrices(std::vector<glm::mat4> &m)
+void AnimationTechnique::setSkinningMatrices(std::vector<glm::mat4> &m)
 {
 	skinningMatrices = m;
 }

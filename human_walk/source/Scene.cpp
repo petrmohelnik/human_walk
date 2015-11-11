@@ -5,7 +5,7 @@ void Scene::setName(const char *n)
 	name.append(n);
 }
 
-void Scene::addObject(std::shared_ptr<RenderedObject> o)
+void Scene::addObject(std::shared_ptr<Renderer> o)
 {
 	objects.push_back(o);
 }

@@ -19,7 +19,7 @@ bool SDLHandler::init()
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 5);
 
 	//create window
-	mainwindow = SDL_CreateWindow("kostra_sdl", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+	mainwindow = SDL_CreateWindow("human_walk", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 		width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
 	if (!mainwindow) {
 		std::cout << "ERROR: Cannot create window\nSDL ERROR: " << SDL_GetError() << "\n";

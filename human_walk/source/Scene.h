@@ -8,20 +8,20 @@
 #include <memory>
 #include <SDL/SDL.h>
 #include "Camera.h"
-#include "RenderedObject.h"
+#include "Renderer.h"
 #include "Light.h"
 
 class Scene
 {
 protected:
 	std::string name;
-	std::vector<std::shared_ptr<RenderedObject> > objects;
+	std::vector<std::shared_ptr<Renderer> > objects;
 	Camera camera;
 	std::vector<Light> lights;
 	glm::vec3 ambientLight;
 public:
 	void setName(const char *n);
-	void addObject(std::shared_ptr<RenderedObject> o);
+	void addObject(std::shared_ptr<Renderer> o);
 	void addLight(Light l);
 	void setAmbientLight(glm::vec3 a);
 	virtual void initCamera(float fov, int width, int height, float nearPlane, float farPlane, int mode = CAM_ROT_TRANS);

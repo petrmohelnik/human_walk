@@ -1,33 +1,33 @@
-#include "Model.h"
+#include "Mesh.h"
 
-void Model::addVertex(glm::vec3 vertex, glm::vec3 normal, glm::vec2 texCoord)
+void Mesh::addVertex(glm::vec3 vertex, glm::vec3 normal, glm::vec2 texCoord)
 {
 	v.push_back(vertex);
 	n.push_back(normal);
 	t.push_back(texCoord);
 }
 
-float *Model::getVertices()
+float *Mesh::getVertices()
 {
 	return &v[0].x;
 }
 
-float *Model::getNormals()
+float *Mesh::getNormals()
 {
 	return &n[0].x;
 }
 
-float *Model::getTexCoords()
+float *Mesh::getTexCoords()
 {
 	return &t[0].x;
 }
 
-int Model::getSize()
+int Mesh::getSize()
 {
 	return v.size();
 }
 
-void WeightedModel::addVertex(glm::vec3 vertex, glm::vec3 normal, glm::vec2 texCoord, glm::vec4 w, glm::ivec4 j)
+void WeightedMesh::addVertex(glm::vec3 vertex, glm::vec3 normal, glm::vec2 texCoord, glm::vec4 w, glm::ivec4 j)
 {
 	v.push_back(vertex);
 	n.push_back(normal);
@@ -36,34 +36,34 @@ void WeightedModel::addVertex(glm::vec3 vertex, glm::vec3 normal, glm::vec2 texC
 	jointIndices.push_back(j);
 }
 
-void WeightedModel::initWeightVectors()
+void WeightedMesh::initWeightVectors()
 {
 	weights.reserve(getSize());
 	jointIndices.reserve(getSize());
 }
 
-void WeightedModel::addWeight(int i, glm::vec4 w, glm::ivec4 j)
+void WeightedMesh::addWeight(int i, glm::vec4 w, glm::ivec4 j)
 {
 	weights.push_back(w);
 	jointIndices.push_back(j);
 }
 
-float *WeightedModel::getWeights()
+float *WeightedMesh::getWeights()
 {
 	return &weights[0].x;
 }
 
-int *WeightedModel::getJointIndices()
+int *WeightedMesh::getJointIndices()
 {
 	return &jointIndices[0].x;
 }
 
-void WeightedModel::setBindMatrix(glm::mat4 m)
+void WeightedMesh::setBindMatrix(glm::mat4 m)
 {
 	bindMatrix = m;
 }
 
-glm::mat4 WeightedModel::getBindMatrix()
+glm::mat4 WeightedMesh::getBindMatrix()
 {
 	return bindMatrix;
 }

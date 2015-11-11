@@ -3,24 +3,25 @@
 
 #include <memory>
 #include <iostream>
-#include "RenderedObject.h"
+#include <vector>
+#include "Renderer.h"
 #include "Model.h"
 #include "Skeleton.h"
-#include "AnimationRenderer.h"
+#include "AnimationTechnique.h"
 #include "Scene.h"
 #include "Camera.h"
 
-class RiggedModelRenderer : public RenderedObject
+class RiggedModelRenderer : public Renderer
 {
 private:
 	std::shared_ptr<Skeleton> skeleton;
-	std::shared_ptr<AnimationRenderer> renderer;
+	std::vector<std::shared_ptr<AnimationTechnique> > technique;
 	glm::vec3 pos;
 	glm::mat4 bindMatrix;
 public:
 	RiggedModelRenderer(glm::vec3 p, std::shared_ptr<Skeleton> s);
 	bool initRenderer(Model &m, GLuint p);
-	void display(Camera &cam, std::vector<Light> &lights, glm::vec3 ambientLight);
+	void render(Camera &cam, std::vector<Light> &lights, glm::vec3 ambientLight);
 };
 
 #endif //RIGGED_MODEL_RENDERER_H

@@ -2,7 +2,7 @@
 
 SkeletonRenderer::SkeletonRenderer(glm::vec3 p, std::shared_ptr<Skeleton> s)
 {
-	renderer.reset(new BasicRenderer);
+	renderer.reset(new BasicTechnique);
 	pos = p;
 	skeleton = s;
 }

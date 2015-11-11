@@ -1,8 +1,8 @@
-#include "riggedModelRenderer.h"
+#include "RiggedModelRenderer.h"
 
 RiggedModelRenderer::RiggedModelRenderer(glm::vec3 p, std::shared_ptr<Skeleton> s)
 {
-	renderer.reset(new AnimationRenderer);
+	technique.reset(new AnimationTechnique);
 	pos = p;
 	skeleton = s;
 }

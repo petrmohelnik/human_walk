@@ -41,17 +41,17 @@ void Skeleton::fixScale()
 		if (bones[i].childs.size() != 0)
 			bones[i].scale = glm::length(glm::vec3((bones[bones[i].childs[0]].globalMat[3] - bones[i].globalMat[3])));
 		else
-			bones[i].scale = bones[bones[i].parent].scale * 0.5;
+			bones[i].scale = bones[bones[i].parent].scale * 0.5f;
 	}
 
 	for (unsigned int i = 0; i < bones.size(); i++) {
 		if (bones[i].name.find("empty") != std::string::npos) {
 			bones[bones[i].parent].childs.pop_back();
 			for (unsigned int j = 0; j < bones.size(); j++) {
-				if (bones[j].parent > i)
+				if (bones[j].parent > (int)i)
 					bones[j].parent--;
 				for (unsigned int k = 0; k < bones[j].childs.size(); k++) {
-					if (bones[j].childs[k] > i)
+					if (bones[j].childs[k] > (int)i)
 						bones[j].childs[k]--;
 				}
 			}

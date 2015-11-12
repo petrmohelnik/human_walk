@@ -16,8 +16,8 @@ class RiggedModelRenderer : public Renderer
 private:
 	std::shared_ptr<Skeleton> skeleton;
 	std::vector<std::shared_ptr<AnimationTechnique> > technique;
+	std::vector<glm::mat4> bindMatrix;
 	glm::vec3 pos;
-	glm::mat4 bindMatrix;
 public:
 	RiggedModelRenderer(glm::vec3 p, std::shared_ptr<Skeleton> s);
 	bool initRenderer(Model &m, GLuint p);

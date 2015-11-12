@@ -45,11 +45,26 @@ bool FileSystem::loadFile(const char *path, std::string &buffer)
 	return true;
 }
 
+bool loadTexture(const char *path, std::vector<unsigned char> &img)
+{
+	unsigned width, height;
+
+	unsigned error = lodepng::decode(img, width, height, path);
+
+	if (error) {
+		std::cout << path <<  ": Decoder error " << error << ": " << lodepng_error_text(error) << std::endl;
+		return false;
+	}
+
+	return true;
+}
+
 bool FileSystem::parseObj(const char *path, Model &m)
 {
 	std::string line;
 	std::ifstream fileStream(path);
 	unsigned int ind = 0; //amout of indices
+	Mesh mesh;
 
 	std::vector<glm::vec3> v, n;
 	std::vector<glm::vec2> t;
@@ -97,7 +112,7 @@ bool FileSystem::parseObj(const char *path, Model &m)
 				texCoord.x = t[i].x; texCoord.y = t[i].y;
 				i = atoi(v1[2].c_str()) - 1;
 				normal.x = n[i].x; normal.y = n[i].y; normal.z = n[i].z;
-				m.addVertex(vertex, normal, texCoord);
+				mesh.addVertex(vertex, normal, texCoord);
 
 				std::vector<std::string> v2 = split(tokens[2], '/');
 				i = atoi(v2[0].c_str()) - 1;
@@ -106,7 +121,7 @@ bool FileSystem::parseObj(const char *path, Model &m)
 				texCoord.x = t[i].x; texCoord.y = t[i].y;
 				i = atoi(v2[2].c_str()) - 1;
 				normal.x = n[i].x; normal.y = n[i].y; normal.z = n[i].z;
-				m.addVertex(vertex, normal, texCoord);
+				mesh.addVertex(vertex, normal, texCoord);
 
 				std::vector<std::string> v3 = split(tokens[3], '/');
 				i = atoi(v3[0].c_str()) - 1;
@@ -115,9 +130,18 @@ bool FileSystem::parseObj(const char *path, Model &m)
 				texCoord.x = t[i].x; texCoord.y = t[i].y;
 				i = atoi(v3[2].c_str()) - 1;
 				normal.x = n[i].x; normal.y = n[i].y; normal.z = n[i].z;
-				m.addVertex(vertex, normal, texCoord);
+				mesh.addVertex(vertex, normal, texCoord);
 			}
 		}
+
+		std::shared_ptr<Material> mat(new Material);
+		std::vector<unsigned char> tex;
+		if (!loadTexture("resources/white_d.png", tex))
+			return false;
+		mat->setDifTex(tex);
+		mesh.addMaterial(mat);
+
+		m.addMesh(std::make_shared<Mesh>(mesh));
 
 		fileStream.close();
 		return true;
@@ -137,7 +161,7 @@ int FileSystem::findLastOpen(std::vector<bool> &closed)
 	return -1;
 }
 
-bool FileSystem::loadModelAndSkeletonDae(const char *path, WeightedModel &m, Skeleton &s)
+bool FileSystem::loadModelAndSkeletonDae(const char *path, Model &m, Skeleton &s)
 {
 	size_t pos;
 	std::string line, armatureName;
@@ -232,7 +256,6 @@ bool FileSystem::loadModelAndSkeletonDae(const char *path, WeightedModel &m, Ske
 			for (unsigned int i = 0; i < 16; i++)
 				bindShapeMatrix[i / 4][i % 4] = (float)atof(tokens[i].c_str());
 			bindShapeMatrix = glm::transpose(bindShapeMatrix);
-			m.setBindMatrix(bindShapeMatrix);
 		}
 
 		//load vertex weights
@@ -288,7 +311,7 @@ bool FileSystem::loadModelAndSkeletonDae(const char *path, WeightedModel &m, Ske
 		for (unsigned int i = 0; i < vcount.size(); i++) {
 			weightJoints.push_back(std::vector<int>());
 			weightWeights.push_back(std::vector<int>());
-			for (unsigned int j = 0; j < vcount[i]; j++) {
+			for (int j = 0; j < vcount[i]; j++) {
 				weightJoints[i].push_back(atoi(tokens[k].c_str())); k++;
 				weightWeights[i].push_back(atoi(tokens[k].c_str())); k++;
 			}
@@ -389,6 +412,7 @@ bool FileSystem::loadModelAndSkeletonDae(const char *path, WeightedModel &m, Ske
 		}
 
 		//push in faces
+		WeightedMesh mesh;
 		for (unsigned int i = 0; i < indices.size(); i += 3) {
 			glm::vec3 vertex, normal;
 			glm::vec2 texCoord;
@@ -418,8 +442,18 @@ bool FileSystem::loadModelAndSkeletonDae(const char *path, WeightedModel &m, Ske
 			else
 				texCoord = glm::vec2(0.0f);
 
-			m.addVertex(vertex, normal, texCoord, weights, joints);
+			mesh.addVertex(vertex, normal, texCoord, weights, joints);
 		}
+		mesh.setBindMatrix(bindShapeMatrix);
+
+		std::shared_ptr<Material> mat(new Material);
+		std::vector<unsigned char> tex;
+		if (!loadTexture("resources/white_d.png", tex))
+			return false;
+		mat->setDifTex(tex);
+		mesh.addMaterial(mat);
+
+		m.addMesh(std::make_shared<WeightedMesh>(mesh));
 
 		fileStream.close();
 		return true;

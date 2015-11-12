@@ -2,31 +2,31 @@
 
 SkeletonRenderer::SkeletonRenderer(glm::vec3 p, std::shared_ptr<Skeleton> s)
 {
-	renderer.reset(new BasicTechnique);
+	technique.reset(new BasicTechnique);
 	pos = p;
 	skeleton = s;
 }
 
 bool SkeletonRenderer::initRenderer(Model &m, GLuint p)
 {
-	if (m.getSize() < 1) {
+	if (m.getMeshesSize() < 1) {
 		std::cout << "ERROR: Model is empty!";
 			return false;
 	}
 
-	renderer->init(m, p);
+	technique->init(*(m.getMeshes()[0]), p);
 	return true;
 }
 
-void SkeletonRenderer::display(Camera &cam, std::vector<Light> &lights, glm::vec3 ambientLight)
+void SkeletonRenderer::render(Camera &cam, std::vector<Light> &lights, glm::vec3 ambientLight)
 {
 	glClear(GL_DEPTH_BUFFER_BIT);
 
 	if (lights.size() > 0)
-		renderer->setLightPos(lights[0].pos);
-	renderer->setAmbientLight(ambientLight);
-	renderer->setP(cam.getProjection());
-	renderer->setViewPos(cam.getPos());
+		technique->setLightPos(lights[0].pos);
+	technique->setAmbientLight(ambientLight);
+	technique->setP(cam.getProjection());
+	technique->setViewPos(cam.getPos());
 
 	glm::mat4 skeletonMv = skeleton->getRootTransformMatrix();
 	skeletonMv = glm::translate(skeletonMv, pos);
@@ -53,9 +53,9 @@ void SkeletonRenderer::display(Camera &cam, std::vector<Light> &lights, glm::vec
 		//	m = glm::scale(modelview, glm::vec3(glm::length(glm::vec3((modelview * bones[i + 1])[3] - modelview[3]))));
 		//else
 		//	m = modelview;
-		renderer->setMv(skeletonMv * bones[i]);
+		technique->setMv(skeletonMv * bones[i]);
 
-		renderer->render();
+		technique->draw();
 	}
 }
 

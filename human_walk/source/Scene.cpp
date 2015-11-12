@@ -34,7 +34,7 @@ void Scene::render()
 {
 	for (unsigned int i = 0; i < objects.size(); i++)
 	{
-		objects[i]->display(camera, lights, ambientLight);
+		objects[i]->render(camera, lights, ambientLight);
 	}
 }
 
@@ -128,6 +128,6 @@ void MainScene::render()
 
 	for (unsigned int i = 0; i < objects.size(); i++)
 	{
-		objects[i]->display(camera, lights, ambientLight);
+		objects[i]->render(camera, lights, ambientLight);
 	}
 }

@@ -11,6 +11,7 @@
 #include <stdlib.h>  
 #include "Model.h"
 #include "Skeleton.h"
+#include "lodepng.h"
 
 class FileSystem
 {
@@ -21,8 +22,9 @@ private:
 	int findLastOpen(std::vector<bool> &closed);
 public:
 	bool loadFile(const char *path, std::string &buffer);
+	bool loadTexture(const char *path, std::vector<unsigned char> img);
 	bool parseObj(const char *path, Model &m);
-	bool loadModelAndSkeletonDae(const char *path, WeightedModel &m, Skeleton &s);
+	bool loadModelAndSkeletonDae(const char *path, Model &m, Skeleton &s);
 };
 
 #endif //FILE_SYSTEM_H

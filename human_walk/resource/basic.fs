@@ -5,6 +5,7 @@ uniform mat3 ti_mv;
 uniform vec3 viewPos;
 uniform vec3 lightPos;
 uniform vec3 ambientLight;
+uniform sampler2D texture;
 
 in vec3 f_pos;
 in vec3 f_norm;

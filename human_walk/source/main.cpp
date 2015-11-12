@@ -101,7 +101,7 @@ int main(int argc, char **argv)
 		cin.get();
 		return -1;
 	}
-	WeightedModel m2;
+	Model m2;
 	std::shared_ptr<Skeleton> skeleton(new Skeleton);
 	if (!f.loadModelAndSkeletonDae("resource/joker.dae", m2, *skeleton.get())) {
 		cin.get();

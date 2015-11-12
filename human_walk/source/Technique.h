@@ -12,8 +12,8 @@ protected:
 	int indices; //amount of indices in vao
 	GLuint program;
 public:
-	virtual void draw(Mesh &m, GLuint p) = 0;
-	virtual void render() = 0;
+	virtual void init(Mesh &m, GLuint p) = 0;
+	virtual void draw() = 0;
 };
 
 #endif //TECHNIQUE_H

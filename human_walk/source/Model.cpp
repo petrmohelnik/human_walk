@@ -1,10 +1,20 @@
-#include "Mesh.h"
+#include "Model.h"
+
+void Material::setDifTex(std::vector<unsigned char> tex)
+{
+	difTex = tex;
+}
 
 void Mesh::addVertex(glm::vec3 vertex, glm::vec3 normal, glm::vec2 texCoord)
 {
 	v.push_back(vertex);
 	n.push_back(normal);
 	t.push_back(texCoord);
+}
+
+void Mesh::addMaterial(std::shared_ptr<Material> mat)
+{
+	m = mat;
 }
 
 float *Mesh::getVertices()
@@ -66,4 +76,21 @@ void WeightedMesh::setBindMatrix(glm::mat4 m)
 glm::mat4 WeightedMesh::getBindMatrix()
 {
 	return bindMatrix;
+}
+
+std::vector<std::shared_ptr<Mesh> > Model::getMeshes()
+{
+	return meshes;
+}
+
+int Model::getMeshesSize()
+{
+	return meshes.size();
+}
+
+int Model::addMesh(std::shared_ptr<Mesh> mesh)
+{
+	meshes.push_back(mesh);
+
+	return meshes.size();
 }

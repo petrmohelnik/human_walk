@@ -30,9 +30,6 @@
     <ClCompile Include="source\Model.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\BasicRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="source\Scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -48,18 +45,21 @@
     <ClCompile Include="source\Skeleton.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\AnimationRenderer.cpp">
+    <ClCompile Include="source\BasicTechnique.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\riggedModelRenderer.cpp">
+    <ClCompile Include="source\AnimationTechnique.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\RiggedModelRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\lodepng.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\SDLHandler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\Renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="source\Shader.h">
@@ -69,12 +69,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="source\Model.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\RenderedObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\BasicRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="source\Scene.h">
@@ -95,10 +89,22 @@
     <ClInclude Include="source\Skeleton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\AnimationRenderer.h">
+    <ClInclude Include="source\Technique.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\riggedModelRenderer.h">
+    <ClInclude Include="source\BasicTechnique.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Renderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\AnimationTechnique.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\RiggedModelRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\lodepng.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

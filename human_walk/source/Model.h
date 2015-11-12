@@ -7,10 +7,10 @@
 
 class Material
 {
-public:
-
 private:
-
+	std::vector<unsigned char> difTex;
+public:
+	void setDifTex(std::vector<unsigned char> tex);
 };
 
 class Mesh
@@ -22,6 +22,7 @@ protected:
 	std::shared_ptr<Material> m;
 public:
 	virtual void addVertex(glm::vec3 vertex, glm::vec3 normal, glm::vec2 texCoord);
+	void addMaterial(std::shared_ptr<Material> mat);
 	float *getVertices();
 	float *getNormals();
 	float *getTexCoords();
@@ -49,7 +50,9 @@ class Model
 private:
 	std::vector<std::shared_ptr<Mesh> > meshes;
 public:
-
+	std::vector<std::shared_ptr<Mesh> > getMeshes();
+	int getMeshesSize();
+	int addMesh(std::shared_ptr<Mesh> mesh);
 };
 
 #endif //MODEL_H

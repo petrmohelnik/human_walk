@@ -45,11 +45,9 @@ bool FileSystem::loadFile(const char *path, std::string &buffer)
 	return true;
 }
 
-bool loadTexture(const char *path, std::vector<unsigned char> &img)
+bool FileSystem::loadTexture(const char *path, Texture &img)
 {
-	unsigned width, height;
-
-	unsigned error = lodepng::decode(img, width, height, path);
+	unsigned int error = lodepng::decode(img.tex, img.width, img.height, path);
 
 	if (error) {
 		std::cout << path <<  ": Decoder error " << error << ": " << lodepng_error_text(error) << std::endl;
@@ -135,8 +133,8 @@ bool FileSystem::parseObj(const char *path, Model &m)
 		}
 
 		std::shared_ptr<Material> mat(new Material);
-		std::vector<unsigned char> tex;
-		if (!loadTexture("resources/white_d.png", tex))
+		Texture tex;
+		if (!loadTexture("resource/white_d.png", tex))
 			return false;
 		mat->setDifTex(tex);
 		mesh.addMaterial(mat);
@@ -447,8 +445,8 @@ bool FileSystem::loadModelAndSkeletonDae(const char *path, Model &m, Skeleton &s
 		mesh.setBindMatrix(bindShapeMatrix);
 
 		std::shared_ptr<Material> mat(new Material);
-		std::vector<unsigned char> tex;
-		if (!loadTexture("resources/white_d.png", tex))
+		Texture tex;
+		if (!loadTexture("resource/white_d.png", tex))
 			return false;
 		mat->setDifTex(tex);
 		mesh.addMaterial(mat);

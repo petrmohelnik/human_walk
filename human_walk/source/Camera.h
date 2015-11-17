@@ -25,6 +25,7 @@ public:
 	void rotateY(float r);
 	void translate(glm::vec3 t);
 	glm::mat4 getProjection();
+	glm::mat4 getView();
 	glm::vec3 getPos();
 	glm::vec2 getRotation();
 	void setMode(int mode);

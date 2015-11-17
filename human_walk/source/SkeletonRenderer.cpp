@@ -26,10 +26,12 @@ void SkeletonRenderer::render(Camera &cam, std::vector<Light> &lights, glm::vec3
 		technique->setLightPos(lights[0].pos);
 	technique->setAmbientLight(ambientLight);
 	technique->setP(cam.getProjection());
+	technique->setV(cam.getView());
 	technique->setViewPos(cam.getPos());
+	technique->bindTexDif(0);
 
-	glm::mat4 skeletonMv = skeleton->getRootTransformMatrix();
-	skeletonMv = glm::translate(skeletonMv, pos);
+	glm::mat4 skeletonM = skeleton->getRootTransformMatrix();
+	skeletonM = glm::translate(skeletonM, pos);
 
 	skeleton->countGlobalMatrices();
 	std::vector<glm::mat4> bones = skeleton->getScaledGlobalMatrices();
@@ -53,7 +55,7 @@ void SkeletonRenderer::render(Camera &cam, std::vector<Light> &lights, glm::vec3
 		//	m = glm::scale(modelview, glm::vec3(glm::length(glm::vec3((modelview * bones[i + 1])[3] - modelview[3]))));
 		//else
 		//	m = modelview;
-		technique->setMv(skeletonMv * bones[i]);
+		technique->setM(skeletonM * bones[i]);
 
 		technique->draw();
 	}

@@ -22,7 +22,7 @@ private:
 	int findLastOpen(std::vector<bool> &closed);
 public:
 	bool loadFile(const char *path, std::string &buffer);
-	bool loadTexture(const char *path, std::vector<unsigned char> img);
+	bool loadTexture(const char *path, Texture &img);
 	bool parseObj(const char *path, Model &m);
 	bool loadModelAndSkeletonDae(const char *path, Model &m, Skeleton &s);
 };

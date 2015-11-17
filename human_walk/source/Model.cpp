@@ -1,8 +1,13 @@
 #include "Model.h"
 
-void Material::setDifTex(std::vector<unsigned char> tex)
+void Material::setDifTex(Texture tex)
 {
 	difTex = tex;
+}
+
+Texture Material::getDifTex()
+{
+	return difTex;
 }
 
 void Mesh::addVertex(glm::vec3 vertex, glm::vec3 normal, glm::vec2 texCoord)
@@ -35,6 +40,11 @@ float *Mesh::getTexCoords()
 int Mesh::getSize()
 {
 	return v.size();
+}
+
+std::shared_ptr<Material> Mesh::getMaterial()
+{
+	return m;
 }
 
 void WeightedMesh::addVertex(glm::vec3 vertex, glm::vec3 normal, glm::vec2 texCoord, glm::vec4 w, glm::ivec4 j)

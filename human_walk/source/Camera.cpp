@@ -29,18 +29,25 @@ void Camera::translate(glm::vec3 t)
 
 glm::mat4 Camera::getProjection()
 {
-	glm::mat4 projection = glm::perspective(fov, width / (float)height, nearPlane, farPlane);
+	return glm::perspective(fov, width / (float)height, nearPlane, farPlane);
+}
+
+glm::mat4 Camera::getView()
+{
+	glm::mat4 view = glm::mat4(1.0);
+
 	if (mode == CAM_ROT_TRANS) {
-		projection = glm::rotate(projection, rot.y, glm::vec3(1.0f, 0.0f, 0.0f));
-		projection = glm::rotate(projection, rot.x, glm::vec3(0.0f, 1.0f, 0.0f));
-		projection = glm::translate(projection, pos);
+		view = glm::rotate(view, rot.y, glm::vec3(1.0f, 0.0f, 0.0f));
+		view = glm::rotate(view, rot.x, glm::vec3(0.0f, 1.0f, 0.0f));
+		view = glm::translate(view, pos);
 	}
 	else {
-		projection = glm::translate(projection, pos);
-		projection = glm::rotate(projection, rot.y, glm::vec3(1.0f, 0.0f, 0.0f));
-		projection = glm::rotate(projection, rot.x, glm::vec3(0.0f, 1.0f, 0.0f));
+		view = glm::translate(view, pos);
+		view = glm::rotate(view, rot.y, glm::vec3(1.0f, 0.0f, 0.0f));
+		view = glm::rotate(view, rot.x, glm::vec3(0.0f, 1.0f, 0.0f));
 	}
-	return projection;
+
+	return view;
 }
 
 glm::vec3 Camera::getPos()

@@ -1,7 +1,7 @@
 #version 450
 
 uniform mat4 mvp;
-uniform mat3 mv;
+uniform mat3 m;
 
 in vec3 v_pos;
 in vec3 v_norm;
@@ -13,7 +13,7 @@ out vec2 f_texCoord;
 
 void main()
 {
-	f_pos = mv * v_pos;
+	f_pos = m * v_pos;
 	f_texCoord = v_texCoord;
 	f_norm = v_norm;
 

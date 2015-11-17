@@ -5,12 +5,20 @@
 #include <glm/glm.hpp>
 #include <memory>
 
+struct Texture
+{
+	std::vector<unsigned char> tex;
+	unsigned int width;
+	unsigned int height;
+};
+
 class Material
 {
 private:
-	std::vector<unsigned char> difTex;
+	Texture difTex;
 public:
-	void setDifTex(std::vector<unsigned char> tex);
+	void setDifTex(Texture tex);
+	Texture getDifTex();
 };
 
 class Mesh
@@ -27,6 +35,7 @@ public:
 	float *getNormals();
 	float *getTexCoords();
 	int getSize();
+	std::shared_ptr<Material> getMaterial();
 };
 
 class WeightedMesh : public Mesh

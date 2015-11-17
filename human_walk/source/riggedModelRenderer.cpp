@@ -36,13 +36,15 @@ void RiggedModelRenderer::render(Camera &cam, std::vector<Light> &lights, glm::v
 			technique[i]->setLightPos(lights[0].pos);
 		technique[i]->setAmbientLight(ambientLight);
 		technique[i]->setP(cam.getProjection());
+		technique[i]->setV(cam.getView());
 		technique[i]->setViewPos(cam.getPos());
 		technique[i]->setSkinningMatrices(skeleton->getSkinningMatrices());
+		technique[i]->bindTexDif(0);
 
-		glm::mat4 skeletonMv = skeleton->getRootTransformMatrix();
-		skeletonMv = glm::translate(skeletonMv, pos);// * bindMatrix;
+		glm::mat4 skeletonM = skeleton->getRootTransformMatrix();
+		skeletonM = glm::translate(skeletonM, pos);// * bindMatrix;
 
-		technique[i]->setMv(skeletonMv);
+		technique[i]->setM(skeletonM);
 
 		technique[i]->draw();
 	}

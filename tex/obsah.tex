@@ -1,0 +1,136 @@
+%=========================================================================
+% (c) Michal Bidlo, Bohuslav Køena, 2008
+
+\chapter{Úvod}
+Poèítaèová animace má velké vyu¾ití pro poèítaèové hry a filmy. Lidé jsou velmi vnímaví na správnost lidské chùze a snadno rozpoznají, kdy je animace nepøirozená. Proto je vylep¹ování tvorby této animace stále aktuálním tématem. Lidská chùze je jedna z nejpou¾ívanìj¹ích a nejdùle¾itìj¹ích animací. Existují rùzné pøístupy k tvorbì animace lidské chùze. Tyto pøístupy se li¹í v kompromisu mezi pøirozeností a kontrolou nad animací. Tato práce se zabývá procedurální tvorbou.
+
+
+\chapter{Skeletální animace}
+Skeletální animace je zpùsob animace, který vyu¾ívá dvì základní komponenty: model (nejèastìji polygonální) nazýván kù¾e a kostru, na kterou je kù¾e pøipojena. Pohyb kosti zpùsobí pohyb pøipojené kù¾e. V klasické animaci, je vytvoøen mesh pro ka¾dý klíèový snímek animace a tyto meshe se za sebou zobrazují. Oproti tomu se skeletální animace skládá pouze z jednoho modelu a pøipojené kostry, pro kterou jsou ulo¾eny pozice kostí v klíèových snímcích napø. cyklu chùze. Ty mohou být pøedpoèítané. Ka¾dý tento snímek definuje pozici ka¾dé kosti v konkrétní èas. Díky tomu má mnohem ni¾¹í pamì»ovou nároènost. Také skeletální animace umo¾òuje vysokou interakci s prostøedím. Kost se mù¾e zarazit o pøeká¾ku apod. Skeletální animace také mohou být pou¾ité na více rùzných modelech. Nìkdy programy poskytují pøedpøipravenou kostru, okolo které se vytvoøí model. Skeletální animace má také své nevýhody. Pohyby kostí a pøipojených vrcholù spotøebovávají výpoèetní výkon. V animacích obecnì se musí øe¹it interpolace mezi dvìma klíèovými snímky, proto¾e zobrazení snímku mù¾e probìhnout v libovolný èas.
+
+\section{Kostra}
+Kostra je abstraktní model lidského nebo zvíøecího tìla. Jedná se o stromovou strukturu. Uzly jsou nazývány kosti nebo klouby. Ke kostem jsou pøiøazeny vrcholy. Ka¾dá kost má stupnì volnosti, které urèují v jakém smìru a jak moc se mù¾ou rotovat. Pøipojování modelu na kostru se nazývá skinning.
+
+\begin{figure}[h]
+\begin{center}
+\scalebox{0.5}{\includegraphics{fig/bone_structure.png}}
+\caption{Pøíklad hierarchie kostry} \label{bone_structure}
+\end{center}
+\end{figure}
+
+Ka¾dá kost má lokální transformaci: posunutí, rotaci a zvìt¹ení. Tato transformace se mù¾e ulo¾it jako matice a urèuje transformaci vùèi rodièovské kosti, pokud existuje. Pro realistické modely se vìt¹inou pou¾ívá pouze rotace. Výsledná globální transformace kosti $\mathbf{B}$ se získá kombinací rodièovské globální transformace a vlastní lokální transformace. To se provede procházením øetìzce pøímé kinematiky, kde se postupnì aplikují transformace od koøene k listùm. Pro koøenovou kost je lokální transformace její globální. 
+
+Na zaèátku se kostra nastaví do bind pose \cite{bindPose}. To je základní pozice kostry pøed jakýmkoliv pohybem, na kterou je pøipojena kù¾e. Kdy¾ je kostra pøipojena na kù¾i, jsou urèeny bind pose matice $\mathbf{B}$ pro ka¾dou kost. Ty urèují jejich transformaci z poèátku souøadného systému kostry. Chceme-li zmìnit pózu kostry (matici $\mathbf{B}$ nìjaké kosti) a tím i pøipojeného modelu, musí se vrcholy transformovat ze souøadného systému modelu do souøadného systému kostry. K tomu se pou¾ije inverzní bind pose matice $\mathbf{B}_i$. Ta urèuje tranformaci kosti, tak aby byla umístìna v poèátku. Tedy invertuje transformaci, která byla na model aplikována v bind pose. Matematický zápis transformace $\mathbf{T}$ do nové pozice je následující:
+
+\begin{eqnarray}
+\mathbf{T} &=& \mathbf{B}_i \mathbf{B}\label{r.transform_mat}
+\end{eqnarray}
+
+Poté se mù¾e pou¾ít nová transformace kosti. Vrchol bude poøád ve stejné relativní pozici vùèi kosti. Transformování se èasto provádí na grafické kartì ve vertex shaderu.
+
+ \begin{figure}[h]
+\begin{center}
+\scalebox{0.5}{\includegraphics{fig/transform_pose.png}}
+\caption{Transformace pøedloktí. Prvnì se aplikuje inverse bind pose a poté nová bind pose} \label{transform_pose}
+\end{center}
+\end{figure}
+
+\section{Skinning}
+Skinning \cite{skinningMethods} je proces pøidìlování kostí vrcholùm a urèování jejich vah. Tento proces mù¾e probíhat algoritmicky nebo ruènì v nìkterém z modelovacích programù. 
+
+Nejjednodu¹¹í zpùsob pøiøazení modelu kostøe je ka¾dé kostøe pøiøadit samostatný pevný objekt jako je napø. válec. Na ka¾dý takový objekt se poté aplikuje transformace odpovídající kosti. Tento pøístup není vhodný pro realistické animování.
+
+Simple skinning je základní metoda, která ji¾ pou¾ívá kù¾i, tedy jeden model pro celou kostru. Pøiøazuje jeden vrchol k jedné kosti. Ka¾dý vrchol se poté transformuje transformací odpovídající kosti. Je pou¾ívaná napøíklad ve star¹ích hrách. Je pou¾itelná pro modely s nízkým poètem trojúhelníkù. U detailnìj¹ích modelù zpùsobuje nepìkné deformace v kloubech a animace vypadá nepøirozenì. 
+
+Linear blend skinning je pokroèilej¹í algoritmus. Ka¾dému vrcholu se mù¾e pøiøadit více kostí. Ka¾dá kost ovlivòuje vrchol rùznou silou, vahou. Váha urèuje jak velký vliv má pohyb kosti na výslednou pozici vrcholu. Oèekává na vstupu následující data. 
+\begin{itemize}
+\item Rest pose shape, typicky reprezentovaný jako polygonální model. Propojení meshe se v prùbìhu nemìní, pouze pozice vrcholù. 
+\item Transformace kostí, reprezentované jako matice $\mathbf{T}_1,\ldots,\mathbf{T}_m$ urèené podle rovnice \ref{r.transform_mat}. 
+\item Váhy vrcholù, pro ka¾dý vrchol $\mathbf{v}_i$ máme váhy $w_{i,1},\ldots,w_{i,m} \in \mathbb{R}$. Ka¾dá váha $W_{i,j}$ urèuje vliv kosti $j$ na vrchol $i$. Celkový souèet v¹ech vah je 1, pøièem¾ ¾ádná váha není záporná. 
+\end{itemize}
+Mno¾ství kostí ovlivòující jeden vrchol se mù¾e významnì li¹it, napø. od 1 do 10. Kvùli limitacím grafického hardwaru se èasto uva¾uje ¾e jich není více ne¾ 4. Transformovaná pozice vrcholu $\mathbf{v}'_i$ se urèí podle následující rovnice:
+
+\begin{eqnarray}
+\mathbf{v}'_i &=& \Bigg(\sum_{j=1}^mw_{i,j} \mathbf{T}_j\Bigg)\mathbf{v}_i\label{r.linear_blend_skinning}
+\end{eqnarray}
+ 
+ Tato metoda podává dobré výsledky, pokud míchané transformace nejsou pøíli¹ rozdílné. Problémy nastávají jestli¾e potøebujeme míchat transformace, které se významnì li¹í v jejich rotaci. Je známým faktem, ¾e lineární kombinace rotací nevzniká rotace. To je dùsledkem faktu, ¾e Lieova grupa 3D transformací, $SO(3)$, není lineární prostor, ale zakøivená varieta. Pokud jsou si rotace blízké není to problémem. Uva¾ujme ale tyto dvì rotace.
+$$\mathbf{R}_1\left[\begin{array}{ccc}
+1 & 0 & 0\\
+0 & 1 & 0\\
+0 & 0 & 1~\end{array}\right], \quad \mathbf{R}_2 \left[\begin{array}{ccc}
+-1 & 0 & 0\\
+0 & -1 & 0\\
+0 & 0 & 1~\end{array}\right]$$ 
+  $\mathbf{R}_1$ je maticí identity a $\mathbf{R}_2$ je rotace okolo osy Z o 180°. Lineární míchání $0.5 \cdot \mathbf{R}_1 + 0.5 \cdot \mathbf{R}_2$ nám dá za výsledek matici hodnosti 1, která promítá 3D prostor na osu Z. Dojde ke ztrátì objemu modelu. Velké relativní rotace nejsou vzácné, proto¾e klouby jako ramena a zápìstí mají velký rozsah pohybu. Tyto problémy je mo¾né øe¹it zavedením více parametrù ne¾ má linearní blend skinning. Takové metody se nazývají multilineární. Tyto metody nemusí být ¾ádoucí kvùli nutnosti vytváøet a ukládat více vah pro ka¾dý vrchol. 
+ 
+ \begin{figure}[h]
+\begin{center}
+\scalebox{0.5}{\includegraphics{fig/dual_quat.png}}
+\caption{Zleva doprava: model v rest pose, linear blend skinning a dual quaternion} \label{bone_structure}
+\end{center}
+\end{figure}
+ 
+Velmi roz¹íøenou metodou je nelineární metoda Dual quaternion skinning \cite{dualQuat}, kde se místo matic míchají duální kvaterniony. Tato metoda øe¹í artefakty vznikající u LBD, zachovává objem modelu a je velmi rychlá. Pou¾ívá se v roz¹írených modelovacích programech jako je napø. Blender. Klasické kvaterniony umo¾òují reprezentovat 3D rotaci okolo osy. Tato osa ale musí procházet poèátkem souøadného systému. Oproti tomu dual kvaterniony toto omezení nemají - osa mù¾e být libovolná. Kromì toho duální kvaterniony je¹tì umo¾òují popsat posunutí. Ale neumo¾òují popsat zmìnu mìøítka. Proto nemù¾e docházet ke ztrátì objemu, jako u matic, kde násobením mù¾e vznikat zmen¹ení. Dual kvaterniony jsou také výhodné pro GPU hardware, proto¾e obsahují ménì hodnot ne¾ matice.
+
+Pøiøazení vah je mo¾né automaticky metodou obálek \cite{envelopes}. Tato metoda je zalo¾ena na blízkosti kostí a jejich geometrie. Ka¾dá kost má dvì oblasti vlivu. Vnitøní oblast, kde je geometrie plnì ovlivnìna touto kostí. A vnìj¹í oblast, kde je geometrie ménì ovlivnìna kostí, jak se vzdaluje k okraji této oblasti. 
+Pro kvalitní model je nutné nastavit váhy ruènì, nakreslit. Napø. Blender "Weight Paint" mode, kde se pohybem ¹tìtce po modelu urèují váhy vrcholù pro jednotlivé kosti. Tento proces je iterativní a nároèný. Kreslením se odebírají nebo pøidávají váhy vrcholùm pro konkrétní kost. Poté se zkou¹í efekt na známé póze, upravují a vyhlazují váhy a tento proces se opakuje, dokud výsledek není dostateènì kvalitní. 
+
+\begin{figure}[h]
+\begin{center}
+\subfloat{{\includegraphics[width=3cm]{fig/envelopes.png}}}
+\qquad
+\subfloat{{\includegraphics[width=7cm]{fig/weight_paint.png}}}
+\caption{Metoda obalek v programu Blender a model ve Weight paint mode} \label{envelope_weight_paint}
+\end{center}
+\end{figure}
+
+
+\section{Tvorba animace}
+Animace èlovìka se vyskytuje ve velkém mno¾ství aplikací v rùzných prostøedích a podmínkách. Tyto animace by proto mìly být pøizpùsobitelné prostøedí v reálném èase. Také by mìly pùsobit pøirozenì a tím pøidávat na reálnosti.
+
+Základní nástroje pro specifikaci pohybu jsou zalo¾eny na kinematikách. Existují dvì techniky popisu kinematické informace: inverzní a pøímá kinematika. 
+
+Pøímá kinematika je metoda, kde se hýbe s ka¾dou kostí v øetìzci kostí a podle toho se urèí výsledná pozice posledního èlánku. Výsledky pøi ruèním vytváøení animace jsou velmi závislé na schopnostech animátora, proto¾e musí nastavovat pozice kostí od ruky. V této technice je obtí¾né omezovat pohyb, jako napøíklad ¾e chodidlo nemù¾e proniknout do zemì. Oproti tomu v inverzní kinematice se hýbe pouze s kostí na konci øetìzce a pohyb ostatních kostí se dopoèítá, tak aby byl tento pohyb umo¾nìn. Øe¹ení inverzní kinematiky mù¾e být více a musí se vybírat to nejvhodnìj¹í. V pøípadì lidské kostry se musí omezit pohyb kloubù, tak aby rotovali jenom v urèitých smìrech a nepøesáhli maximální úhel rotace. Napøíklad koleno rotuje pouze v jednom smìru a nemù¾e být otevøeno více ne¾ 180° a zavøeno ménì ne¾ 20° nebo 30°. Tato metoda je jednodu¹¹í na pou¾ití. V modelovacím programu mù¾eme hýbat napø. pouze chodidlem a nemusíme také pohybovat stehenní a lýtkovou kostí. Pozice jsou èasto ukládány jako relativní rotace urèující zmìnu ka¾dé kosti z její rest pose do aktuální pozice vzhledem k rodièovské kosti. Techniky pou¾ívající kinematiku pou¾ívají empirickou a biomechanickou znalost pohybu pro generování animace.
+
+Welbergen a spol. \cite{survey} dìlí techniky tvorby animace na tøi základní: procedurální simulace, fyzikální simulace a editace pohybu.
+
+Procedurální simulace popisuje animaci algoritmicky pomocí matematických formulí. Její úspìch závisí na tom, jak hluboce jsme schopni pochopit a modelovat simulovaný pohyb. Metody mohou popisovat rotace kostí pøímo nebo popisovat cesty koncových uzlù kostry (chodidla). Výstupy tìchto metod se ovlivòují zmìnami hodnot parametrù, díky èemu¾ je mo¾né upravit výstup na míru po¾adavkùm. Jsou dobré pro adaptaci prostøedí a jsou také málo výpoèetnì nároèné. Nedosahují takové pøirozenosti jako napø. editace pohybu nebo fyzikálnì simulované. Umo¾òují pøesné èasování a pozicování kostí a mohou vyu¾ívat velké mno¾ství parametrù. Nicménì je obtí¾né popsat pohyby matematicky. Musí se explicitnì zachovávat pøirozenost v procedurálním modelu pohybu pro v¹echny mo¾nosti parametrù. 
+
+V mnoha pøípadech je vhodné poèítat s dynamikami \cite{surveyWalk}, aby byla zachována realistiènost pohybu. Tyto pøípady mohou být:
+\begin{itemize}
+\item jestli¾e postava nese náklad
+\item jestli¾e postava musí reagovat na externí síly jako poryvy vìtru
+\item  povrch na kterém se pohybuje je komplexní (schody atp.)
+\end{itemize} Dynamiky se pou¾ívají u pøístupù zalo¾ených na fyzikální simulaci. 
+Dynamiky jsou zalo¾ené na Newtonových pohybových zákonech. Spojují síly (resp. toèivé momenty rotací) do výsledného pohybu (rotace) podle rovnice: 
+\begin{eqnarray}
+f=m \cdot x''\label{r.dynamics1}
+\end{eqnarray}
+kde $f$ je síla aplikovaná na objekt, $m$ je jeho hmotnost, $x''$ je druhá derivace $x$ podle èasu. Pro rotace vypadají rovnice podobnì. Toèivé momenty a úhlové pozice jsou spojeny pomocí:
+\begin{eqnarray}
+t=i \cdot \theta '' + \theta ' \times i \cdot \theta '\label{r.dynamics2}
+\end{eqnarray} 
+kde $t$ je toèivý moment, $i$ je matice setrvaènosti, $\theta'$ je úhlová rychlost a $\theta''$ je úhlové zrychlení. Pøímá(?) dynamika je aplikace tìchto zákonù k výpoètu pohybu vygenerovaného danou silou. Inverzní dynamika jsou metody urèující sílu, která by vygenerovala daný pohyb.
+
+Animace zalo¾ená na fyzikální simulaci aplikuje na kosti toèivý moment a vypoèítává pohyb pomocí pøímé kinematiky. Pøiøazuje objektùm fyzikální vlastnosti jako napø. hmotnost. U tohoto typu animace je typicky model tvoøen systémem pevných tìles. Jsou velmi dobré na adaptování se prostøedí, ale jsou výpoèetnì nároèné. Metody mohou fungovat na základì zadávání omezení pohybù kostí jako parametrù animace, kde se spoèítají pohyby pomocí kinematik a poté se zkontroluje pomocí dynamik jejich vhodnost. Nebo zadávání po¾adovaného cílového stavu animace.
+
+Metody editace pohybu vytváøí pohyb na základnì vstupu nìkolika vzorù pohybu. Vstupní data mohou být získána pomocí napø. motion capture, ale mohou být tvoøená i animátorem ruènì. V Motion capture\cite{motion_capture} má herec okolo ka¾dého kloubu znaèky, které jsou zaznamenávány a sledovány. Z pozic a úhlù mezi tìmito znaèkami se urèí pohyb, který se poté aplikuje na kostru modelu. Aèkoliv tyto techniky vypadají nejvíce pøirozenì, jsou vázány na specifický kontext. Zachovávají pøirozenost vstupních vzorù pohybu, ale pouze jsou-li zmìny malé. Techniky pou¾ívající více vzorù na jeden pohyb zachovávají pøirozenost i pøi vìt¹ích zmìnách. Poèet vzorù roste exponenciálnì s poètem parametrù animace. Neposkytují fyzikální interakci s prostøedím. Vhodné pro vytváøení pøedem pro neinteraktivní aplikace jako filmy. Pro interaktivní, napø. hry je potøeba velká databáze pohybù. Pohyby se mohou vytváøet pomocí technik ze zpracování signálù, interpolací mezi vzory pohybù nebo pomocí statistických modelù.
+
+\begin{figure}[h]
+\begin{center}
+\scalebox{0.4}{\includegraphics{fig/motion_capture.jpg}}
+\caption{Rekonstukce kostry podle pozic znaèek} \label{motion_capture}
+\end{center}
+\end{figure}
+
+Techniky se také mohou kombinovat dohromady a vyu¾ívat vhodnìj¹í techniku pro danou situaci. Mù¾e se napøíklad pou¾ít technika editace pohybu dokud nedojde k interakci s prostøedím a ta se mù¾e zpracovat pomocí fyzikální simulace. 
+
+\section{Lidská chùze}
+Sled fází oddìlený dopadem chodidla na zem a jeho zvednutím. Jeden stride je definován jako cyklus od zvednutí levého chodidla do jeho dal¹ího zvednutí. Krok je mezi zvednutím jedné nohy a zvednutím druhé.
+
+
+\chapter{Závìr}
+
+
+%=========================================================================

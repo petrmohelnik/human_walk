@@ -134,7 +134,7 @@ bool FileSystem::parseObj(const char *path, Model &m)
 
 		std::shared_ptr<Material> mat(new Material);
 		Texture tex;
-		if (!loadTexture("resource/white_d.png", tex))
+		if (!loadTexture("resource/white_D.png", tex))
 			return false;
 		mat->setDifTex(tex);
 		mesh.addMaterial(mat);
@@ -170,8 +170,9 @@ bool FileSystem::loadModelAndSkeletonDae(const char *path, Model &m, Skeleton &s
 	std::vector<float> v, n, t, w;
 	std::vector<std::string> jointNames;
 	std::vector<glm::mat4> bindPoses;
-	std::vector<std::vector<int> > weightJoints, weightWeights;
-	std::vector<int> vcount, indices;
+	std::vector<std::vector<int> > weightJoints, weightWeights, indices;
+	std::vector<std::string> polylistMaterials;
+	std::vector<int> vcount;
 
 	if (fileStream.is_open())
 	{
@@ -215,17 +216,21 @@ bool FileSystem::loadModelAndSkeletonDae(const char *path, Model &m, Skeleton &s
 				}
 			}
 			else if ((pos = line.find("<polylist")) != std::string::npos) {
+				size_t posMat = line.find("material=\"") + 9;
+				polylistMaterials.push_back(line.substr((pos = line.find("material=\"") + 10), line.find("-material\"", pos + 1) - pos));
 				while (line.find("<p>") == std::string::npos && fileStream.good()) {
 					getline(fileStream, line);
 				}
-
+				std::vector<int> polylist;
 				std::string values = line.substr((pos = line.find_first_of(">")) + 1, line.find_first_of("<", pos + 1) - (pos + 1));
 				std::vector<std::string> tokens = split(values, ' ');
 				indices.reserve(tokens.size());
 				for (unsigned int i = 0; i < tokens.size(); i++) {
-					indices.push_back(atoi(tokens[i].c_str()));
+					polylist.push_back(atoi(tokens[i].c_str()));
 				}
-
+				indices.push_back(polylist);
+			}
+			else if ((pos = line.find("</mesh>")) != std::string::npos) {
 				break;
 			}
 		}
@@ -410,48 +415,53 @@ bool FileSystem::loadModelAndSkeletonDae(const char *path, Model &m, Skeleton &s
 		}
 
 		//push in faces
-		WeightedMesh mesh;
-		for (unsigned int i = 0; i < indices.size(); i += 3) {
-			glm::vec3 vertex, normal;
-			glm::vec2 texCoord;
-			glm::vec4 weights;
-			glm::ivec4 joints;
+		for (unsigned int k = 0; k < indices.size(); k++)
+		{
+			WeightedMesh mesh;
+			for (unsigned int i = 0; i < indices[k].size(); i += 3) {
+				glm::vec3 vertex, normal;
+				glm::vec2 texCoord;
+				glm::vec4 weights;
+				glm::ivec4 joints;
 
-			vertex.x = v[indices[i] * 3];
-			vertex.y = v[indices[i] * 3 + 1];
-			vertex.z = v[indices[i] * 3 + 2];
-			weights = glm::vec4(0.0f); joints = glm::ivec4(0);
+				vertex.x = v[indices[k][i] * 3];
+				vertex.y = v[indices[k][i] * 3 + 1];
+				vertex.z = v[indices[k][i] * 3 + 2];
+				weights = glm::vec4(0.0f); joints = glm::ivec4(0);
 
-			for (unsigned int j = 0; j < weightWeights[indices[i]].size(); j++) {
-				if (j >= 4)
-					break;
-				weights[j] = wSorted[indices[i]][j];
-				joints[j] = jSorted[indices[i]][j];
+				for (unsigned int j = 0; j < weightWeights[indices[k][i]].size(); j++) {
+					if (j >= 4)
+						break;
+					weights[j] = wSorted[indices[k][i]][j];
+					joints[j] = jSorted[indices[k][i]][j];
+				}
+
+				normal.x = n[indices[k][i + 1] * 3];
+				normal.y = n[indices[k][i + 1] * 3 + 1];
+				normal.z = n[indices[k][i + 1] * 3 + 2];
+
+				if (t.size() > 0) {
+					texCoord.x = t[indices[k][i + 2] * 2];
+					texCoord.y = 1.0 - t[indices[k][i + 2] * 2 + 1]; //OpenGL coords
+				}
+				else
+					texCoord = glm::vec2(0.0f);
+
+				mesh.addVertex(vertex, normal, texCoord, weights, joints);
 			}
+			mesh.setBindMatrix(bindShapeMatrix);
 
-			normal.x = n[indices[i + 1] * 3];
-			normal.y = n[indices[i + 1] * 3 + 1];
-			normal.z = n[indices[i + 1] * 3 + 2];
-
-			if (t.size() > 0) {
-				texCoord.x = t[indices[i + 2] * 2];
-				texCoord.y = t[indices[i + 2] * 2 + 1];
+			std::shared_ptr<Material> mat(new Material);
+			Texture tex;
+			if (!loadTexture(std::string("resource/").append(polylistMaterials[k].append("_D.png")).c_str(), tex)) {
+				if (!loadTexture("resource/white_D.png", tex))
+					return false;
 			}
-			else
-				texCoord = glm::vec2(0.0f);
+			mat->setDifTex(tex);
+			mesh.addMaterial(mat);
 
-			mesh.addVertex(vertex, normal, texCoord, weights, joints);
+			m.addMesh(std::make_shared<WeightedMesh>(mesh));
 		}
-		mesh.setBindMatrix(bindShapeMatrix);
-
-		std::shared_ptr<Material> mat(new Material);
-		Texture tex;
-		if (!loadTexture("resource/white_d.png", tex))
-			return false;
-		mat->setDifTex(tex);
-		mesh.addMaterial(mat);
-
-		m.addMesh(std::make_shared<WeightedMesh>(mesh));
 
 		fileStream.close();
 		return true;

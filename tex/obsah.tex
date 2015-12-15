@@ -2,7 +2,7 @@
 % (c) Michal Bidlo, Bohuslav Køena, 2008
 
 \chapter{Úvod}
-Poèítaèová animace má velké vyu¾ití pro poèítaèové hry a filmy. Lidé jsou velmi vnímaví na správnost lidské chùze a snadno rozpoznají, kdy je animace nepøirozená. Proto je vylep¹ování tvorby této animace stále aktuálním tématem. Lidská chùze je jedna z nejpou¾ívanìj¹ích a nejdùle¾itìj¹ích animací. Existují rùzné pøístupy k tvorbì animace lidské chùze. Tyto pøístupy se li¹í v kompromisu mezi pøirozeností a kontrolou nad animací. Tato práce se zabývá procedurální tvorbou.
+Poèítaèová animace má velké vyu¾ití pro poèítaèové hry a filmy. Lidé jsou velmi vnímaví na správnost lidské chùze a snadno rozpoznají, kdy je animace nepøirozená. Proto je vylep¹ování tvorby této animace stále aktuálním tématem. Lidská chùze je jedna z nejpou¾ívanìj¹ích a nejdùle¾itìj¹ích animací. Existují rùzné pøístupy k tvorbì animace lidské chùze. Tyto pøístupy se li¹í v kompromisu mezi pøirozeností a kontrolou nad animací. Tato práce se zabývá procedurální tvorbou. Procedurální systém umo¾òuje jednodu¹e vytvoøit animaci pomocí specifikace nìkolika parametrù.
 
 
 \chapter{Skeletální animace}
@@ -81,7 +81,7 @@ Pro kvalitní model je nutné nastavit váhy ruènì, nakreslit. Napø. Blender "Weigh
 \subfloat{{\includegraphics[width=3cm]{fig/envelopes.png}}}
 \qquad
 \subfloat{{\includegraphics[width=7cm]{fig/weight_paint.png}}}
-\caption{Metoda obalek v programu Blender a model ve Weight paint mode} \label{envelope_weight_paint}
+\caption{Metoda obálek v programu Blender a model ve Weight paint mode} \label{envelope_weight_paint}
 \end{center}
 \end{figure}
 
@@ -127,8 +127,45 @@ Metody editace pohybu vytváøí pohyb na základnì vstupu nìkolika vzorù pohybu. Vs
 Techniky se také mohou kombinovat dohromady a vyu¾ívat vhodnìj¹í techniku pro danou situaci. Mù¾e se napøíklad pou¾ít technika editace pohybu dokud nedojde k interakci s prostøedím a ta se mù¾e zpracovat pomocí fyzikální simulace. 
 
 \section{Lidská chùze}
-Sled fází oddìlený dopadem chodidla na zem a jeho zvednutím. Jeden stride je definován jako cyklus od zvednutí levého chodidla do jeho dal¹ího zvednutí. Krok je mezi zvednutím jedné nohy a zvednutím druhé.
 
+\subsection{Interactive Animation of Personalized Human Locomotion}
+V èlánku Interactive Animation of Personalized Human Locomotion \cite{bruderlin} je popsán systém pro tvorbu lidského pohybu pomocí procedurální animace. Umo¾òuje specifikaci tøí parametrù: délka kroku, frekvence krokù a rychlost. A 15 atributù jako je napø. rotace a náklon pánve. Díky tìmto atributùm je umo¾nìna individualizace pohybu pro starého èlovìka, malé dítì apod. Tento systém je plnì kinematický. 
+
+Pohyb je urèený dvìma symetrickými kroky (levým a pravým), které dohromady tvoøí jeden stride, který se cyklicky opakuje. Proto se mù¾eme zabývat pouze jedním krokem. Pro ka¾dý krok jsou vypoèítány tøi omezení ze specifikovaných parametrù a atributù. Doba trvání fází kroku (stání a ¹vih), úhly nohy na konci kroku a kontrolní body urèující pohyb kyèle stojící nohy bìhem kroku. Urèují se ètyøi kontrolní body zvlá¹» pro vertikální a horizontální komponent. První a  poslední bod se urèí z délky kroku a úhlù nohy na zaèátku a konci kroku. Druhý a tøetí kontrolní bod se urèí na základì znalosti, ¾e vertikální pøesun je nejni¾¹í uprostøed fáze, kde jsou obì nohy na zemi a nejvy¹¹í uprostøed ¹vihu. Zatímco horizontální pøesun má maximum a minimum opaènì. To je v korelaci s výdajem energie bìhen jedné stride, jak je vidìt na obrázku \ref{bruderlin}, kde potenciální energie je identická s vertikálním pøesunem a kinetická s horizontálním. 
+
+\begin{figure}[h]
+\begin{center}
+\scalebox{0.4}{\includegraphics{fig/bruderlin.png}}
+\caption{Aproximace kinetických a potenciálních energií horní poloviny tìla pro prùmìrný krok. Pøevzato z \cite{bruderlin}} \label{bruderlin}
+\end{center}
+\end{figure}
+
+Mezi body z ka¾dé mno¾iny jsou prolo¾eny interpolaèní spline køivky a tím je urèen pohyb kyèle pro stojící nohu bìhem kroku. Pozice prstù nohy je statické bìhem fáze staní. Úhly zbylých kloubù nohy jsou dopoèítány pomocí inverzní kinematiky.
+
+Tím je urèen pohyb stojící nohy. Dále se urèí rotace, náklon pánve a lateral displacement!!natoèení tìla do boku. Rotace pánve je na maximu pøi dopadu paty na zem a na minimu jsou-li obì nohy soubì¾nì. Náklon pánve má minimum a maximum opaènì. Náklon tìla do boku je zpùsobem tím, ¾e se tìlo v¾dy nakloní na stranu nohy nesoucí váhu. Je minimální pøi dopadu paty a maximální uprostøed stání. Pozice kyèle nohy ve ¹vihu je urèena interpolací tìchto hodnot. Pohyb nohy ve ¹vihu je rozdìlen do tøí fází a urèen lineární interpolací. Pohyb horní poloviny tìla je urèen v závislosti na spodní, napø. ruka se hýbe dopøedu s protilehlou nohou. Pohyb ruky a rotace ramene je urèen nastavitelnými atributy.
+
+\subsection{Animation of Human Walking in Virtual Environments}
+Kontrolní systém pro animaci lidské chùze po nerovném terénu je prezentován v èlánku Animation of Human Walking in Virtual Environments \cite{chung}. Pou¾ívá se model èlovìka s 18 klouby a celkem 36 stupni volnosti. 
+
+Kontrola pohybu na nejvy¹¹í úrovni umo¾òuje u¾ivateli animovat pohyby s malým mno¾stvím parametrù. U¾ivatel specifikuje cestu pohybu pomocí kubických splinù v horizontální rovinì. Z parametrù vý¹ky èlovìka a rychlosti chùze, je vygenerována délka a frekvence kroku. Pro normální chùzi mù¾e být vztah urèen jako v rovnici \ref{r.step_length}.
+\begin{eqnarray}
+l &=& \sqrt{0.004 \times s \times h}\label{r.step_length}
+\end{eqnarray}
+kde $l$ je délka kroku, $s$ je rychlost trupu a $h$ je vý¹ka èlovìka.
+Výpoèet pozice chodidla na terénu je urèen jako funkce délky kroku, zmìny smìru globální cesty a stavu terénu. Prvnì jsou pozice chodidel rovnomìrnì rozlo¾eny po køivce cesty v horizontální rovinì. Pøesáhne-li rotace chodidla prahovou hodnotu, je krok zkrácen, ale doba provedení kroku zùstane zachována. Stav terénù ve 3D je zkontrolován pro urèení bezkolizních trajektorií nohou. 
+
+Na støední úrovni kontroly jsou poskytnuty atributy pro kontrolu spodní èásti tìla. Prvnì se odhadnou úhly dopadu a zvednutí chodidla stojící nohy. Z tìchto odhadnutých hodnot a podle pøibli¾né trajektorie pánve jsou pomocí inverzí kinematiky dopoèítány úhly kolene a kyèle. Poté jsou pøesnì dopoèítány úhly dopadu a zvednutí chodidla, trajektorie chodidla se urèí lineární interpolací mezi polo¾eným chodidlem na zemi a tìmito úhly. Tím je urèena trajektorie stojící nohy, jednoho z koncových efektorù pro øetìzec inverzní kinematiky. Nyní je potøeba urèit pohyb koøene øetìzce, pánve. 
+
+Observace ukázaly, ¾e trajektorie pánve pøibli¾nì odpovídá sinusoidì, viz \ref{chung_pelvis}. Pro interpolaci jsou pou¾ity kubické spliny, konkrétnì Beziérova køivka. Pánev prochází vertikálním maximem uprostøed fáze podpírající nohy, tato hodnota se urèí podle velikosti ohybu kolene. Pánev prochází minimem uprostøed fáze podpory obou nohou, která se nachází uprostøed mezi dvìma fázemi podpírající nohy. Pozice v této fázi je urèena tak, aby byla minimalizována suma úhlových zrychlení v¹ech kloubù podpírající nohy. U¾ivatel mù¾e tìmto kloubùm nastavovat váhy. Výsledná Beziérova køivka je poté vzorkována s neuniformním èasovì-prostorovým vzorkováním, aby bylo dosa¾eno nejrychlej¹ího pohybu bìhem fáze podpory obou nohou a nejpomalej¹ího uprostøed fáze podpírající nohy. 
+
+\begin{figure}[h]
+\begin{center}
+\scalebox{0.4}{\includegraphics{fig/chung_pelvis.png}}
+\caption{3D trajektorie(c) je urèena z vertikálního (a) a horizontálního (b) posuvu. Pøevzato z \cite{chung}} \label{chung_pelvis}
+\end{center}
+\end{figure}
+
+Pro definici trajektorie chodidla nohy ve ¹vihu se pou¾ijí Beziérovy køivky obdobnì jako pøi pohybu pánve. Spolu se znalostí pozice koøene (pánve) kinematického øetìzce se dopoèítají pozice ostatních kloubù. Trajektorie se urèí tak, aby se chodidlo vyhnulo kolizím a aby byla spotøebována co nejmen¹í energie. Na nejni¾¹í úrovni je poté mo¾né nastavit dal¹í atributy, napø. rotace a náklon pánve.
 
 \chapter{Závìr}
 

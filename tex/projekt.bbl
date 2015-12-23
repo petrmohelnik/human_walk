@@ -1,4 +1,4 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
 \providecommand{\url}[1]{\texttt{#1}}
 \providecommand{\urlprefix}{URL }
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -17,28 +17,48 @@
 \bibitem{envelopes}
 {\tt http://wiki.blender.org/index.php/Doc:2.4/Manual/Rigging/Skinning/ObData}.
 
-\bibitem{survey}
-{\tt
-  http://www.cs.uu.nl/docs/vakken/mssw/papers/STAR/Real\%20Time\%20Animation\%20of\%20Virtual\%20Humans\%20-\%20A\%20Trade-off\%20Between\%20Naturalness\%20and\%20Control.pdf}.
-
-\bibitem{surveyWalk}
-{\tt
-  http://www-ljk.imag.fr/Publications/Basilic/com.lmc.publi.PUBLI\_Article@1172c0fd434\_716922/survey.pdf}.
-
-\bibitem{motion_capture}
-{\tt
-  http://graphics.berkeley.edu/papers/Kirk-SPE-2005-06/Kirk-SPE-2005-06.pdf}.
+\bibitem{welman}
+{http://graphics.ucsd.edu/courses/cse169\_w04/welman.pdf}.
 
 \bibitem{bruderlin}
 {\tt http://graphicsinterface.org/wp-content/uploads/gi1993-3.pdf}.
 
+\bibitem{AristidouTR632}
+Aristidou, A.; Lasenby, J.: Inverse Kinematics: a review of existing techniques
+  and introduction of a new fast iterative solver. Technická Zpráva
+  CUEDF-INFENG, TR-632, Department of Information Engineering, University of
+  Cambridge, September 2009.
+
+\bibitem{Buss09introductionto}
+Buss, S.~R.: Introduction to inverse kinematics with Jacobian transpose,
+  pseudoinverse and damped least squares methods. 2009.
+
 \bibitem{chung}
-{\tt
-  http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.46.6017\&rep=rep1\&type=pdf}.
+Chung, S.-k.; Hahn, J.~K.: Animation of Human Walking in Virtual Environments.
+  In \emph{Proceedings of the Computer Animation}, CA '99, Washington, DC, USA:
+  IEEE Computer Society, 1999, ISBN 0-7695-0167-2, s. 4--.
+\newline\urlprefix\url{http://dl.acm.org/citation.cfm?id=791217.791557}
 
 \bibitem{dualQuat}
 Kavan, L.; Collins, S.; Zara, J.; aj.: Geometric Skinning with Approximate Dual
   Quaternion Blending. \emph{ACM Trans. Graph.}, roèník~27, è.~4, 2008: str.
   105.
+
+\bibitem{motion_capture}
+Kirk, A.; O'Brien, J.; Forsyth, D.: Skeletal parameter estimation from optical
+  motion capture data. In \emph{Computer Vision and Pattern Recognition, 2005.
+  CVPR 2005. IEEE Computer Society Conference on}, roèník~2, June 2005, ISSN
+  1063-6919, s. 1185 vol. 2--, \doi{10.1109/CVPR.2005.327}.
+
+\bibitem{surveyWalk}
+Multon, F.; France, L.; Cani-Gascuel, M.-P.; aj.: Computer Animation of Human
+  Walking: a Survey. 1999.
+
+\bibitem{survey}
+Van~Welbergen, H.; Van~Basten, B. J.~H.; Egges, A.; aj.: Real Time Animation of
+  Virtual Humans: A Trade-off Between Naturalness and Control. \emph{Computer
+  Graphics Forum}, roèník~29, è.~8, 2010: s. 2530--2554, ISSN 1467-8659,
+  \doi{10.1111/j.1467-8659.2010.01822.x}.
+\newline\urlprefix\url{http://dx.doi.org/10.1111/j.1467-8659.2010.01822.x}
 
 \end{thebibliography}

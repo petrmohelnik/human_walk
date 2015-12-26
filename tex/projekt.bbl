@@ -8,26 +8,32 @@
 \providecommand{\selectlanguage}[1]{\relax}
 \providecommand{\eprint}[2][]{\url{#2}}
 
-\bibitem{bindPose}
-{\tt http://ruh.li/AnimationVertexSkinning.html}.
-
-\bibitem{skinningMethods}
-{\tt http://skinning.org/direct-methods.pdf}.
+\bibitem{gait_img}
+Gait in prosthetic rehabilitation.
+  {\url{http://www.physio-pedia.com/Gait\_in\_prosthetic\_rehabilitation}}.
 
 \bibitem{envelopes}
-{\tt http://wiki.blender.org/index.php/Doc:2.4/Manual/Rigging/Skinning/ObData}.
+Skinning to Shapes.
+  {\url{http://wiki.blender.org/index.php/Doc:2.4/Manual/Rigging/Skinning/ObData}}.
 
-\bibitem{welman}
-{http://graphics.ucsd.edu/courses/cse169\_w04/welman.pdf}.
+\bibitem{bindPose}
+Vertex Skinning. {\url{http://ruh.li/AnimationVertexSkinning.html}}.
 
-\bibitem{bruderlin}
-{\tt http://graphicsinterface.org/wp-content/uploads/gi1993-3.pdf}.
+\bibitem{gait_review}
+A.~Kharb, Y. K.~J., V.~Saini; Dhiman, S.: A review of gait cycle and its
+  parameters. \emph{Int. J. Comput. Eng. Manag.}, roèník~13, 2011: s. 78--83.
 
 \bibitem{AristidouTR632}
 Aristidou, A.; Lasenby, J.: Inverse Kinematics: a review of existing techniques
   and introduction of a new fast iterative solver. Technická Zpráva
   CUEDF-INFENG, TR-632, Department of Information Engineering, University of
   Cambridge, September 2009.
+
+\bibitem{bruderlin}
+Bruderlin, A.; Calvert, T.: Interactive animation of personalized human
+  locomotion. In \emph{Proceedings of Graphics Interface {\textquoteright}93},
+  Canadian Information Processing Society, Toronto, Ontario, Canada: Canadian
+  Information Processing Society, 1993, str. 17{\textendash}23.
 
 \bibitem{Buss09introductionto}
 Buss, S.~R.: Introduction to inverse kinematics with Jacobian transpose,
@@ -38,6 +44,10 @@ Chung, S.-k.; Hahn, J.~K.: Animation of Human Walking in Virtual Environments.
   In \emph{Proceedings of the Computer Animation}, CA '99, Washington, DC, USA:
   IEEE Computer Society, 1999, ISBN 0-7695-0167-2, s. 4--.
 \newline\urlprefix\url{http://dl.acm.org/citation.cfm?id=791217.791557}
+
+\bibitem{skinningMethods}
+Jacobson, A.; Deng, Z.; Kavan, L.; aj.: Skinning: Real-time Shape Deformation.
+  In \emph{ACM SIGGRAPH 2014 Courses}, 2014.
 
 \bibitem{dualQuat}
 Kavan, L.; Collins, S.; Zara, J.; aj.: Geometric Skinning with Approximate Dual
@@ -60,5 +70,9 @@ Van~Welbergen, H.; Van~Basten, B. J.~H.; Egges, A.; aj.: Real Time Animation of
   Graphics Forum}, roèník~29, è.~8, 2010: s. 2530--2554, ISSN 1467-8659,
   \doi{10.1111/j.1467-8659.2010.01822.x}.
 \newline\urlprefix\url{http://dx.doi.org/10.1111/j.1467-8659.2010.01822.x}
+
+\bibitem{welman}
+Welman, C.: \emph{{Inverse kinematics and geometric constraints for articulated
+  figure manipulation}}. Diplomová práce, Simon Frasor University, 1993.
 
 \end{thebibliography}

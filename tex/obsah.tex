@@ -55,7 +55,7 @@ $$\mathbf{R}_1\left[\begin{array}{ccc}
  \begin{figure}[h]
 \begin{center}
 \scalebox{0.5}{\includegraphics{fig/dual_quat.png}}
-\caption{Zleva doprava: model v rest pose, linear blend skinning a dual quaternion} \label{bone_structure}
+\caption{Zleva doprava: model v rest pose, linear blend skinning a dual quaternion. Pøevzato z \cite{skinningMethods}.} \label{bone_structure}
 \end{center}
 \end{figure}
 Velmi roz¹íøenou metodou je nelineární metoda Dual quaternion skinning \cite{dualQuat}, kde se místo matic míchají duální kvaterniony. Tato metoda øe¹í artefakty vznikající u LBD, zachovává objem modelu a je velmi rychlá. Pou¾ívá se v roz¹írených modelovacích programech jako je napø. Blender. Klasické kvaterniony umo¾òují reprezentovat 3D rotaci okolo osy. Tato osa ale musí procházet poèátkem souøadného systému. Oproti tomu dual kvaterniony toto omezení nemají - osa mù¾e být libovolná. Kromì toho duální kvaterniony je¹tì umo¾òují popsat posunutí. Ale neumo¾òují popsat zmìnu mìøítka. Proto nemù¾e docházet ke ztrátì objemu, jako u matic, kde násobením mù¾e vznikat zmen¹ení. Dual kvaterniony jsou také výhodné pro GPU hardware, proto¾e obsahují ménì hodnot ne¾ matice.
@@ -67,7 +67,7 @@ Pro kvalitní model je nutné nastavit váhy ruènì, nakreslit. Napøíklad v Blenderu
 \subfloat{{\includegraphics[width=3cm]{fig/envelopes.png}}}
 \qquad
 \subfloat{{\includegraphics[width=7cm]{fig/weight_paint.png}}}
-\caption{Metoda obálek v programu Blender a model ve Weight paint mode} \label{envelope_weight_paint}
+\caption{Metoda obálek v programu Blender \cite{envelopes} a model ve Weight paint mode} \label{envelope_weight_paint}
 \end{center}
 \end{figure}
 \section{Tvorba animace}
@@ -101,12 +101,12 @@ Metody editace pohybu vytváøí pohyb na základnì vstupu nìkolika vzorù pohybu. Vs
 \begin{figure}[h]
 \begin{center}
 \scalebox{0.4}{\includegraphics{fig/motion_capture.jpg}}
-\caption{Rekonstukce kostry podle pozic znaèek. Pøevzato z \cite{motion_capture}}. \label{motion_capture_img}
+\caption{Rekonstukce kostry podle pozic znaèek. Pøevzato z \cite{motion_capture}.} \label{motion_capture_img}
 \end{center}
 \end{figure}
 
 Techniky se také mohou kombinovat dohromady a vyu¾ívat vhodnìj¹í techniku pro danou situaci. Mù¾e se napøíklad pou¾ít technika editace pohybu dokud nedojde k interakci s prostøedím a ta se mù¾e zpracovat pomocí fyzikální simulace.
-\section{Kinematiky} 
+\chapter{Kinematiky} 
 \label{kinematics}
 Kinematiky jsou v poèítaèové grafice vìt¹inou rozdìleny na dvì èásti: pøímá a inverzní kinematika. Pøímá kinematika je metoda, kde se hýbe s ka¾dou kostí v øetìzci kostí a podle toho se urèí výsledná pozice posledního èlánku - koncového efektoru. Výsledky pøi ruèním vytváøení animace jsou velmi závislé na schopnostech animátora, proto¾e musí nastavovat pozice kostí od ruky. V této technice je obtí¾né omezovat pohyb, jako napøíklad ¾e chodidlo nemù¾e proniknout do zemì. Máme-li øetìzec kloubù, kde ka¾dý kloub $i$ má pøiøazen úhel $\theta_i$, který urèuje jeho rotaci oproti jeho pøedkovi, viz obrázek \ref{ik_chain}. Potom stav øetìzce je urèen stavovým vektorem $\boldsymbol{\theta}(\theta_1,\dots,\theta_n)$. Oznaème pozici koncového efektoru $\mathbf{P}$. Pøímá kinematika øe¹í následující rovnici:
 \begin{eqnarray}
@@ -126,7 +126,7 @@ Oproti tomu v inverzní kinematice \cite{Buss09introductionto}\cite{welman} se hý
 \end{center}
 \end{figure}
 Øe¹ení inverzní kinematiky není tak jednoduché jako pøímé. Funkce $f$ je nelineární a aèkoliv v rovnici \ref{r.forward_kinematics} existuje unikátní namapování z $\boldsymbol{\theta}$ na $\mathbf{P}$, pro inverzní mapování v \ref{r.inverse_kinematics} mù¾e být nekoneèné mno¾ství $\boldsymbol{\theta}$ pro jedno konkrétní $\mathbf{P}$. Analytické øe¹ení pro libovolný øetìzec kloubù neexistuje. Problém ze øe¹í pomocí numerických metod pro øe¹ení systémù nelineárních rovnic. Je snaha vybírat to nejvhodnìj¹í øe¹ení. Rùzné metody preferují rùzné øe¹ení a proto se metody, které se pro øe¹ení pou¾ijí vybírají na základì konkrétnì øe¹eného problému. V pøípadì lidské kostry má ka¾dý kloub urèené stupnì volnosti, aby rotovali jenom v urèitých smìrech a také je definován maximální úhel rotace. Napøíklad koleno rotuje pouze v jednom smìru a nemù¾e být otevøeno více ne¾ 180° a zavøeno ménì ne¾ cca 30°. Inverzní kinematika poskytuje lep¹í kontrolu nad koncovým efektorem, jeho¾ cílová pozice nás vìt¹inou nejvíce zajímá. V modelovacím programu mù¾eme hýbat napø. pouze chodidlem a nemusíme také pohybovat stehenní a lýtkovou kostí. Toho se také vyu¾ije v procedurální animaci lidské chùze, kde budeme urèovat trajektorie koncových efektorù. Techniky pou¾ívající kinematiku pou¾ívají empirickou a biomechanickou znalost pohybu pro generování animace. Nyní si uká¾eme nìkteré zpùsoby øe¹ení inverzní kinematiky.
-\subsection{Jacobiho inverzní metoda}
+\section{Jacobiho inverzní metoda}
 Jacobiho inverzní metoda \cite{Buss09introductionto}\cite{welman}\cite{AristidouTR632} je iterativní metoda vyu¾ívající Jacobiho matice k aproximaci øe¹ení. Vztah mezi kartézským prostorem koncového efektoru $\mathbf{P}$ a prostoru kloubù úhlù $\boldsymbol{\theta}$ je:
 \begin{eqnarray}
 \mathbf{\dot{P}} = J(\boldsymbol{\theta})\boldsymbol{\dot{\theta}}\label{r.jacobian_vztah}
@@ -159,7 +159,7 @@ Jacobiho matice ale není v¾dy invertibilní, tzn. není ètvercová a zároveò singul
 \caption{Singulární konfigurace øetìzce kloubù}. \label{singular}
 \end{center}
 \end{figure}
-\subsection{Cyclic Coordinate Descent}
+\section{Cyclic Coordinate Descent}
 Cyclic Coordinate Descent (CCD) \cite{welman} je technika zalo¾ená na iterativním heuristickém vyhledávání, která se sna¾í o minimalizaci rotaèní chyby  zpracováváním jednoho kloubu v jeden okam¾ik. Ka¾dá iterace provede pohyb nejposlednìj¹ího èlánku a postupuje pøes celý øetìzec a to se opakuje dokud se nedosáhlo po¾adované pozice a nebo se nepøesáhl maximální poèet cyklù. K urèení úhlu rotace se pou¾ívají dva vektory. Proto¾e pracuje s jedním kloubem v jeden okam¾ik, zvýhodòuje klouby na zaèátku. Oproti Jakobianským metodám provádí více iterací. Aèkoliv je algoritmus jednoduchý, je èasto nutné ho dále pøizpùsobovat, aby bylo dosa¾eno vhodných výsledkù.
 
 Mìjme pozici kloubu $\mathbf{k}_i$ pro iteraci a kloub $i$. Potom vektor $\mathbf{P}_{ia}$ je vektor od pozice kloubu $\mathbf{k}_i$ k aktuální pozici koncového efektoru a $\mathbf{P}_{ip}$ je vektor od $\mathbf{k}_i$ do po¾adované pozice koncového efektoru. Budeme-li rotovat vektor $\mathbf{P}_{ia}$ okolo osy $o$ o úhel $\phi$, dostaneme nový vektor $\mathbf{P}'_{ia}(\phi)$. Jestli¾e úhel bude nabývat libovolných hodnot, výsledné pozice $\mathbf{P}'_{ia}(\phi)$ zaènou tvoøit kruh se støedem $\mathbf{k}_i$. Bod na tomto kruhu nejblí¾e k po¾adované pozici $\mathbf{P}_p$, je bod, na kterém kruh protíná pøímku urèenou vektorem $\mathbf{P}_{ia}$. Proto budeme mìnit rotaci kloubu $\mathbf{k}_i$ tak, aby se $\mathbf{P}_{ip}$ a $\mathbf{P}'_{ia}$ zarovnaly.
@@ -178,8 +178,8 @@ kde $k_1$, $k_2$ a $k_3$ jsou konstantní koeficienty, pro detaily viz \cite{welm
 \phi &=& \tan^{-1}\frac{k_3}{k_2 - k_1}\label{r.ccd_max2}
 \end{eqnarray}
 která vymezí kandidátní hodnotu $\phi_c$ v rozsahu $\frac{-\pi}{2} \leq \phi_c \leq \frac{\pi}{2}$. Proto¾e $\tan$ je periodické, musíme uva¾ovat i dvì dal¹í kandidátní hodnoty: $\phi_c + \pi$ a $\phi_c - \pi$. Z kandidátních hodnot se vybere taková, která spadá do intervalu $-\pi \leq x \leq \pi$ a její¾ druhá derivace je záporná. Je-li jich více, funkce se vyhodnotí nad v¹emi a vybere se z nich maximum. Kdy¾ jsme získali úhel $\phi$ mù¾eme ho vynásobit váhou urèující tuhost kloubu a pøièteme ho k aktuální rotaci $r_i$ kloubu $i$. Poté se pokraèuje s iterací $i+1$.
-\section{Lidská chùze}
-Lidská chùze se skládá z opakujících se krokových cyklù, neboli dvojkrokù. Cyklus je sekvence pohybù od doby kdy se jedna noha dotkne zemì do doby kdy se stejná noha dotkne zemì znovu. Ka¾dý krokový cyklus má dvì základní fáze: stojnou fázi a ¹vihovou fázi. Proto¾e je cyklus shodný pro obì nohy, budeme popisovat pouze jednu.
+\chapter{Lidská chùze}
+Lidská chùze \cite{gait_review} se skládá z opakujících se krokových cyklù neboli dvojkrokù, viz obrázek \ref{gait_cycle}. Cyklus je sekvence pohybù od doby kdy se jedna noha dotkne zemì do doby kdy se stejná noha dotkne zemì znovu. Ka¾dý krokový cyklus má dvì základní fáze: stojnou fázi a ¹vihovou fázi. Proto¾e je cyklus shodný pro obì nohy, budeme popisovat pouze jednu.
 
 Stojná fáze, je fáze, kdy je noha v kontaktu se zemí. Zabírá 60\% dvojkroku a zaèíná s úderem paty (poèáteèní kontakt) a konèí s odrazem palce. Je dále rozdìlena do podfází:
 \begin{itemize}
@@ -188,7 +188,7 @@ Stojná fáze, je fáze, kdy je noha v kontaktu se zemí. Zabírá 60\% dvojkroku a za
 \item koneèný stoj
 \item pøed¹vihová fáze
 \end{itemize}
-Po poèáteèním kontaktu levé nohy nastává perioda dvojí opory, která konèí pøi odrazu palce pravé nohy. Následuje jedno-oporová fáze do té doby, ne¾ se pravá dostane do poèáteèního kontaktu. Nastává druhá perioda dvojí opory, a¾ do odrazu palce levé nohy. V ka¾dé fázi dvojí opory je jedna noha vpøedu, právì se dotkla zemì. A druhá je vzadu pøipravena na zvednutí se ze zemì. Pøední noha je ve stadiu zatì¾ování  a zadní je v koneèném ¹vihu. V ka¾dém krokovém cyklu jsou dvì periody dvojí opory a dvì periody jedno-oporové fáze. Dvojí opora zabírá pøibli¾nì 10\% dvojkroku, ale její délka se mìní s rychlostí chùze. S vìt¹í rychlostí se prodlu¾uje ¹vihová fáze a zkracuje fáze dvojí opory. Kdy¾ dvojí opora úplnì vymizí z chùze se stává bìh. Mezi kroky bìhu je fáze letu, kdy není ¾ádná noha na zemi.
+Po poèáteèním kontaktu pravé nohy nastává perioda dvojí opory, která konèí pøi odrazu palce levé nohy. Následuje jedno-oporová fáze do té doby, ne¾ se levá dostane do poèáteèního kontaktu. Nastává druhá perioda dvojí opory, a¾ do odrazu palce pravé nohy. V ka¾dé fázi dvojí opory je jedna noha vpøedu, právì se dotkla zemì. A druhá je vzadu pøipravena na zvednutí se ze zemì. Pøední noha je ve stadiu zatì¾ování  a zadní je v koneèném ¹vihu. V ka¾dém krokovém cyklu jsou dvì periody dvojí opory a dvì periody jedno-oporové fáze. Dvojí opora zabírá pøibli¾nì 10\% dvojkroku, ale její délka se mìní s rychlostí chùze. S vìt¹í rychlostí se prodlu¾uje ¹vihová fáze a zkracuje fáze dvojí opory. Kdy¾ dvojí opora úplnì vymizí z chùze se stává bìh. Mezi kroky bìhu je fáze letu, kdy není ¾ádná noha na zemi.
 
 ©vihová fáze nastává kdy¾ je chodidlo ve vzduchu a trvá 40\% délky dvojkroku. Zaèíná s úderem paty a konèí s druhým odrazem palce.  Je dále rozdìlena do podfází:
 \begin{itemize}
@@ -197,21 +197,55 @@ Po poèáteèním kontaktu levé nohy nastává perioda dvojí opory, která konèí pøi od
 \item koneèný ¹vih
 \end{itemize}
 
-Nyní si popí¹eme nìkteré termíny a parametry specifikující chùzi. Délka dvojkroku je vzdálenost mezi dvìma po sobì jdoucími kroky stejné nohy. Skládá se ze dvou délek kroku, levé a pravé, ka¾dá s nich urèuje vzdálenost o kterou se jedna noha pøesune pøed druhou. Mù¾e být napø. nulová, kdy¾ se levá noha pøesune na úroveò pravé a ne pøed ní. ©íøka dvojkroku je vzdálenost mezi pøímkami urèenými støedy pat obou nohou pøi chùzi. Úhel vytoèení chodidla urèuje úhel mezi zmínìnou pøímkou a pøímkou procházející støedem chodidla. Kadence je poèet krokù v daném èase. V jednom krokovém cyklu jsou dva kroky a tedy kadence je mìøítko  pùl-cyklù. Èas dvojkroku $c$ v sekundách se urèí jako $c = 120/kad$, kde $kad$ je kadence v krocích za minutu. Rychlost chùze je vzdálenost u¹lá v èase. Okam¾itá rychlost je variabilní v prùbìhu kroku, ale prùmìrná rychlost je výsledkem kadence a délky dvojkroku. Rychlost chùze $r$ se spoèítá jako $r = d/c$, kde $d$ je délka dvojkroku. Rychlost chùze tedy závisí na délce kroku, které velmi závisí na délce ¹vihové fáze.
-\subsection{Interactive Animation of Personalized Human Locomotion}
-V èlánku Interactive Animation of Personalized Human Locomotion \cite{bruderlin} je popsán systém pro tvorbu lidského pohybu pomocí procedurální animace. Umo¾òuje specifikaci tøí parametrù: délka kroku, frekvence krokù a rychlost. A 15 atributù jako je napø. rotace a náklon pánve. Díky tìmto atributùm je umo¾nìna individualizace pohybu pro starého èlovìka, malé dítì apod. Tento systém je plnì kinematický. 
+\begin{figure}[h]
+\begin{center}
+\scalebox{0.4}{\includegraphics{fig/gait-cycle.jpg}}
+\caption{Krokový cyklus a jeho fáze. Pøevzato z \cite{gait_img}.} \label{gait_cycle}
+\end{center}
+\end{figure}
 
-Pohyb je urèený dvìma symetrickými kroky (levým a pravým), které dohromady tvoøí jeden stride, který se cyklicky opakuje. Proto se mù¾eme zabývat pouze jedním krokem. Pro ka¾dý krok jsou vypoèítány tøi omezení ze specifikovaných parametrù a atributù. Doba trvání fází kroku (stání a ¹vih), úhly nohy na konci kroku a kontrolní body urèující pohyb kyèle stojící nohy bìhem kroku. Urèují se ètyøi kontrolní body zvlá¹» pro vertikální a horizontální komponent. První a  poslední bod se urèí z délky kroku a úhlù nohy na zaèátku a konci kroku. Druhý a tøetí kontrolní bod se urèí na základì znalosti, ¾e vertikální pøesun je nejni¾¹í uprostøed fáze, kde jsou obì nohy na zemi a nejvy¹¹í uprostøed ¹vihu. Zatímco horizontální pøesun má maximum a minimum opaènì. To je v korelaci s výdajem energie bìhen jedné stride, jak je vidìt na obrázku \ref{bruderlin_img}, kde potenciální energie je identická s vertikálním pøesunem a kinetická s horizontálním. Mezi body z ka¾dé mno¾iny jsou prolo¾eny interpolaèní spline køivky a tím je urèen pohyb kyèle pro stojící nohu bìhem kroku. Pozice prstù nohy je statická bìhem fáze staní. Úhly zbylých kloubù nohy jsou dopoèítány pomocí inverzní kinematiky.
+Nyní si popí¹eme nìkteré termíny a parametry specifikující chùzi. Délka dvojkroku je vzdálenost mezi dvìma po sobì jdoucími kroky stejné nohy. Skládá se ze dvou délek kroku, levé a pravé, ka¾dá s nich urèuje vzdálenost o kterou se jedna noha pøesune pøed druhou. Mù¾e být napø. nulová, kdy¾ se levá noha pøesune na úroveò pravé a ne pøed ní. ©íøka dvojkroku je vzdálenost mezi pøímkami urèenými støedy pat obou nohou pøi chùzi. Úhel vytoèení chodidla urèuje úhel mezi zmínìnou pøímkou a pøímkou procházející støedem chodidla. Kadence je poèet krokù v daném èase. V jednom krokovém cyklu jsou dva kroky a tedy kadence je mìøítko  pùl-cyklù. Èas dvojkroku $c$ v sekundách se urèí jako $c = 120/kad$, kde $kad$ je kadence v krocích za minutu. Rychlost chùze je vzdálenost u¹lá v èase. Okam¾itá rychlost je variabilní v prùbìhu kroku, ale prùmìrná rychlost je výsledkem kadence a délky dvojkroku. Rychlost chùze $r$ se spoèítá jako $r = d/c$, kde $d$ je délka dvojkroku. Rychlost chùze tedy závisí na délce kroku, které závisí na délce ¹vihové fáze.
+
+\begin{figure}[h]
+\begin{center}
+\scalebox{0.4}{\includegraphics{fig/step_length.png}}
+\caption{Délka, ¹íøka kroku a úhel vytoèení chodidla. Pøevzato z \cite{gait_review}.} \label{step_length}
+\end{center}
+\end{figure}
+
+\section{Fáze krokového cyklu}
+Následuje podrobnìj¹í popis jednotlivých fází krokového cyklu \cite{gait_review}. 
+\subsection{Poèáteèní kontakt}
+V této fázi je kyèel ohnutá, koleno nata¾ené a kotník v neutrální poloze. Kontakt se zemí je dosa¾en pomocí paty, která se stává støedem otáèení. Druhá noha je na konci koneèného stoje. Tato fáze obsahuje moment kdy právì nastane dotyk nohy se zemí. Dr¾ení tìla v tuto chvíli urèuje pohyb konèetiny ve stadiu zatì¾ování. 
+\subsection{Stadium zatì¾ování}
+Stadium zatì¾ování je fáze, kde je váha tìla pøenesena na pøední nohu. Koleno je pokrèeno pro absorbci ¹oku. Chodidlo se dostává do plného kontaktu se zemí. Protilehlá noha je v pøed¹vihové fázi. Tato fáze je poèátkem fáze dvojí opory. Pokraèuje dokud nezaène být druhá noha zvedána ke ¹vihu. 
+\subsection{Mezistoj}
+V mezistoji dochází k posunutí dolní konèetiny pøes zafixované chodidlo, zatímco koleno a kotník se propínají. Protilehlá noha se nachází uprostøed mezi¹vihové fáze. Je to první polovina intervalu stoje na pouze jedné noze. Trvá od zvednutí druhé nohy dokud váha není pøesunuta po chodidle do oblasti pøedno¾í. 
+\subsection{Koneèný stoj}
+Bìhem druhé poloviny intervalu stoje na jedné noze se zvedne pata a støed otáèení stojné konèetiny se pøesune do pøední èásti nohy. Koleno zvý¹í své propnutí a poté se zaène lehce ohýbat, kyèel se propíná. Druhá noha je v koneèném ¹vihu. Zaèíná se zdvihem paty a konèí v okam¾iku kontaktu paty druhé nohy se zemí. Váha tìla je pøesunuta pøed nohu. 
+\subsection{Pøed¹vihová fáze}
+Kontakt se zemí druhé nohy zaèal dal¹í fázi dvojí opory. Referenèní noha zvý¹í ohyb v kotníku a v koleni, kyèel ji¾ není propnutá. Protilehlá noha je ve stadiu zatì¾ování. Tato poslední podfáze stojné fáze je druhým (a posledním) intervalem dvojí opory v krokovém cyklu. Zaèíná s poèáteèním kontaktem druhé nohy a konèí s odrazem palce referenèní nohy. Váha je uvolnìna z referenèní nohy a pøenesena na nohu druhou. Uvolnìná noha vyu¾ije volnosti k pøípravì na ¹vihovou fázi, k èemu¾ slou¾í v¹echny pohyby a svalové akce odehrávající se v tuto dobu.
+\subsection{Poèáteèní ¹vih}
+Chodidlo je zvednuto a pøesunuto vpøed pomocí ohybu v kyèli a koleni. Kotník èásteènì dorziflexuje (ohyb kotníku smìrem k høbetu nohy). Druhá konèetina je na zaèátku mezi¹vihu. Tato fáze je pøibli¾nì tøetina ¹vihové periody. Zaèíná kdy¾ noha opustí podlo¾ku a konèí v okam¾iku maximálního propnutí v koleni.
+\subsection{Mezi¹vih}
+Pøesun nohy dopøedu je získán dal¹ím ohybem v kyèli. Koleno se propíná  a kotník dorziflexuje do neutrální polohy. Druhá noha je na konci mezistoje. Tato druhá fáze ¹vihové periody zaèíná kdy¾ je ¹vihová noha  naproti stojné noze. Konèí kdy¾ je holení kost ve vertikálním postavení - ohyb kolene a kyèle je shodný.
+\subsection{Koneèný ¹vih}
+Pøesun chodidla je ukonèen propnutím kolene a pøesunem holenì pøed stehno. Kyèel si zachovává ohyb z pøedchozí fáze. Kotník zùstává v neutrální poloze. Druhá noha je v koneèném stoji. Tato poslední fáze ¹vihu zaèíná s vertikální holení kostí a konèí pøi kontaktu nohy se zemí. Touto fází je pøesun nohy ukonèen.
+\section{Interactive Animation of Personalized Human Locomotion}
+V èlánku Interactive Animation of Personalized Human Locomotion \cite{bruderlin} je popsán systém pro tvorbu lidského pohybu pomocí procedurální animace. Umo¾òuje specifikaci tøí parametrù: délka kroku, kadence krokù a rychlost. A 15 atributù jako je napø. rotace a náklon pánve. Díky tìmto atributùm je umo¾nìna individualizace pohybu pro starého èlovìka, malé dítì apod. Tento systém je plnì kinematický. 
+
+Pro ka¾dý krok jsou vypoèítány tøi omezení ze specifikovaných parametrù a atributù: doba trvání fází kroku (stojná a ¹vihová), úhly nohy na konci kroku a kontrolní body urèující pohyb kyèle stojné nohy bìhem kroku. Urèují se ètyøi kontrolní body zvlá¹» pro vertikální a horizontální komponent. První a  poslední bod se urèí z délky kroku a úhlù nohy na zaèátku a konci kroku. Druhý a tøetí kontrolní bod se urèí na základì znalosti, ¾e vertikální pøesun je nejni¾¹í uprostøed dvojí opory a nejvy¹¹í uprostøed ¹vihové fáze. Zatímco horizontální pøesun má maximum a minimum opaènì. To je v korelaci s výdajem energie bìhen jednoho dvojkroku, jak je vidìt na obrázku \ref{bruderlin_img}, kde potenciální energie je identická s vertikálním pøesunem a kinetická s horizontálním. Mezi body z ka¾dé mno¾iny jsou prolo¾eny interpolaèní spline køivky a tím je urèen pohyb kyèle pro stojnou nohu bìhem kroku. Pozice prstù nohy je statická bìhem stojné fáze. Úhly zbylých kloubù nohy jsou dopoèítány pomocí inverzní kinematiky.
 
 \begin{figure}[h]
 \begin{center}
 \scalebox{0.4}{\includegraphics{fig/bruderlin.png}}
-\caption{Aproximace kinetických a potenciálních energií horní poloviny tìla pro prùmìrný krok. Pøevzato z \cite{bruderlin}} \label{bruderlin_img}
+\caption{Aproximace kinetických a potenciálních energií horní poloviny tìla pro prùmìrný krok. Pøevzato z \cite{bruderlin}.} \label{bruderlin_img}
 \end{center}
 \end{figure}
 
-Tím je urèen pohyb stojící nohy. Dále se urèí rotace, náklon pánve a lateral displacement!!natoèení tìla do boku. Rotace pánve je na maximu pøi dopadu paty na zem a na minimu jsou-li obì nohy soubì¾nì. Náklon pánve má minimum a maximum opaènì. Náklon tìla do boku je zpùsobem tím, ¾e se tìlo v¾dy nakloní na stranu nohy nesoucí váhu. Je minimální pøi dopadu paty a maximální uprostøed stání. Pozice kyèle nohy ve ¹vihu je urèena interpolací tìchto hodnot. Pohyb nohy ve ¹vihu je rozdìlen do tøí fází a urèen lineární interpolací. Pohyb horní poloviny tìla je urèen v závislosti na spodní, napø. ruka se hýbe dopøedu s protilehlou nohou. Pohyb ruky a rotace ramene je urèen nastavitelnými atributy.
-\subsection{Animation of Human Walking in Virtual Environments}
+Tím je urèen pohyb stojné nohy. Dále se urèí rotace, úklon a náklon pánve. Rotace pánve je na maximu pøi úderu paty na zem a na minimu v mezistoji. Úklon pánve má minimum pøi úderu paty a maximum na konci dvojí opory. Náklon pánve je zpùsobem tím, ¾e se tìlo v¾dy nakloní na stranu nohy nesoucí váhu. Je minimální pøi úderu paty a maximální uprostøed stojné fáze. Pozice kyèle nohy ve ¹vihu je urèena interpolací tìchto hodnot. Pohyb nohy ve ¹vihu je rozdìlen do tøí fází a urèen lineární interpolací. Pohyb horní poloviny tìla je urèen v závislosti na spodní, napø. ruka se hýbe dopøedu s protilehlou nohou. Pohyb ruky a rotace ramene je urèen nastavitelnými atributy.
+
+\section{Animation of Human Walking in Virtual Environments}
 Kontrolní systém pro animaci lidské chùze po nerovném terénu je prezentován v èlánku Animation of Human Walking in Virtual Environments \cite{chung}. Pou¾ívá se model èlovìka s 18 klouby a celkem 36 stupni volnosti. 
 
 Kontrola pohybu na nejvy¹¹í úrovni umo¾òuje u¾ivateli animovat pohyby s malým mno¾stvím parametrù. U¾ivatel specifikuje cestu pohybu pomocí kubických splinù v horizontální rovinì. Z parametrù vý¹ky èlovìka a rychlosti chùze je vygenerována délka a frekvence kroku. Pro normální chùzi mù¾e být vztah urèen jako v rovnici:
@@ -221,16 +255,16 @@ l &=& \sqrt{0.004 \times s \times h}\label{r.step_length}
 kde $l$ je délka kroku, $s$ je rychlost trupu a $h$ je vý¹ka èlovìka.
 Výpoèet pozice chodidla na terénu je urèen jako funkce délky kroku, zmìny smìru globální cesty a stavu terénu. Prvnì jsou pozice chodidel rovnomìrnì rozlo¾eny po køivce cesty v horizontální rovinì. Pøesáhne-li rotace chodidla prahovou hodnotu, je krok zkrácen, ale doba provedení kroku zùstane zachována. Stav terénù ve 3D je zkontrolován pro urèení bezkolizních trajektorií nohou. 
 
-Na støední úrovni kontroly jsou poskytnuty atributy pro kontrolu spodní èásti tìla. Prvnì se odhadnou úhly dopadu a zvednutí chodidla stojící nohy. Z tìchto odhadnutých hodnot a podle pøibli¾né trajektorie pánve jsou pomocí inverzí kinematiky dopoèítány úhly kolene a kyèle. Poté jsou pøesnì dopoèítány úhly dopadu a zvednutí chodidla, trajektorie chodidla se urèí lineární interpolací mezi polo¾eným chodidlem na zemi a tìmito úhly. Tím je urèena trajektorie stojící nohy, jednoho z koncových efektorù pro øetìzec inverzní kinematiky. Nyní je potøeba urèit pohyb koøene øetìzce, pánve. 
+Na støední úrovni kontroly jsou poskytnuty atributy pro kontrolu spodní èásti tìla. Prvnì se odhadnou úhly dopadu a zvednutí chodidla stojící nohy. Z tìchto odhadnutých hodnot a podle pøibli¾né trajektorie pánve jsou pomocí inverzí kinematiky dopoèítány úhly kolene a kyèle. Poté jsou pøesnì dopoèítány úhly dopadu a zvednutí chodidla. Trajektorie chodidla se urèí lineární interpolací mezi polo¾eným chodidlem na zemi a úhly dopadu a zvednutí chodidla. Tím je urèena trajektorie stojící nohy, jednoho z koncových efektorù pro øetìzec inverzní kinematiky. Nyní je potøeba urèit pohyb koøene øetìzce, pánve. 
 
-Observace ukázaly, ¾e trajektorie pánve pøibli¾nì odpovídá sinusoidì, viz obrázek \ref{chung_pelvis}. Pro interpolaci jsou pou¾ity kubické spliny, konkrétnì Beziérova køivka. Pánev prochází vertikálním maximem uprostøed fáze podpírající nohy, tato hodnota se urèí podle velikosti ohybu kolene. Pánev prochází minimem uprostøed fáze podpory obou nohou, která se nachází uprostøed mezi dvìma fázemi podpírající nohy. Pozice v této fázi je urèena tak, aby byla minimalizována suma úhlových zrychlení v¹ech kloubù podpírající nohy. U¾ivatel mù¾e tìmto kloubùm nastavovat váhy. Výsledná Beziérova køivka je poté nerovnomìrnì vzorkována, aby bylo dosa¾eno nejrychlej¹ího pohybu bìhem fáze podpory obou nohou a nejpomalej¹ího uprostøed fáze podpírající nohy. 
+Observace ukázaly, ¾e trajektorie pánve pøibli¾nì odpovídá sinusoidì, viz obrázek \ref{chung_pelvis}. Pro interpolaci jsou pou¾ity kubické spliny, konkrétnì Beziérova køivka. Pánev prochází vertikálním maximem uprostøed stojné fáze, tato hodnota se urèí podle velikosti ohybu kolene. Pánev prochází minimem uprostøed intervalu dvojí opory, kdy obì nohy jsou v kontaktu se zemí. Pozice v této fázi je urèena tak, aby byla minimalizována suma úhlových zrychlení v¹ech kloubù podpírající nohy. U¾ivatel mù¾e tìmto kloubùm nastavovat váhy. Výsledná Beziérova køivka je poté nerovnomìrnì vzorkována, aby bylo dosa¾eno nejrychlej¹ího pohybu bìhem dvojí opory a nejpomalej¹ího uprostøed stojné fáze. 
 \begin{figure}[h]
 \begin{center}
 \scalebox{0.4}{\includegraphics{fig/chung_pelvis.png}}
-\caption{3D trajektorie(c) je urèena z vertikálního (a) a horizontálního (b) posuvu. Pøevzato z \cite{chung}} \label{chung_pelvis}
+\caption{3D trajektorie (c) je urèena z vertikálního (a) a horizontálního (b) posuvu. Pøevzato z \cite{chung}.} \label{chung_pelvis}
 \end{center}
 \end{figure}
-Pro definici trajektorie chodidla nohy ve ¹vihu se pou¾ijí Beziérovy køivky obdobnì jako pøi pohybu pánve. Spolu se znalostí pozice koøene (pánve) kinematického øetìzce se dopoèítají pozice ostatních kloubù. Trajektorie se urèí tak, aby se chodidlo vyhnulo kolizím a aby byla spotøebována co nejmen¹í energie. Na nejni¾¹í úrovni je poté mo¾né nastavit dal¹í atributy, napø. rotace a náklon pánve.
+Pro definici trajektorie chodidla nohy ve ¹vihové fázi se pou¾ijí Beziérovy køivky obdobnì jako pøi pohybu pánve. Spolu se znalostí pozice koøene (pánve) kinematického øetìzce se dopoèítají pozice ostatních kloubù. Trajektorie se urèí tak, aby se chodidlo vyhnulo kolizím a aby byla spotøebována co nejmen¹í energie. Na nejni¾¹í úrovni je poté mo¾né nastavit dal¹í atributy, napø. rotace a náklon pánve.
 \chapter{Závìr}
 
 

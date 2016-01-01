@@ -78,7 +78,7 @@ int *WeightedMesh::getJointIndices()
 	return &jointIndices[0].x;
 }
 
-void WeightedMesh::setBindMatrix(glm::mat4 m)
+/*void WeightedMesh::setBindMatrix(glm::mat4 m)
 {
 	bindMatrix = m;
 }
@@ -86,7 +86,7 @@ void WeightedMesh::setBindMatrix(glm::mat4 m)
 glm::mat4 WeightedMesh::getBindMatrix()
 {
 	return bindMatrix;
-}
+}*/
 
 std::vector<std::shared_ptr<Mesh> > Model::getMeshes()
 {

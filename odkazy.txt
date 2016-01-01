@@ -70,3 +70,9 @@ file:///C:/Users/peta/Desktop/2040-biomechanika-chuze-pro-pdf-pdf_4d64ff209a906.
 
 
 http://blender.stackexchange.com/questions/3778/why-does-the-collada-exporter-not-export-texture-references
+http://tf3dm.com/3d-model/male-base-mesh-6682.html
+
+
+gui:
+http://cegui.org.uk/wiki/Using_CEGUI_with_SDL_and_OpenGL
+http://anttweakbar.sourceforge.net/doc/tools:anttweakbar

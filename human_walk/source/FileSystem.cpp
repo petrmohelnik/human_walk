@@ -449,7 +449,7 @@ bool FileSystem::loadModelAndSkeletonDae(const char *path, Model &m, Skeleton &s
 
 				mesh.addVertex(vertex, normal, texCoord, weights, joints);
 			}
-			mesh.setBindMatrix(bindShapeMatrix);
+			//mesh.setBindMatrix(bindShapeMatrix);
 
 			std::shared_ptr<Material> mat(new Material);
 			Texture tex;

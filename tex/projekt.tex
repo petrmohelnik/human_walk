@@ -31,7 +31,36 @@
 \usepackage{subfig}
 \usepackage{epstopdf}
 \usepackage{graphicx}
+\usepackage{listings}
+\captionsetup[lstlisting]{position=bottom}
+\renewcommand{\lstlistingname}{Kód}% Listing -> Kód
+%http://tex.stackexchange.com/a/11134
+\usepackage{color}
+\definecolor{gray}{rgb}{0.4,0.4,0.4}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.6}
+\definecolor{cyan}{rgb}{0.0,0.6,0.6}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
 
+\lstset{
+  basicstyle=\ttfamily,
+  columns=fullflexible,
+  captionpos=b,
+  showstringspaces=false,
+  commentstyle=\color{gray}\upshape,
+    keywordstyle=\color{darkblue},       % keyword style
+  stringstyle=\color{mymauve},     % string literal style
+}
+
+\lstdefinelanguage{XML}
+{
+  morestring=[b]",
+  morestring=[s]{>}{<},
+  morecomment=[s]{<?}{?>},
+  stringstyle=\color{black},
+  identifierstyle=\color{darkblue},
+  keywordstyle=\color{cyan},
+  morekeywords={xmlns,version,type}% list your attributes here
+}
 % =======================================================================
 % balíèek "hyperref" vytváøí klikací odkazy v pdf, pokud tedy pou¾ijeme pdflatex
 % problém je, ¾e balíèek hyperref musí být uveden jako poslední, tak¾e nemù¾e
@@ -74,13 +103,13 @@
   %bud pomoci nasledujicich parametru nebo pomoci vyhrazenych maker (viz dale)
   %===========================================================================
   %Klicova slova
-  keywords.cs={skeletální animace, lidská chùze, inverzní kinematika}, %klicova slova v ceskem jazyce
-  keywords.en={skeletal animation, human walk, inverse kinematics}, %klicova slova v anglickem jazyce
+  keywords.cs={poèítaèová grafika, skeletální animace, lidská chùze, inverzní kinematika}, %klicova slova v ceskem jazyce
+  keywords.en={computer graphics, skeletal animation, human walk, inverse kinematics}, %klicova slova v anglickem jazyce
   %Abstract
-  abstract.cs={Výtah (abstrakt) práce v èeském jazyce.}, % abstrakt v ceskem jazyce
-  abstract.en={Výtah (abstrakt) práce v anglickém jazyce.}, % abstrakt v anglickem jazyce
+  abstract.cs={Animace lidské chùze má velké vyu¾ití v interaktivních aplikacích, pøevá¾nì poèítaèových hrách. Existuje mno¾ství zpùsobù tvorby této animace. Tyto zpùsoby se li¹í v kompromisu mezi pøirozeností, kontrolou nad animací a výpoèetním èasem. Tato práce se zabývá implementací procedurální animace. Dále jsou popsány metody øe¹ení inverzní kinematiky a je rozebrána lidská chùze a její fáze.}, % abstrakt v ceskem jazyce
+  abstract.en={Animation of human walk is employed in many interactive applications, mostly computer games. There are many ways to create such animation. Techniques differ in compromise between naturalness, control over animation and computing time. This work implements procedural animation. It also describes methods to solve inverse kinematics problem and analyze human walk and its phases.}, % abstrakt v anglickem jazyce
   %Prohlaseni
-  declaration={Prohla¹uji, ¾e jsem tuto bakaláøskou práci vypracoval samostatnì pod vedením pana ...},
+  declaration={Prohla¹uji, ¾e jsem tento semestrální projekt vypracoval samostatnì pod vedením Ing. Luká¹e Poloka,},
   %Podekovani (nepovinne)
   acknowledgment={Zde je mo¾né uvést podìkování vedoucímu práce a tìm, kteøí poskytli odbornou pomoc.} % nepovinne
 }

@@ -103,7 +103,7 @@ int main(int argc, char **argv)
 	}
 	Model m2;
 	std::shared_ptr<Skeleton> skeleton(new Skeleton);
-	if (!f.loadModelAndSkeletonDae("resource/venom_joker_mat.dae", m2, *skeleton.get())) {
+	if (!f.loadModelAndSkeletonDae("resource/rigged.dae", m2, *skeleton.get())) {
 		cin.get();
 		return -1;
 	}

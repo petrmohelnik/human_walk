@@ -19,7 +19,7 @@ bool RiggedModelRenderer::initRenderer(Model &m, GLuint p)
 		std::shared_ptr<AnimationTechnique> ptr(new AnimationTechnique);
 		technique.push_back(ptr);
 		WeightedMesh *wm = (WeightedMesh *)(meshes[i].get());
-		bindMatrix.push_back(wm->getBindMatrix());
+//		bindMatrix.push_back(wm->getBindMatrix());
 		technique[i]->init(*wm, p);
 	}
 

@@ -2,7 +2,11 @@
 % (c) Michal Bidlo, Bohuslav Køena, 2008
 
 \chapter{Úvod}
-Poèítaèová animace má velké vyu¾ití pro poèítaèové hry a filmy. Lidé jsou velmi vnímaví na správnost lidské chùze a snadno rozpoznají, kdy je animace nepøirozená. Proto je vylep¹ování tvorby této animace stále aktuálním tématem. Lidská chùze je jedna z nejpou¾ívanìj¹ích a nejdùle¾itìj¹ích animací. Existují rùzné pøístupy k tvorbì animace lidské chùze. Tyto pøístupy se li¹í v kompromisu mezi pøirozeností a kontrolou nad animací. Tato práce se zabývá procedurální tvorbou. Procedurální systém umo¾òuje jednodu¹e vytvoøit animaci pomocí specifikace nìkolika parametrù.
+Poèítaèová animace má velké vyu¾ití pro poèítaèové hry a filmy. Existuje mno¾ství zpùsobù tvorby a zobrazování animace. Tato práce se zabývá tvorbou animace lidské chùze. Lidská chùze je jedna z nejpou¾ívanìj¹ích a nejdùle¾itìj¹ích animací. Lidé jsou velmi vnímaví na správnost lidské chùze a snadno rozpoznají, kdy je animace nepøirozená. To klade velký dùraz na pøesnost.
+
+Existují rùzné pøístupy k tvorbì animace lidské chùze. Tyto pøístupy se li¹í v kompromisu mezi pøirozeností, kontrolou nad animací a výpoèetním èasem. Populární zpùsob tvorby animace je motion capture, kde se zachytává pohyb herce pomocí kamer. Aèkoliv tento zpùsob dosahuje velké pøirozenosti, je velmi drahý. Fyzikální simulace umo¾òuje velmi dobrou interakci s prostøedím, ale je velmi výpoèetnì nároèná. Tato práce se zabývá procedurální tvorbou. Pøi tomto zpùsobu se vyu¾ívá znalostí o cyklu lidské chùze, který je studován ji¾ od starovìku. Procedurální systém umo¾òuje jednodu¹e vytvoøit animaci pomocí specifikace mno¾ství parametrù. Je výpoèetnì nenároèná, ale není pøíli¹ vhodná pro interakci s prostøedím. Také není tak detailní jako v motion capture.  V této práci si klademe za cíl vytvoøení systému, který umo¾ní rychlou a jednoduchou tvorbu specifické animace lidské chùze i u¾ivatelùm bez animaèních znalostí a schopností, kterou budou moci pou¾it napø. v poèítaèové høe.
+
+Druhá kapitola se zamìøuje na skeletální animaci. Pøibli¾uje co je to kostra a jak se na ní pøipojí kù¾e. Dále obsahuje struèný pøehled metod tvorby animace. Tøetí kapitola se vìnuje kinematikám. Definuje co je to inverzní kinematika a popisuje nìkteré metody jejího øe¹ení. Ve ètvrté kapitole je podrobnì popsána lidská chùze a její fáze. Také obsahuje popis nìkterých existujících implementací procedurální animace vyu¾ívající tyto znalosti. 
 \chapter{Skeletální animace}
 Skeletální animace je zpùsob animace, který vyu¾ívá dvì základní komponenty: model (nejèastìji polygonální) nazýván kù¾e a kostru, na kterou je kù¾e pøipojena. Jestli¾e se pohne kost, pohne se také pøipojená kù¾e. V klasické animaci, je vytvoøen model pro ka¾dý klíèový snímek animace a tyto modely se za postupnì zobrazují. Oproti tomu se skeletální animace skládá pouze z jednoho modelu a pøipojené kostry, pro kterou jsou ulo¾eny pozice kostí v klíèových snímcích napø. cyklu chùze. Ka¾dý tento snímek definuje pozici ka¾dé kosti v konkrétní èas. Díky tomu má mnohem ni¾¹í pamì»ovou nároènost. Také skeletální animace umo¾òuje vysokou interakci s prostøedím. Kost se mù¾e zarazit o pøeká¾ku apod. Skeletální animace také mohou být pou¾ité na více rùzných modelech. Nìkdy programy poskytují pøedpøipravenou kostru, okolo které se vytvoøí model. Skeletální animace má také své nevýhody. Pohyby kostí a pøipojených vrcholù spotøebovávají výpoèetní výkon. V animacích obecnì se musí øe¹it interpolace mezi dvìma klíèovými snímky, proto¾e zobrazení snímku mù¾e probìhnout v libovolný èas.
 \section{Kostra}
@@ -35,7 +39,7 @@ Nejjednodu¹¹í zpùsob pøiøazení kù¾e ke kostøe je ka¾dé kosti pøiøadit samostatný
 
 Pokroèilej¹í, ale stále základní metoda je Jednoduchý skinning, který ji¾ pou¾ívá kù¾i, tedy jeden model pro celou kostru. Pøiøazuje jeden vrchol k jedné kosti. Ka¾dý vrchol se poté transformuje podle pøiøazené kosti. Je pou¾íván napøíklad ve star¹ích hrách. Je dobøe pou¾itelný pro modely s nízkým poètem trojúhelníkù. U detailnìj¹ích modelù zpùsobuje nepìkné deformace v kloubech a animace vypadá nepøirozenì. 
 
-\subsection{Linear blend skinning}
+\subsection{Linear blend skinning} \label{linear_blend_skinning}
 Linear blend skinning je modernìj¹í algoritmus. Ka¾dému vrcholu umo¾òuje pøiøazení více kostí. Ka¾dá dvojice kost a vrchol má pøiøazenou váhu. Váha urèuje jak velký vliv má pohyb konkrétní kosti na výslednou pozici vrcholu. Na vstupu oèekává následující data: 
 \begin{itemize}
 \item Kù¾e v bind pose, typicky reprezentovaná jako polygonální model. Propojení mezi vrcholy se v prùbìhu nemìní, pouze pozice vrcholù. 
@@ -290,7 +294,96 @@ Observace ukázaly, ¾e trajektorie pánve pøibli¾nì odpovídá sinusoidì, viz obráze
 \end{center}
 \end{figure}
 Pro definici trajektorie chodidla nohy ve ¹vihové fázi se pou¾ijí Beziérovy køivky obdobnì jako pøi pohybu pánve. Spolu se znalostí pozice koøene (pánve) kinematického øetìzce se dopoèítají pozice ostatních kloubù. Trajektorie se urèí tak, aby se chodidlo vyhnulo kolizím a aby byla spotøebována co nejmen¹í energie. Na nejni¾¹í úrovni je poté mo¾né nastavit dal¹í atributy, napø. rotace a náklon pánve.
+
+\chapter{Návrh a realizace øe¹ení}
+Øe¹ení je implementováno v jazyce C++. 3D grafika je vykreslena pomocí rozhraní OpenGL. OpenGL je multiplatformní rozhraní, podporováno mno¾stvím programovacích jazykù, umo¾òující vykreslování 2D a 3D grafiky. Komunikuje s grafickým procesorem pro hardwarovì akcelerované vykreslování. Pro zpracování vstupù a vytvoøení kontextu OpenGL je vyu¾ita knihovna SDL 2.0. SDL je multiplatformní knihovna umo¾òující nízkoúrovòový pøístup ke klávesnici, my¹i, zvuku a grafickému hardwaru. Funguje nativnì v C++.
+
+Aplikace umo¾òuje naètení pøedpøipraveného modelu s pøipojenou kostrou. Pøípadnì u¾ivatel mù¾e vyu¾ít poskytnutou pøedpøipravenou kostru a na ní si pøipojit vlastní model. A ten poté vyexportovat v Blenderu do formátu COLLADA (.dae). Aplikace model zobrazí za vyu¾ití Linear blend skinning (kapitola \ref{linear_blend_skinning}) algoritmu. U¾ivatel má mo¾nost zobrazení pouze kù¾e modelu, nebo kostry, nebo obojí zároveò. Model je animován. Je mo¾nost pomocí nìkolika parametrù upravit animaci chùze. K tomu slou¾í grafické u¾ivatelské rozhraní. Animace mù¾e být vyexportována a následnì pou¾ita napøíklad v Unity enginu.
+
+\subsection{Naètení modelu}
+Model je naèítán z formátu COLLADA, který podporuje ulo¾ení geometrie, efektù, fyziky, animace, kinematik scény aj. Vyu¾ívá XML schéma. Pøi naèítání uva¾ujeme, ¾e model do tohoto formátu byl exportován z Blenderu.
+
+Zaène se naètením geometrie modelu z XML elementu  \texttt{library\_geometries}. Ulo¾í se pole s pozicemi vrcholù, normálami a texturovacími koordináty. Naètou se seznamy polygonù, které jsou urèeny odkazy do polí naètených v pøedchozím kroku. Oèekává se pou¾ití pouze trojúhelníkù. Tìchto seznamù mù¾e být více, li¹í se pou¾itým materiálem a v na¹í aplikaci jeden tento seznam tvoøí jeden  \texttt{Mesh} (kód \ref{weighted_mesh}). Název materiálu je nastavený v Blenderu a pøi naèítání modelu se oèekává pøilo¾ení textury se shodným názvem a pøíponou "\_D" pro difuzní texturu.
+
+\begin{lstlisting}[language=C++, caption={Tøída modelu.}, label={weighted_mesh}]
+class Mesh {
+protected:
+  std::vector<glm::vec3> v; //pozice vrcholu
+  std::vector<glm::vec3> n; //normaly
+  std::vector<glm::vec2> t; //texturovaci koordinaty
+  std::shared_ptr<Material> m; //material
+public:
+  ... };
+  
+class WeightedMesh : public Mesh {
+private:
+  std::vector<glm::vec4> weights; //vahy prirazenych kosti
+  std::vector<glm::ivec4> jointIndices; //prirazene kosti
+public:
+  ... };
+\end{lstlisting}
+
+Následuje naètení vah a pøiøazení kostí vrcholùm z XML elementu  \texttt{library\_controllers}. První se pøeète bind shape matice. Ta popisuje transformaci geometrie do správného souøadného systému pro pou¾ití s klouby. Poté je naèten seznam názvù kostí, seznam inverzních bind pose matic $\mathbf{B}_i$ (viz rovnice \ref{r.transform_mat}) pro ka¾dou kost a seznam vah vrcholù. Následuje seznam, který urèuje pro ka¾dý vrchol poèet kloubù, které ho ovlivòují a stejný poèet odkazù do seznamu kloubù a vah.
+
+Nyní se naète samotná hierarchie kostry z XML elementu \texttt{library\_visual\_scenes}. První uzel obsahuje koøenovou transformaci, od které se odvíjí dal¹í transformace v¹ech kostí. Kosti jsou hierarchicky zanoøené, obsahují název a lokální transformaèní matici, viz kód \ref{collada_skeleton}. Kosti se ukládají do 2D pole, kde ka¾dá kost má ulo¾ený index nadøazeného uzlu, tedy rodièovské kosti. A $0 \dots n$ indexù na své potomky, viz obrázek kód \ref{class_skeleton}. Kostem se následnì pøidají inverzní bind pose matice vynásobené bind shape maticí, ta se dále neukládá. Pro správné zobrazení kostry je nutné urèit velikost kostí, ta se urèí jako rozdíl pozice dané kosti a jejího potomka. Pokud ale kost nemá ¾ádného potomka nemù¾eme zjistit její velikost. Proto uva¾ujeme polovièní velikost ne¾ je velikost rodièovské kosti. Dále jsme zavedli mo¾nost pøidat kost, která se pou¾ije pouze pro urèení velikosti a poté se odstraní, taková kost musí ve svém názvu obsahovat "empty".
+
+\begin{lstlisting}[language=C++, caption={Tøída kostry.}, label={class_skeleton}
+]
+struct Bone {
+  glm::mat4 localMat; //lokalni transformace
+  glm::mat4 globalMat; //globalni transformace
+  glm::mat4 inverseBindMatrix; //inverzni bind pose matice
+  int parent; //odkaz na rodicovskou kost
+  std::vector<int> childs; //odkaz na potomky
+  std::string name; //nazev kosti
+  float scale; //velikost kosti, slouzi pro zobrazeni kosti 
+};
+
+class Skeleton {
+private:
+  std::vector<Bone> bones;
+  glm::mat4 rootTransform;
+public:
+  ... };
+\end{lstlisting}
+
+Nakonec jsou naplnìny objekty tøídy \texttt{WeightedMesh} (kód \ref{weighted_mesh}). Proto¾e z hardwarových dùvodù je vhodné mít pro ka¾dý vrchol kù¾e pøiøazeny pouze ètyøi kosti a jejich váhy, abychom mohly pou¾ít \texttt{vec4} ve vertex shaderu. Musí být nìkteré kosti zanedbány, pokud jich vrchol  pou¾ívá více. Ètyøi kosti jsou dostateèné a pokud je jich více, mají nekteré velmi nízké váhy. Proto jsou pro ka¾dý vrchol v¹echny jeho kosti seøazeny sestupnì podle vah a ukládají se pouze první ètyøi.
+
+\begin{lstlisting}[language=XML, caption={Ukázka ulo¾ení hierarchie kostry ve formátu COLLADA.}, label={collada_skeleton}]
+...
+<library_visual_scenes>
+  <visual_scene id="Scene" name="Scene">
+    ...
+    <node id="metarig" name="metarig" type="NODE">
+      <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
+      <node id="hips" name="hips" sid="hips" type="JOINT">
+        <matrix sid="transform">
+          1 0 0 0 0 -0.16 -0.98 0.05 0 0.98 -0.167 1.01 0 0 0 1
+        </matrix>
+        <node id="spine" name="spine" sid="spine" type="JOINT">
+          <matrix sid="transform">
+            1 0 0 0 0 0.99 0.11 0.17 0 -0.11 0.99 1.49e-8 0 0 0 1
+          </matrix>
+          <node id="chest" name="chest" sid="chest" type="JOINT">
+            <matrix sid="transform">
+              1 0 0 0 0 0.99 0.14 0.15 0 -0.14 0.99 7.45e-9 0 0 0 1
+            </matrix>
+            ...
+          </node>
+        </node>
+        ...
+      </node>
+    </node>
+    ...
+  </visual_scene>
+</library_visual_scenes>
+...
+\end{lstlisting}
+
+\subsection{Zobrazení}
+
 \chapter{Závìr}
+Bylo implementováno naètení modelu èlovìka spolu s pøipojenou kostrou a jeho zobrazení. Byly popsány nìkteré existující implementace procedurální animace a metody øe¹ení inverzní kinematiky. V rámci dal¹ího vývoje bude potøeba implementovat systém tvorby animace a její vyexportování do souboru.
 
 
 %=========================================================================

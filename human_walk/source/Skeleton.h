@@ -7,13 +7,13 @@
 
 struct Bone
 {
-	glm::mat4 localMat;
-	glm::mat4 globalMat;
-	glm::mat4 inverseBindMatrix;
-	int parent;
-	std::vector<int> childs;
-	std::string name;
-	float scale;
+	glm::mat4 localMat; //lokalni transformace
+	glm::mat4 globalMat; //globalni transformace
+	glm::mat4 inverseBindMatrix; //inverzni bind pose matice
+	int parent; //odkaz na rodicovskou kost
+	std::vector<int> childs; //odkaz na potomky
+	std::string name; //nazev kosti
+	float scale; //velikost kosti, slouzi pro zobrazeni kosti
 	Bone(glm::mat4 mat, int parent, const char *name) : localMat(mat), parent(parent), name(name), scale(1.0f) {}
 };
 

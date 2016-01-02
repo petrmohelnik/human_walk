@@ -44,7 +44,7 @@ Linear blend skinning je modernìj¹í algoritmus. Ka¾dému vrcholu umo¾òuje pøiøaze
 \begin{itemize}
 \item Kù¾e v bind pose, typicky reprezentovaná jako polygonální model. Propojení mezi vrcholy se v prùbìhu nemìní, pouze pozice vrcholù. 
 \item Transformace kostí, reprezentované jako matice $\mathbf{T}_1,\ldots,\mathbf{T}_m$ urèené podle rovnice \ref{r.transform_mat}. Tyto matice jsou typicky jediná velièina, která se v prùbìhu animace mù¾e mìnit. 
-\item Váhy vrcholù, pro ka¾dý vrchol $\mathbf{v}_i$ máme váhy $w_{i,1},\ldots,w_{i,m} \in \mathbb{R}$. Ka¾dá váha $W_{i,j}$ urèuje vliv kosti $j$ na vrchol $i$. Celkový souèet v¹ech vah je 1, pøièem¾ ¾ádná váha není záporná. 
+\item \label{weight_sum} Váhy vrcholù, pro ka¾dý vrchol $\mathbf{v}_i$ máme váhy $w_{i,1},\ldots,w_{i,m} \in \mathbb{R}$. Ka¾dá váha $W_{i,j}$ urèuje vliv kosti $j$ na vrchol $i$. Celkový souèet v¹ech vah je 1, pøièem¾ ¾ádná váha není záporná. 
 \end{itemize}
 Mno¾ství kostí ovlivòující jeden vrchol se mù¾e významnì li¹it, napø. od 1 do 10. Kvùli limitacím grafického hardwaru se èasto uva¾uje ¾e jich není více ne¾ 4. Transformovaná pozice vrcholu $\mathbf{v}'_i$ se urèí podle následující rovnice:
 \begin{eqnarray}
@@ -313,14 +313,14 @@ protected:
   std::vector<glm::vec2> t; //texturovaci koordinaty
   std::shared_ptr<Material> m; //material
 public:
-  ... };
+  /* ... */ };
   
 class WeightedMesh : public Mesh {
 private:
   std::vector<glm::vec4> weights; //vahy prirazenych kosti
   std::vector<glm::ivec4> jointIndices; //prirazene kosti
 public:
-  ... };
+  /* ... */ };
 \end{lstlisting}
 
 Následuje naètení vah a pøiøazení kostí vrcholùm z XML elementu  \texttt{library\_controllers}. První se pøeète bind shape matice. Ta popisuje transformaci geometrie do správného souøadného systému pro pou¾ití s klouby. Poté je naèten seznam názvù kostí, seznam inverzních bind pose matic $\mathbf{B}_i$ (viz rovnice \ref{r.transform_mat}) pro ka¾dou kost a seznam vah vrcholù. Následuje seznam, který urèuje pro ka¾dý vrchol poèet kloubù, které ho ovlivòují a stejný poèet odkazù do seznamu kloubù a vah.
@@ -341,19 +341,18 @@ struct Bone {
 
 class Skeleton {
 private:
-  std::vector<Bone> bones;
-  glm::mat4 rootTransform;
+  std::vector<Bone> bones; //pole kosti
+  glm::mat4 rootTransform; //korenova transformacni matice
 public:
-  ... };
+  /* ... */ };
 \end{lstlisting}
 
-Nakonec jsou naplnìny objekty tøídy \texttt{WeightedMesh} (kód \ref{weighted_mesh}). Proto¾e z hardwarových dùvodù je vhodné mít pro ka¾dý vrchol kù¾e pøiøazeny pouze ètyøi kosti a jejich váhy, abychom mohly pou¾ít \texttt{vec4} ve vertex shaderu. Musí být nìkteré kosti zanedbány, pokud jich vrchol  pou¾ívá více. Ètyøi kosti jsou dostateèné a pokud je jich více, mají nekteré velmi nízké váhy. Proto jsou pro ka¾dý vrchol v¹echny jeho kosti seøazeny sestupnì podle vah a ukládají se pouze první ètyøi.
+Nakonec jsou naplnìny objekty tøídy \texttt{WeightedMesh} (kód \ref{weighted_mesh}). Proto¾e z hardwarových dùvodù je vhodné mít pro ka¾dý vrchol kù¾e pøiøazeny pouze ètyøi kosti a jejich váhy, abychom mohly pou¾ít \texttt{vec4} ve vertex shaderu. Musí být nìkteré kosti zanedbány, pokud jich vrchol  pou¾ívá více. Ètyøi kosti jsou dostateèné a pokud je jich více, mají nìkteré velmi nízké váhy. Proto jsou pro ka¾dý vrchol v¹echny jeho kosti seøazeny sestupnì podle vah a ukládají se pouze první ètyøi. Váhy ostatních jsou rozlo¾eny rovnomìrnì mezi tyto ètyøi kosti, aby zùstala zachována podmínka o celkovém souètu v¹ech vah (viz \ref{weight_sum}).
 
 \begin{lstlisting}[language=XML, caption={Ukázka ulo¾ení hierarchie kostry ve formátu COLLADA.}, label={collada_skeleton}]
-...
 <library_visual_scenes>
   <visual_scene id="Scene" name="Scene">
-    ...
+    <!-- ... -->
     <node id="metarig" name="metarig" type="NODE">
       <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
       <node id="hips" name="hips" sid="hips" type="JOINT">
@@ -368,22 +367,46 @@ Nakonec jsou naplnìny objekty tøídy \texttt{WeightedMesh} (kód \ref{weighted_mes
             <matrix sid="transform">
               1 0 0 0 0 0.99 0.14 0.15 0 -0.14 0.99 7.45e-9 0 0 0 1
             </matrix>
-            ...
+            <!-- ... -->
           </node>
         </node>
-        ...
+        <!-- ... -->
       </node>
     </node>
-    ...
+    <!-- ... -->
   </visual_scene>
 </library_visual_scenes>
-...
 \end{lstlisting}
 
 \subsection{Zobrazení}
+Pøed ka¾dým zobrazením snímku je nutné spoèítat globální matice pro v¹echny kosti kostry. Proto procházíme pole s kostmi a pro ka¾dou kost vynásobíme globální matici rodièe s její lokální maticí. Poté získáme transformaèní matici $\mathbf{T}$ podle rovnice \ref{r.transform_mat}. Vezmeme koøenovou transformaèní matici a nastavíme jí jako model matici do vertex shaderu. Následnì ve vertex shaderu získáme pozici vrcholu násobením maticí $\mathbf{T}$ a odpovídající vahou pro ètyøi pøiøazené kosti. Pøepoèítáváme také normálu, viz kód \ref{animation_shader}.
+
+\begin{lstlisting}[language=GLSL, caption={Ukázka z vertex shaderu pro animovaný model. Výpoèet pro pozici a normálu se provede \(4 \times \), pro komponenty \texttt{x}, \texttt{y}, \texttt{z} a \texttt{w} vektorù \texttt{v\_weights} a \texttt{v\_joints}.}, label={animation_shader}]
+vec4 pos = vec4(0.0);
+pos += T[v_joints.x] * vec4(v_pos, 1.0) * v_weights.x;
+/* ... */
+vec4 norm = vec4(0.0);
+norm += transpose(inverse(T[v_joints.x])) * vec4(v_norm, 1.0) * v_weights.x;
+/* ... */
+gl_Position = mvp * vec4(pos.xyz, 1.0);
+\end{lstlisting}
+
+Následuje zobrazení kostry. Pro ka¾dou kost se pou¾ije shodný model. Pro kosti se pou¾ívají globální matice shodné jako pøi zobrazování kù¾e, ale je v nich zapoèítané zvìt¹ení, aby na sebe kosti navazovaly.  Výsledná model matice kosti je koøenová transformace vynásobená s touto globální maticí kosti. Pøed zobrazením je vyèi¹tìn hloubkový buffer, aby se kostra pøekreslila pøes model. 
+
+Pro zobrazení jsou pou¾ity difuzní textury a Phongùv osvìtlovací model. Výsledný výstup viz obrázek \ref{graphical_output}.
+
+\begin{figure}[h]
+\begin{center}
+\subfloat{{\includegraphics[width=5cm]{fig/rigged.png}}}
+\qquad
+\subfloat{{\includegraphics[width=7cm]{fig/joker.png}}}
+\caption{Grafický výstup aplikace pro dva rùzné modely. Model vpravo má rotované nìkteré kosti (ruènì, uvnitø kódu).} \label{graphical_output}
+\end{center}
+\end{figure}
+
 
 \chapter{Závìr}
-Bylo implementováno naètení modelu èlovìka spolu s pøipojenou kostrou a jeho zobrazení. Byly popsány nìkteré existující implementace procedurální animace a metody øe¹ení inverzní kinematiky. V rámci dal¹ího vývoje bude potøeba implementovat systém tvorby animace a její vyexportování do souboru.
+Bylo implementováno naètení modelu èlovìka spolu s pøipojenou kostrou a jeho zobrazení. Výsledná aplikace má ... øádkù kódu. Byly popsány nìkteré existující implementace procedurální animace a metody øe¹ení inverzní kinematiky. V rámci dal¹ího vývoje bude potøeba implementovat systém tvorby animace a její vyexportování do souboru.
 
 
 %=========================================================================

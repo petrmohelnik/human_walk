@@ -414,6 +414,18 @@ bool FileSystem::loadModelAndSkeletonDae(const char *path, Model &m, Skeleton &s
 			}
 		}
 
+		for (int i = 0; i < wSorted.size(); i++) {
+			if (wSorted[i].size() > 4) {
+				for (unsigned int j = wSorted[i].size() - 1; j > 3; j--) {
+					for (int k = 0; k < 4; k++)
+						wSorted[i][k] += wSorted[i][j] * 0.25f;
+
+					wSorted[i].erase(wSorted[i].begin() + j);
+					jSorted[i].erase(jSorted[i].begin() + j);
+				}
+			}
+		}
+
 		//push in faces
 		for (unsigned int k = 0; k < indices.size(); k++)
 		{
@@ -429,9 +441,9 @@ bool FileSystem::loadModelAndSkeletonDae(const char *path, Model &m, Skeleton &s
 				vertex.z = v[indices[k][i] * 3 + 2];
 				weights = glm::vec4(0.0f); joints = glm::ivec4(0);
 
-				for (unsigned int j = 0; j < weightWeights[indices[k][i]].size(); j++) {
-					if (j >= 4)
-						break;
+				for (unsigned int j = 0; j < wSorted[indices[k][i]].size(); j++) {
+					//if (j >= 4)
+					//	break;
 					weights[j] = wSorted[indices[k][i]][j];
 					joints[j] = jSorted[indices[k][i]][j];
 				}

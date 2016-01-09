@@ -4,24 +4,24 @@
 \chapter{Úvod}
 Poèítaèová animace má velké vyu¾ití pro poèítaèové hry a filmy. Existuje mno¾ství zpùsobù tvorby a zobrazování animace. Tato práce se zabývá tvorbou animace lidské chùze. Lidská chùze je jedna z nejpou¾ívanìj¹ích a nejdùle¾itìj¹ích animací. Lidé jsou velmi vnímaví na správnost lidské chùze a snadno rozpoznají, kdy je animace nepøirozená. To klade velký dùraz na pøesnost.
 
-Existují rùzné pøístupy k tvorbì animace lidské chùze. Tyto pøístupy se li¹í v kompromisu mezi pøirozeností, kontrolou nad animací a výpoèetním èasem. Populární zpùsob tvorby animace je motion capture, kde se zachytává pohyb herce pomocí kamer. Aèkoliv tento zpùsob dosahuje velké pøirozenosti, je velmi drahý. Fyzikální simulace umo¾òuje velmi dobrou interakci s prostøedím, ale je velmi výpoèetnì nároèná. Tato práce se zabývá procedurální tvorbou. Pøi tomto zpùsobu se vyu¾ívá znalostí o cyklu lidské chùze, který je studován ji¾ od starovìku. Procedurální systém umo¾òuje jednodu¹e vytvoøit animaci pomocí specifikace mno¾ství parametrù. Je výpoèetnì nenároèná, ale není pøíli¹ vhodná pro interakci s prostøedím. Také není tak detailní jako v motion capture.  V této práci si klademe za cíl vytvoøení systému, který umo¾ní rychlou a jednoduchou tvorbu specifické animace lidské chùze i u¾ivatelùm bez animaèních znalostí a schopností, kterou budou moci pou¾it napø. v poèítaèové høe.
+Existují rùzné pøístupy k tvorbì animace lidské chùze. Tyto pøístupy se li¹í v kompromisu mezi pøirozeností, kontrolou nad animací a výpoèetním èasem. Populární zpùsob tvorby animace je \textit{motion capture}, kde se zachytává pohyb herce pomocí kamer. Aèkoliv tento zpùsob dosahuje velké pøirozenosti, je velmi drahý. \textit{Fyzikální simulace} umo¾òuje velmi dobrou interakci s prostøedím, ale je velmi výpoèetnì nároèná. Tato práce se zabývá \textit{procedurální simulací}. Pøi tomto zpùsobu se vyu¾ívá znalostí o \textit{cyklu lidské chùze}, který je studován ji¾ od starovìku. Procedurální systém umo¾òuje jednodu¹e vytvoøit animaci pomocí specifikace mno¾ství parametrù. Je výpoèetnì nenároèná, ale není pøíli¹ vhodná pro interakci s prostøedím. Také není tak detailní jako v motion capture.  V této práci si klademe za cíl vytvoøení systému, který umo¾ní rychlou a jednoduchou tvorbu specifické animace lidské chùze i u¾ivatelùm bez animaèních znalostí a schopností, kterou budou moci pou¾it napø. v poèítaèové høe.
 
-Druhá kapitola se zamìøuje na skeletální animaci. Pøibli¾uje co je to kostra a jak se na ní pøipojí kù¾e. Dále obsahuje struèný pøehled metod tvorby animace. Tøetí kapitola se vìnuje kinematikám. Definuje co je to inverzní kinematika a popisuje nìkteré metody jejího øe¹ení. Ve ètvrté kapitole je podrobnì popsána lidská chùze a její fáze. Také obsahuje popis nìkterých existujících implementací procedurální animace vyu¾ívající tyto znalosti. 
+Druhá kapitola se zamìøuje na \textit{skeletální animaci}. Pøibli¾uje co je to \textit{kostra} a jak se na ní pøipojí \textit{kù¾e}. Dále obsahuje struèný pøehled metod tvorby animace. Tøetí kapitola se vìnuje \textit{kinematikám}. Definuje co je to \textit{inverzní kinematika} a popisuje nìkteré metody jejího øe¹ení. Ve ètvrté kapitole je podrobnì popsána lidská chùze a její fáze. Také obsahuje popis nìkterých existujících implementací procedurální animace vyu¾ívající tyto znalosti. Pátá kapitola nastiòuje výslednou aplikaci a její øe¹ení a popisuje implementované èásti v rámci semestrálního projektu.
 \chapter{Skeletální animace}
-Skeletální animace je zpùsob animace, který vyu¾ívá dvì základní komponenty: model (nejèastìji polygonální) nazýván kù¾e a kostru, na kterou je kù¾e pøipojena. Jestli¾e se pohne kost, pohne se také pøipojená kù¾e. V klasické animaci, je vytvoøen model pro ka¾dý klíèový snímek animace a tyto modely se za postupnì zobrazují. Oproti tomu se skeletální animace skládá pouze z jednoho modelu a pøipojené kostry, pro kterou jsou ulo¾eny pozice kostí v klíèových snímcích napø. cyklu chùze. Ka¾dý tento snímek definuje pozici ka¾dé kosti v konkrétní èas. Díky tomu má mnohem ni¾¹í pamì»ovou nároènost. Také skeletální animace umo¾òuje vysokou interakci s prostøedím. Kost se mù¾e zarazit o pøeká¾ku apod. Skeletální animace také mohou být pou¾ité na více rùzných modelech. Nìkdy programy poskytují pøedpøipravenou kostru, okolo které se vytvoøí model. Skeletální animace má také své nevýhody. Pohyby kostí a pøipojených vrcholù spotøebovávají výpoèetní výkon. V animacích obecnì se musí øe¹it interpolace mezi dvìma klíèovými snímky, proto¾e zobrazení snímku mù¾e probìhnout v libovolný èas.
+\textit{Skeletální animace} je zpùsob animace, který vyu¾ívá dvì základní komponenty: model (nejèastìji polygonální) nazýván \textit{kù¾e} a \textit{kostru}, na kterou je kù¾e pøipojena. Jestli¾e se pohne kost, pohne se také pøipojená kù¾e. V klasické animaci, je vytvoøen model pro ka¾dý \textit{klíèový snímek} animace a tyto modely se postupnì zobrazují. Oproti tomu se skeletální animace skládá pouze z jednoho modelu a pøipojené kostry, pro kterou jsou ulo¾eny pozice kostí v klíèových snímcích napø. cyklu chùze. Ka¾dý tento snímek definuje pozici ka¾dé kosti v konkrétní èas. Díky tomu má mnohem ni¾¹í pamì»ovou nároènost. Také skeletální animace umo¾òuje vysokou interakci s prostøedím. Kost se mù¾e zarazit o pøeká¾ku apod. Skeletální animace také mohou být pou¾ité na více rùzných modelech. Nìkdy programy poskytují pøedpøipravenou kostru, okolo které se vytvoøí kù¾e. Skeletální animace má také své nevýhody. Pohyby kostí a pøipojených vrcholù spotøebovávají výpoèetní výkon. V animacích obecnì se musí øe¹it interpolace mezi dvìma klíèovými snímky, proto¾e zobrazení snímku mù¾e probìhnout v libovolný èas.
 \section{Kostra}
-Kostra je abstraktní model lidského, zvíøecího tìla nebo jiného objektu. Jedná se o stromovou strukturu. Uzly jsou nazývány kosti nebo klouby. Ke kostem jsou pøiøazeny vrcholy. Kosti mají stupnì volnosti, které urèují v jakém smìru a jak moc se mù¾ou rotovat. Pøipojování modelu na kostru se nazývá skinning.
+Kostra je abstraktní model lidského, zvíøecího tìla nebo jiného objektu. Jedná se o stromovou strukturu (obr. \ref{bone_structure}). Uzly jsou nazývány \textit{kosti} nebo \textit{klouby}. Ke kostem jsou pøiøazeny vrcholy. Kosti mají stupnì volnosti, které urèují v jakém smìru a jak moc se mù¾ou rotovat. Pøipojování modelu na kostru se nazývá \textit{skinning}.
 
 \begin{figure}[h]
 \begin{center}
-\scalebox{0.5}{\includegraphics{fig/bone_structure.png}}
-\caption{Pøíklad hierarchie kostry} \label{bone_structure}
+\scalebox{0.5}{\includegraphics{fig/skeleton_hierarchy.eps}}
+\caption{Pøíklad hierarchie kostry.} \label{bone_structure}
 \end{center}
 \end{figure}
 
 Ka¾dá kost má lokální transformaci: posunutí, rotaci a zvìt¹ení. Tato transformace se mù¾e ulo¾it jako matice a urèuje transformaci vùèi rodièovské kosti, pokud existuje. Pro realistické modely èlovìka se vìt¹inou pou¾ívá pouze rotace. Výsledná globální transformace kosti se získá kombinací rodièovské globální transformace a vlastní lokální transformace. Globální transformace v¹ech kostí se vypoèítá procházením stromové struktury kostry a postupným násobením transformaèních matic od koøene k listùm. Pro koøenovou kost je lokální transformace její globální. 
 
-Pøed pøipojením kù¾e na kostru se kostra nastaví do pozice nazývané bind pose \cite{bindPose}. To je základní pozice kostry pøed jakýmkoliv pohybem. V tuto chvíli se na kostru pøipojí kù¾e. Následnì jsou urèeny a ulo¾eny bind pose matice $\mathbf{B}$ pro ka¾dou kost. Ty urèují jejich transformaci z poèátku souøadného systému kostry do bind pose. Matice $\mathbf{B}_a$ ka¾dé kosti urèuje její aktuální transformaci z poèátku souøadného systému kostry. Pøed prvním pohybem kostry jsou shodné s $\mathbf{B}$. Chceme-li zmìnit pózu kostry (matici $\mathbf{B}_a$ nìjaké kosti) a tím i pøipojeného modelu (kù¾e), musí se vrcholy transformovat ze souøadného systému modelu do souøadného systému kostry. K tomu se pou¾ije inverzní bind pose matice $\mathbf{B}_i$. Ta urèuje transformaci kosti potøebnou pro pøesun kosti z bind pose do poèátku souøadného systému. Tedy invertuje transformaci, která byla na model aplikována v bind pose. Matematický zápis transformace $\mathbf{T}$ urèující novou pozici kosti je následující:
+Pøed pøipojením kù¾e na kostru se kostra nastaví do pozice nazývané \textit{bind pose} \cite{bindPose}. To je základní pozice kostry pøed jakýmkoliv pohybem. V tuto chvíli se na kostru pøipojí kù¾e. Následnì jsou urèeny a ulo¾eny bind pose matice $\mathbf{B}$ pro ka¾dou kost. Ty urèují jejich transformaci z poèátku souøadného systému kostry do bind pose. Matice $\mathbf{B}_a$ ka¾dé kosti urèuje její aktuální transformaci z poèátku souøadného systému kostry. Pøed prvním pohybem kostry jsou shodné s $\mathbf{B}$. Chceme-li zmìnit pózu kostry (matici $\mathbf{B}_a$ nìjaké kosti) a tím i pøipojené kù¾e, musí se vrcholy transformovat ze souøadného systému kù¾e do souøadného systému kostry. K tomu se pou¾ije \textit{inverzní bind pose matice} $\mathbf{B}_i$. Ta urèuje transformaci kosti potøebnou pro pøesun kosti z bind pose do poèátku souøadného systému. Tedy invertuje transformaci, která byla na kù¾i aplikována v bind pose. Matematický zápis transformace $\mathbf{T}$ (obr. \ref{transform_pose}) urèující novou pozici kosti je následující:
 \begin{eqnarray}
 \mathbf{T} &=& \mathbf{B}_i \mathbf{B}_a\label{r.transform_mat}
 \end{eqnarray}
@@ -37,10 +37,10 @@ Skinning \cite{skinningMethods} je nazýván proces pøidìlování kostí vrcholùm kù¾
 
 Nejjednodu¹¹í zpùsob pøiøazení kù¾e ke kostøe je ka¾dé kosti pøiøadit samostatný pevný objekt jako je napø. válec. Na ka¾dý takový objekt se poté aplikuje transformace pøiøazené kosti. Tento pøístup není vhodný pro realistické animování.
 
-Pokroèilej¹í, ale stále základní metoda je Jednoduchý skinning, který ji¾ pou¾ívá kù¾i, tedy jeden model pro celou kostru. Pøiøazuje jeden vrchol k jedné kosti. Ka¾dý vrchol se poté transformuje podle pøiøazené kosti. Je pou¾íván napøíklad ve star¹ích hrách. Je dobøe pou¾itelný pro modely s nízkým poètem trojúhelníkù. U detailnìj¹ích modelù zpùsobuje nepìkné deformace v kloubech a animace vypadá nepøirozenì. 
+Pokroèilej¹í, ale stále základní metoda je \textit{Jednoduchý skinning}, který ji¾ pou¾ívá kù¾i, tedy jeden model pro celou kostru. Pøiøazuje jeden vrchol k jedné kosti. Ka¾dý vrchol se poté transformuje podle pøiøazené kosti. Je pou¾íván napøíklad ve star¹ích hrách. Je dobøe pou¾itelný pro modely s nízkým poètem trojúhelníkù. U detailnìj¹ích modelù zpùsobuje nepìkné deformace v kloubech a animace vypadá nepøirozenì. 
 
 \subsection{Linear blend skinning} \label{linear_blend_skinning}
-Linear blend skinning je modernìj¹í algoritmus. Ka¾dému vrcholu umo¾òuje pøiøazení více kostí. Ka¾dá dvojice kost a vrchol má pøiøazenou váhu. Váha urèuje jak velký vliv má pohyb konkrétní kosti na výslednou pozici vrcholu. Na vstupu oèekává následující data: 
+\textit{Linear blend skinning} je modernìj¹í algoritmus. Ka¾dému vrcholu umo¾òuje pøiøazení více kostí. Ka¾dá dvojice kost a vrchol má pøiøazenou váhu. Váha urèuje jak velký vliv má pohyb konkrétní kosti na výslednou pozici vrcholu. Na vstupu oèekává následující data: 
 \begin{itemize}
 \item Kù¾e v bind pose, typicky reprezentovaná jako polygonální model. Propojení mezi vrcholy se v prùbìhu nemìní, pouze pozice vrcholù. 
 \item Transformace kostí, reprezentované jako matice $\mathbf{T}_1,\ldots,\mathbf{T}_m$ urèené podle rovnice \ref{r.transform_mat}. Tyto matice jsou typicky jediná velièina, která se v prùbìhu animace mù¾e mìnit. 
@@ -58,19 +58,19 @@ $$\mathbf{R}_1\left[\begin{array}{ccc}
 -1 & 0 & 0\\
 0 & -1 & 0\\
 0 & 0 & 1~\end{array}\right]$$ 
-  $\mathbf{R}_1$ je maticí identity a $\mathbf{R}_2$ je rotace okolo osy Z o 180°. Lineární míchání $0.5 \cdot \mathbf{R}_1 + 0.5 \cdot \mathbf{R}_2$ nám dá za výsledek matici hodnosti 1, která promítá 3D prostor na osu Z. To má za následek ztrátu objemu modelu. Velké relativní rotace nejsou vzácné, proto¾e klouby jako ramena a zápìstí mají velký rozsah pohybu. Tyto problémy je mo¾né øe¹it zavedením více parametrù ne¾ má linear blend skinning. Takové metody se nazývají multilineární. Tyto metody ale nemusí být ¾ádoucí kvùli nutnosti vytváøet a ukládat více vah pro ka¾dý vrchol. 
+  $\mathbf{R}_1$ je maticí identity a $\mathbf{R}_2$ je rotace okolo osy Z o 180°. Lineární míchání $0.5 \cdot \mathbf{R}_1 + 0.5 \cdot \mathbf{R}_2$ nám dá za výsledek matici hodnosti 1, která promítá 3D prostor na osu Z. To má za následek ztrátu objemu modelu. Velké relativní rotace nejsou vzácné, proto¾e klouby jako ramena a zápìstí mají velký rozsah pohybu. Tyto problémy je mo¾né øe¹it zavedením více parametrù ne¾ má linear blend skinning. Takové metody se nazývají \textit{multilineární}. Tyto metody ale nemusí být ¾ádoucí kvùli nutnosti vytváøet a ukládat více vah pro ka¾dý vrchol. 
   
  \begin{figure}[h]
 \begin{center}
 \scalebox{0.5}{\includegraphics{fig/dual_quat.png}}
-\caption{Zleva doprava: model v bind pose, linear blend skinning a dual quaternion. Pøevzato z \cite{skinningMethods}.} \label{bone_structure}
+\caption{Zleva doprava: model v bind pose, linear blend skinning a dual quaternion. Pøevzato z \cite{skinningMethods}.} \label{skinning_methods}
 \end{center}
 \end{figure}
 
-Velmi roz¹íøenou metodou je nelineární metoda Dual quaternion skinning \cite{dualQuat}, kde se místo matic míchají duální kvaterniony. Tato metoda øe¹í artefakty vznikající u linear blend skinning, zachovává objem modelu a je velmi rychlá. Pou¾ívá se v roz¹írených modelovacích programech jako je napø. Blender. Klasické kvaterniony umo¾òují reprezentovat 3D rotaci okolo osy. Tato osa ale musí procházet poèátkem souøadného systému. Oproti tomu duální kvaterniony toto omezení nemají - osa mù¾e být libovolná. Kromì toho duální kvaterniony umo¾òují popsat posunutí. Ale neumo¾òují popsat zmìnu mìøítka. Proto nemù¾e docházet ke ztrátì objemu, jako u matic, kde násobením mù¾e vznikat zmen¹ení. Duální kvaterniony jsou také výhodné pro GPU hardware, proto¾e obsahují ménì hodnot ne¾ matice.
+Velmi roz¹íøenou metodou je nelineární metoda \textit{Dual quaternion skinning} \cite{dualQuat}, kde se místo matic míchají \textit{duální kvaterniony}. Tato metoda øe¹í artefakty vznikající u linear blend skinning, zachovává objem modelu a je velmi rychlá. Pou¾ívá se v roz¹írených modelovacích programech jako je napø. Blender. Klasické kvaterniony umo¾òují reprezentovat 3D rotaci okolo osy. Tato osa ale musí procházet poèátkem souøadného systému. Oproti tomu duální kvaterniony toto omezení nemají - osa mù¾e být libovolná. Kromì toho duální kvaterniony umo¾òují popsat posunutí. Ale neumo¾òují popsat zmìnu mìøítka. Proto nemù¾e docházet ke ztrátì objemu, jako u matic, kde násobením mù¾e vznikat zmen¹ení. Duální kvaterniony jsou také výhodné pro GPU hardware, proto¾e obsahují ménì hodnot ne¾ matice. Pro porovnání metod viz obrázek \ref{skinning_methods}.
 
-Pøiøazení vah je mo¾né automaticky metodou obálek \cite{envelopes}. Tato metoda je zalo¾ena na blízkosti kostí a jejich geometrie. Ka¾dá kost má dvì oblasti vlivu. Vnitøní oblast, kde je geometrie plnì ovlivnìna touto kostí. A vnìj¹í oblast, kde je geometrie ménì ovlivnìna kostí, èím blí¾e je k okraji této oblasti. 
-Pokud chceme mít váhy urèené kvalitnì, je nutné nastavit váhy ruènì. To je mo¾né v nìkterém modelovacím programu, napøíklad Blender poskytuje "Weight Paint" mód, kde se pohybem ¹tìtce po modelu urèují váhy vrcholù pro jednotlivé kosti. Tento proces je iterativní a nároèný. Kreslením se odebírají nebo pøidávají váhy vrcholùm pro jednu aktivní kost. Poté se zkou¹í efekt na známé póze, upravují a vyhlazují váhy a tento proces se opakuje, dokud výsledek není dostateènì pøirozený. 
+Pøiøazení vah je mo¾né automaticky \textit{metodou obálek} \cite{envelopes}. Tato metoda je zalo¾ena na blízkosti kostí a jejich geometrie. Ka¾dá kost má dvì oblasti vlivu. Vnitøní oblast, kde je geometrie plnì ovlivnìna touto kostí. A vnìj¹í oblast, kde je geometrie ménì ovlivnìna kostí, èím blí¾e je k okraji této oblasti. 
+Pokud chceme mít váhy urèené kvalitnì, je nutné nastavit váhy ruènì. To je mo¾né v nìkterém modelovacím programu, napøíklad Blender poskytuje \textit{Weight Paint} mód, kde se pohybem ¹tìtce po modelu urèují váhy vrcholù pro jednotlivé kosti. Tento proces je iterativní a nároèný. Kreslením se odebírají nebo pøidávají váhy vrcholùm pro jednu aktivní kost. Poté se zkou¹í efekt na známé póze, upravují a vyhlazují váhy a tento proces se opakuje, dokud výsledek není dostateènì pøirozený. Na obrázku \ref{envelope_weight_paint} je ukázána obálka a model ve Weight Paint módu.
 \begin{figure}[h]
 \begin{center}
 \subfloat{{\includegraphics[width=3cm]{fig/envelopes.png}}}
@@ -83,9 +83,9 @@ Pokud chceme mít váhy urèené kvalitnì, je nutné nastavit váhy ruènì. To je mo¾né
 \section{Tvorba animace}
 Animace èlovìka se vyskytuje ve velkém mno¾ství aplikací v rùzných prostøedích a podmínkách. Tyto animace by proto mìly být pøizpùsobitelné prostøedí v reálném èase. Také by mìly pùsobit pøirozenì a tím pøidávat na reálnosti.
 
-Základní nástroje pro specifikaci pohybu jsou zalo¾eny na kinematikách. Existují dva zpùsoby popisu kinematické informace: inverzní a pøímá kinematika, viz kapitola \ref{kinematics}. 
+Základní nástroje pro specifikaci pohybu jsou zalo¾eny na \textit{kinematikách}. Existují dva zpùsoby popisu kinematické informace: \textit{inverzní} a \textit{pøímá kinematika}, viz kapitola \ref{kinematics}. 
 
-Welbergen a spol. \cite{survey} dìlí techniky tvorby animace do tøí skupin: procedurální simulace, fyzikální simulace a editace pohybu.
+Welbergen a spol. \cite{survey} dìlí techniky tvorby animace do tøí skupin: \textit{procedurální simulace}, \textit{fyzikální simulace} a \textit{editace pohybu}.
 
 Techniky se také mohou kombinovat dohromady a vyu¾ívat vhodnìj¹í techniku pro danou situaci nebo èást tìla. Mù¾e se napøíklad pou¾ít technika editace pohybu dokud nedojde k interakci s prostøedím a ta se mù¾e zpracovat pomocí fyzikální simulace. Nebo pomocí procedurální simulace vytvoøit gesta rukou a fyzikální simulací zachovat fyzikálnì pøirozené balancování spodní èásti tìla.
 
@@ -95,7 +95,7 @@ Procedurální simulace popisuje animaci algoritmicky pomocí matematických formulí
 Procedurální simulace umo¾òuje pøesné èasování a pozicování konèetin a mù¾e vyu¾ívat velké mno¾ství parametrù, pomocí kterých je mo¾né upravit výstup na míru po¾adavkùm. Dobøe se adaptují na prostøedí a jsou málo výpoèetnì nároèné. Nicménì je èasto problematické zakomponovat detaily jako jsou u editace pohybu do matematických formulí. Také je nutné explicitnì zachovávat fyzikální pøirozenost v procedurálním modelu pohybu pro v¹echny mo¾nosti parametrù. Je èasto pou¾ívána pro animaci gest a mluvení, které vy¾adují velké mno¾ství parametrù.
 
 \subsection{Fyzikální simulace}
-V mnoha pøípadech je vhodné poèítat s dynamikami \cite{surveyWalk}, aby byla zachována realistiènost pohybu. Tyto pøípady mohou být:
+V mnoha pøípadech je vhodné poèítat s \textit{dynamikami} \cite{surveyWalk}, aby byla zachována realistiènost pohybu. Tyto pøípady mohou být:
 \begin{itemize}
 \item jestli¾e postava nese náklad
 \item jestli¾e postava musí reagovat na externí síly jako poryvy vìtru
@@ -110,7 +110,7 @@ kde $f$ je síla aplikovaná na objekt, $m$ je jeho hmotnost, $\ddot{x}$ je druhá 
 \begin{eqnarray}
 t=i \cdot \ddot{\theta} + \dot{\theta} \times i \cdot \ddot{\theta}\label{r.dynamics2}
 \end{eqnarray} 
-kde $t$ je toèivý moment, $i$ je matice setrvaènosti, $\dot{\theta}$ je úhlová rychlost a $\ddot{\theta}$ je úhlové zrychlení. Pøímá dynamika je aplikace tìchto zákonù k výpoètu pohybu vygenerovaného danou silou. Inverzní dynamika se zabývá urèováním síly, která by vygenerovala daný pohyb.
+kde $t$ je toèivý moment, $i$ je matice setrvaènosti, $\dot{\theta}$ je úhlová rychlost a $\ddot{\theta}$ je úhlové zrychlení. \textit{Pøímá dynamika} je aplikace tìchto zákonù k výpoètu pohybu vygenerovaného danou silou. \textit{Inverzní dynamika} se zabývá urèováním síly, která by vygenerovala daný pohyb.
 
 Ve fyzikální simulaci je model typicky reprezentovaný jako systém pevných tìles propojených klouby. Ka¾dé z tìchto pevných tìles má pøiøazené fyzikální vlastnosti jako napø. hmotnost. Pohyb je generován manipulací s toèivými momenty kloubù s pou¾itím pøímé dynamiky. Pro umo¾nìní kolizí je nutné geometricky reprezentovat pevná tìlesa. Pou¾ití samotného povrchového modelu je pøíli¹ výpoèetnì nároèné, proto se pou¾ívají pro kolize aproximace pomoci základních tvarù, napø. válec.
 
@@ -123,7 +123,7 @@ Metody editace pohybu vytváøí pohyb na základnì vzorù pohybu. Metody modifikace 
 
 Techniky editace pohybu zachovávají pøirozenost vstupních vzorù pohybu, ale pouze jsou-li zmìny malé. Pøirozenost i pøi vìt¹ích zmìnách je zachována technikami pou¾ívající více vzorù na jeden pohyb. Nicménì pro v¹echny techniky roste poèet vzorù  exponenciálnì s poètem parametrù animace. Navíc techniky editace pohybu neposkytují fyzikální interakci s prostøedím, ale jsou vázány na specifický kontext. Jsou vhodné pro vytváøení animací v pøedstihu pro neinteraktivní aplikace, napø. filmy. Pro interaktivní (napø. videohry) je potøeba velká databáze pohybù. Pohyby se mohou vytváøet pomocí technik ze zpracování signálù, interpolací mezi vzory pohybù nebo pomocí statistických modelù.
 
-Vstupní data mohou být být tvoøená animátorem ruènì, ale mohou být získána i napø. pomocí motion capture. Motion capture  \cite{motion_capture} jsou techniky pro nahrávání pohybù èlovìka, zvíøete nebo jiného subjektu. Mají velké vyu¾ití ve filmech a videohrách. Nejèastìji se pou¾ívá optických metod pro zachycení pohybu. V Motion capture má herec okolo ka¾dého kloubu znaèky, které jsou zaznamenávány a sledovány kamerami. Výstupem je mno¾ina lokací bodù v èase. Tìmi se poté prolo¾í kostra.
+Vstupní data mohou být být tvoøená animátorem ruènì, ale mohou být získána i napø. pomocí \textit{motion capture}. Motion capture  \cite{motion_capture} jsou techniky pro nahrávání pohybù èlovìka, zvíøete nebo jiného subjektu. Mají velké vyu¾ití ve filmech a videohrách. Nejèastìji se pou¾ívá optických metod pro zachycení pohybu. V Motion capture má herec okolo ka¾dého kloubu znaèky, které jsou zaznamenávány a sledovány kamerami, viz obrázek \ref{motion_capture_img}. Výstupem je mno¾ina lokací bodù v èase. Tìmi se poté prolo¾í kostra.
 \begin{figure}[h]
 \begin{center}
 \scalebox{0.4}{\includegraphics{fig/motion_capture.jpg}}
@@ -133,13 +133,13 @@ Vstupní data mohou být být tvoøená animátorem ruènì, ale mohou být získána i nap
 
 \chapter{Kinematiky} 
 \label{kinematics}
-Kinematiky v poèítaèové grafice slou¾í pro manipulaci s kostrou. Jsou  rozdìleny na dvì èásti: pøímá a inverzní kinematika. V pøímé kinematice se hýbe s ka¾dou kostí v øetìzci kostí a podle toho se urèí výsledná pozice posledního èlánku - koncového efektoru. Výsledky pøi ruèním vytváøení animace jsou velmi závislé na schopnostech animátora, proto¾e musí nastavovat pozice kostí od ruky. V této technice je obtí¾né omezovat pohyb, napøíklad ¾e chodidlo nemù¾e proniknout do zemì. 
+Kinematiky v poèítaèové grafice slou¾í pro manipulaci s kostrou. Jsou  rozdìleny na dvì èásti: pøímá a inverzní kinematika. V pøímé kinematice se hýbe s ka¾dou kostí v øetìzci kostí a podle toho se urèí výsledná pozice posledního èlánku - \textit{koncového efektoru}. Výsledky pøi ruèním vytváøení animace jsou velmi závislé na schopnostech animátora, proto¾e musí nastavovat pozice kostí od ruky. V této technice je obtí¾né omezovat pohyb, napøíklad ¾e chodidlo nemù¾e proniknout do zemì. 
 
-Máme-li øetìzec kloubù, kde ka¾dý kloub $i$ má pøiøazen úhel $\theta_i$, který urèuje jeho rotaci oproti jeho pøedkovi, viz obrázek \ref{ik_chain}. Potom stav øetìzce je urèen stavovým vektorem $\boldsymbol{\theta}(\theta_1,\dots,\theta_n)$. Oznaème pozici koncového efektoru $\mathbf{P}$. Pøímá kinematika øe¹í následující rovnici:
+Máme-li \textit{øetìzec kloubù}, kde ka¾dý kloub $i$ má pøiøazen úhel $\theta_i$, který urèuje jeho rotaci oproti jeho pøedkovi, viz obrázek \ref{ik_chain}. Potom stav øetìzce je urèen stavovým vektorem $\boldsymbol{\theta}(\theta_1,\dots,\theta_n)$. Oznaème pozici koncového efektoru $\mathbf{P}$. Pøímá kinematika øe¹í následující rovnici:
 \begin{eqnarray}
 \mathbf{P} = f(\boldsymbol{\theta})\label{r.forward_kinematics}
 \end{eqnarray}
-Ka¾dý kloub mù¾e mít více ne¾ jeden stupeò volnosti, tedy být definován více úhly. Tím je urèena slo¾itost struktury kloubù, která je definována jako souèet stupòù volnosti v¹ech prvkù.
+Ka¾dý kloub mù¾e mít více ne¾ jeden \textit{stupeò volnosti}, tedy být definován více úhly. Tím je urèena slo¾itost struktury kloubù, která je definována jako souèet stupòù volnosti v¹ech prvkù.
 
 Oproti tomu v inverzní kinematice \cite{Buss09introductionto}\cite{welman} se hýbe pouze s koncovým efektorem a pohyb ostatních kloubù se dopoèítá, tak aby byl tento pohyb umo¾nìn. To je matematicky zapsáno následovnì:
 \begin{eqnarray}
@@ -152,11 +152,11 @@ Oproti tomu v inverzní kinematice \cite{Buss09introductionto}\cite{welman} se hý
 \caption{Pøíklad øetìzce tøí kloubù.} \label{ik_chain}
 \end{center}
 \end{figure}
-Øe¹ení inverzní kinematiky není tak jednoduché jako pøímé. Funkce $f$ je nelineární a aèkoliv v rovnici \ref{r.forward_kinematics} existuje unikátní namapování z $\boldsymbol{\theta}$ na $\mathbf{P}$, pro inverzní mapování v rovnici \ref{r.inverse_kinematics} mù¾e být nekoneèné mno¾ství $\boldsymbol{\theta}$ pro jedno konkrétní $\mathbf{P}$. Analytické øe¹ení pro libovolný øetìzec kloubù neexistuje. Problém ze øe¹í pomocí numerických metod pro øe¹ení systémù nelineárních rovnic. Z nekoneèného mno¾ství øe¹ení je snaha vybírat to nejvhodnìj¹í øe¹ení. Rùzné metody preferují rùzné øe¹ení a proto se metody, které se pro øe¹ení pou¾ijí vybírají na základì konkrétnì øe¹eného problému. V pøípadì lidské kostry má ka¾dý kloub urèené stupnì volnosti, aby rotovali jenom v urèitých smìrech a také je definován maximální úhel rotace. Napøíklad koleno rotuje pouze v jednom smìru a nemù¾e být otevøeno více ne¾ 180° a zavøeno ménì ne¾ cca 30°. Inverzní kinematika poskytuje lep¹í kontrolu nad koncovým efektorem, jeho¾ cílová pozice nás vìt¹inou nejvíce zajímá. V modelovacím programu mù¾eme hýbat napø. pouze chodidlem a nemusíme také pohybovat stehenní a lýtkovou kostí. Toho se také vyu¾ije v procedurální animaci lidské chùze, kde budeme urèovat trajektorie koncových efektorù. Techniky zalo¾ené na kinematikách vyu¾ívají empirickou a biomechanickou znalost pohybu pro generování animace. 
+Øe¹ení inverzní kinematiky není tak jednoduché jako pøímé. Funkce $f$ je nelineární a aèkoliv v rovnici \ref{r.forward_kinematics} existuje unikátní namapování z $\boldsymbol{\theta}$ na $\mathbf{P}$, pro inverzní mapování v rovnici \ref{r.inverse_kinematics} mù¾e být nekoneèné mno¾ství $\boldsymbol{\theta}$ pro jedno konkrétní $\mathbf{P}$. Analytické øe¹ení pro libovolný øetìzec kloubù neexistuje. Problém ze øe¹í pomocí numerických metod pro øe¹ení systémù nelineárních rovnic. Z nekoneèného mno¾ství øe¹ení je snaha vybírat to nejvhodnìj¹í øe¹ení. Rùzné metody preferují rùzné øe¹ení a proto se metody vybírají na základì konkrétnì øe¹eného problému. V pøípadì lidské kostry má ka¾dý kloub urèené stupnì volnosti, aby rotovali jenom v urèitých smìrech a také je definován maximální úhel rotace. Napøíklad koleno rotuje pouze v jednom smìru a nemù¾e být otevøeno více ne¾ 180° a zavøeno ménì ne¾ cca 30°. Inverzní kinematika poskytuje lep¹í kontrolu nad koncovým efektorem, jeho¾ cílová pozice nás vìt¹inou nejvíce zajímá. V modelovacím programu mù¾eme hýbat napø. pouze chodidlem a nemusíme také pohybovat stehenní a lýtkovou kostí. Toho se také vyu¾ije v procedurální animaci lidské chùze, kde budeme urèovat trajektorie koncových efektorù. Techniky zalo¾ené na kinematikách vyu¾ívají empirickou a biomechanickou znalost pohybu pro generování animace. 
 
 Nyní si uká¾eme nìkteré zpùsoby øe¹ení inverzní kinematiky.
 \section{Jacobiho inverzní metoda}
-Jacobiho inverzní metoda \cite{Buss09introductionto}\cite{welman}\cite{AristidouTR632} je iterativní metoda vyu¾ívající Jacobiho matice k aproximaci øe¹ení. Vztah mezi kartézským prostorem koncového efektoru $\mathbf{P}$ a prostoru kloubù úhlù $\boldsymbol{\theta}$ je:
+\textit{Jacobiho inverzní metoda} \cite{Buss09introductionto}\cite{welman}\cite{AristidouTR632} je iterativní metoda vyu¾ívající \textit{Jacobiho matice} k aproximaci øe¹ení. Vztah mezi kartézským prostorem koncového efektoru $\mathbf{P}$ a prostoru kloubù úhlù $\boldsymbol{\theta}$ je:
 \begin{eqnarray}
 \mathbf{\dot{P}} = J(\boldsymbol{\theta})\boldsymbol{\dot{\theta}}\label{r.jacobian_vztah}
 \end{eqnarray}
@@ -181,15 +181,15 @@ Hodnota $\Delta\boldsymbol{\theta}$ by mìla být vybrána tak, aby $\Delta\vec{\ma
 
 Jacobiho matice ale není v¾dy invertibilní, tzn. není ètvercová a zároveò singulární. To nastane kdy¾ konfigurace kloubù je redundantní nebo kdy¾ prochází skrz nebo blízko singulární konfigurace.
 
-Øetìzec kloubù je redundantní jestli¾e obsahuje více stupòù volnosti, ne¾ je potøeba pro specifikaci cíle koncového efektoru. Je-li cíl koncového efektoru urèen pozicí v 3D prostoru, potom jakýkoliv øetìzec obsahující více ne¾ 3 stupnì volnosti je redundantní a tedy existuje nekoneènì mnoho øe¹ení. Jacobiho matice potom má více sloupcù ne¾ øádkù. V takových pøípadech se $J^{-1}$ nahradí generalizovanou inverzí $J^{\dagger}$, vet¹inou Moore-Penroseovou pseudoinverzí. Jestli¾e existuje nekoneèné mno¾ství øe¹ení, je mo¾né toho vyu¾ít pro splnìní nìjakého sekundárního kriteria, napø. vyhnutí se pøeká¾kám. Matice je singulární jestli¾e dva nebo více øádkù jsou lineárnì závislé, pøíklad takové konfigurace je vidìt na obrázku \ref{singular}. Jacobiho matice pro takovou konfiguraci bude obsahovat nuly v prvním øádku a nemù¾e být invertována. V takovém pøípadì je mo¾né pou¾ít pseudoinverzní matici, která poskytne øe¹ení v singulární konfiguraci, nicménì v okolí singulární konfigurace bude nevhodnì oscilovat. 
+Øetìzec kloubù je redundantní jestli¾e obsahuje více stupòù volnosti, ne¾ je potøeba pro specifikaci cíle koncového efektoru. Je-li cíl koncového efektoru urèen pozicí v 3D prostoru, potom jakýkoliv øetìzec obsahující více ne¾ 3 stupnì volnosti je redundantní a tedy existuje nekoneènì mnoho øe¹ení. Jacobiho matice potom má více sloupcù ne¾ øádkù. V takových pøípadech se $J^{-1}$ nahradí generalizovanou inverzí $J^{\dagger}$, vet¹inou \textit{Moore-Penroseovou pseudoinverzí}. Jestli¾e existuje nekoneèné mno¾ství øe¹ení, je mo¾né toho vyu¾ít pro splnìní nìjakého sekundárního kriteria, napø. vyhnutí se pøeká¾kám. Matice je singulární jestli¾e dva nebo více øádkù jsou lineárnì závislé, pøíklad takové konfigurace je vidìt na obrázku \ref{singular}. Jacobiho matice pro takovou konfiguraci bude obsahovat nuly v prvním øádku a nemù¾e být invertována. V takovém pøípadì je mo¾né pou¾ít pseudoinverzní matici, která poskytne øe¹ení v singulární konfiguraci, nicménì v okolí singulární konfigurace bude nevhodnì oscilovat. 
 \begin{figure}[h]
 \begin{center}
 \scalebox{0.4}{\includegraphics{fig/singular.eps}}
 \caption{Singulární konfigurace øetìzce kloubù.} \label{singular}
 \end{center}
 \end{figure}
-\section{Cyclic Coordinate Descent}
-Cyclic Coordinate Descent (CCD) \cite{welman} je øe¹ení inverzní kinematiky zalo¾ené na iterativním heuristickém vyhledávání, které se sna¾í o minimalizaci rotaèní chyby  zpracováváním jednoho kloubu v jeden okam¾ik. Ka¾dá iterace provede jednotlivì pohyb v¹ech èlánkù od nejposlednìj¹ího k prvnímu. To se opakuje dokud se nedosáhne po¾adované pozice koncového efektoru a nebo dokud se nepøesáhne maximální poèet cyklù. K urèení úhlu rotace se pou¾ívají dva vektory. Proto¾e metoda pracuje s jedním kloubem v jeden okam¾ik, zvýhodòuje klouby na zaèátku. Oproti metodám pou¾ívající Jacobiho matice provádí více iterací. Aèkoliv je algoritmus jednoduchý, je èasto nutné ho dále pøizpùsobovat, aby bylo dosa¾eno vhodných výsledkù.
+\section{Cyclic Coordinate Descent} \label{ccd}
+\textit{Cyclic Coordinate Descent} (CCD) \cite{welman} je øe¹ení inverzní kinematiky zalo¾ené na iterativním heuristickém vyhledávání, které se sna¾í o minimalizaci rotaèní chyby  zpracováváním jednoho kloubu v jeden okam¾ik. Ka¾dá iterace provede jednotlivì pohyb v¹ech èlánkù od nejposlednìj¹ího k prvnímu. To se opakuje dokud se nedosáhne po¾adované pozice koncového efektoru a nebo dokud se nepøesáhne maximální poèet cyklù. K urèení úhlu rotace se pou¾ívají dva vektory. Proto¾e metoda pracuje s jedním kloubem v jeden okam¾ik, zvýhodòuje klouby na zaèátku. Oproti metodám pou¾ívající Jacobiho matice provádí více iterací. Aèkoliv je algoritmus jednoduchý, je èasto nutné ho dále pøizpùsobovat, aby bylo dosa¾eno vhodných výsledkù.
 
 Mìjme iteraci $i$ (viz obrázek \ref{ccd_img}) a pozici kloubu $\mathbf{k}_i$ pro $i$-tý kloub od konce øetìzce. Potom vektor $\mathbf{P}_{ia}$ je vektor od pozice kloubu $\mathbf{k}_i$ k aktuální pozici koncového efektoru a $\mathbf{P}_{ip}$ je vektor od $\mathbf{k}_i$ do po¾adované pozice koncového efektoru. Budeme-li rotovat vektor $\mathbf{P}_{ia}$ o úhel $\phi$, dostaneme nový vektor $\mathbf{P}'_{ia}(\phi)$. Jestli¾e úhel bude nabývat libovolných hodnot, $\mathbf{P}'_{ia}(\phi)$ zaène tvoøit kruh se støedem $\mathbf{k}_i$. Bod na tomto kruhu nejblí¾e k po¾adované pozici $\mathbf{P}_p$, je bod, na kterém kruh protíná pøímku urèenou vektorem $\mathbf{P}_{ip}$. Proto budeme mìnit rotaci kloubu $\mathbf{k}_i$ tak, aby se $\mathbf{P}_{ip}$ a $\mathbf{P}'_{ia}(\phi)$ zarovnaly.
 \begin{figure}[h]
@@ -208,22 +208,22 @@ kde $k_1$, $k_2$ a $k_3$ jsou konstantní koeficienty, pro detaily viz \cite{welm
 \end{eqnarray}
 která vymezí kandidátní hodnotu $\phi_c$ v rozsahu $\frac{-\pi}{2} \leq \phi_c \leq \frac{\pi}{2}$. Proto¾e $\tan$ je periodické, musíme uva¾ovat i dvì dal¹í kandidátní hodnoty: $\phi_c + \pi$ a $\phi_c - \pi$. Z kandidátních hodnot se vybere taková, která spadá do intervalu $-\pi \leq x \leq \pi$ a její¾ druhá derivace je záporná. Je-li jich více, funkce se vyhodnotí nad v¹emi a vybere se z nich maximum. Poté co jsme získali úhel $\phi$, mù¾eme ho vynásobit váhou urèující tuhost kloubu a pøièíst ho k aktuální rotaci $r_i$ kloubu $i$. Poté se pokraèuje s iterací $i+1$.
 \chapter{Lidská chùze}
-Lidská chùze \cite{gait_review} se skládá z opakujících se krokových cyklù neboli dvojkrokù, viz obrázek \ref{gait_cycle}. Cyklus je sekvence pohybù od doby kdy se jedna noha dotkne zemì do doby kdy se stejná noha dotkne zemì znovu. Ka¾dý krokový cyklus má dvì základní fáze: stojnou fázi a ¹vihovou fázi. Proto¾e je cyklus shodný pro obì nohy, budeme popisovat pouze jednu.
+Lidská chùze \cite{gait_review} se skládá z opakujících se \textit{krokových cyklù} neboli \textit{dvojkrokù}, viz obrázek \ref{gait_cycle}. Cyklus je sekvence pohybù od doby kdy se jedna noha dotkne zemì do doby kdy se stejná noha dotkne zemì znovu. Ka¾dý krokový cyklus má dvì základní fáze: \textit{stojnou fázi} a \textit{¹vihovou fázi}. Proto¾e je cyklus shodný pro obì nohy, budeme popisovat pouze jednu.
 
-Stojná fáze, je fáze, kdy je noha v kontaktu se zemí. Zabírá 60\% dvojkroku a zaèíná s úderem paty (poèáteèní kontakt) a konèí s odrazem palce. Je dále rozdìlena do podfází:
+Stojná fáze, je fáze, kdy je noha v kontaktu se zemí. Zabírá 60\% dvojkroku a zaèíná s \textit{úderem paty} (\textit{poèáteèní kontakt}) a konèí s \textit{odrazem palce}. Je dále rozdìlena do podfází:
 \begin{itemize}
-\item stadium zatì¾ování
-\item mezistoj
-\item koneèný stoj
-\item pøed¹vihová fáze
+\item \textit{stadium zatì¾ování}
+\item \textit{mezistoj}
+\item \textit{koneèný stoj}
+\item \textit{pøed¹vihová fáze}
 \end{itemize}
-Po poèáteèním kontaktu pravé nohy nastává perioda dvojí opory, která konèí pøi odrazu palce levé nohy. Následuje jedno-oporová fáze do té doby, ne¾ se levá dostane do poèáteèního kontaktu. Nastává druhá perioda dvojí opory, a¾ do odrazu palce pravé nohy. V ka¾dé fázi dvojí opory je jedna noha vpøedu, právì se dotkla zemì. A druhá je vzadu pøipravena na zvednutí se ze zemì. Pøední noha je ve stadiu zatì¾ování  a zadní je v koneèném ¹vihu. V ka¾dém krokovém cyklu jsou dvì periody dvojí opory a dvì periody jedno-oporové fáze. Dvojí opora zabírá pøibli¾nì 10\% dvojkroku, ale její délka se mìní s rychlostí chùze. S vìt¹í rychlostí se prodlu¾uje ¹vihová fáze a zkracuje fáze dvojí opory. Kdy¾ dvojí opora úplnì vymizí z chùze se stává bìh. Mezi kroky bìhu je fáze letu, kdy není ¾ádná noha na zemi.
+Po poèáteèním kontaktu pravé nohy nastává perioda \textit{dvojí opory}, která konèí pøi odrazu palce levé nohy. Následuje \textit{jedno-oporová fáze} do té doby, ne¾ se levá dostane do poèáteèního kontaktu. Nastává druhá perioda dvojí opory, a¾ do odrazu palce pravé nohy. V ka¾dé fázi dvojí opory je jedna noha vpøedu, právì se dotkla zemì. A druhá je vzadu pøipravena na zvednutí se ze zemì. Pøední noha je ve stadiu zatì¾ování  a zadní je v koneèném ¹vihu. V ka¾dém krokovém cyklu jsou dvì periody dvojí opory a dvì periody jedno-oporové fáze. Dvojí opora zabírá pøibli¾nì 10\% dvojkroku, ale její délka se mìní s rychlostí chùze. S vìt¹í rychlostí se prodlu¾uje ¹vihová fáze a zkracuje fáze dvojí opory. Kdy¾ dvojí opora úplnì vymizí z chùze se stává bìh. Mezi kroky bìhu je fáze letu, kdy není ¾ádná noha na zemi.
 
 ©vihová fáze nastává kdy¾ je chodidlo ve vzduchu a trvá 40\% délky dvojkroku. Zaèíná s úderem paty a konèí s druhým odrazem palce.  Je dále rozdìlena do podfází:
 \begin{itemize}
-\item poèáteèní ¹vih
-\item mezi¹vih
-\item koneèný ¹vih
+\item \textit{poèáteèní ¹vih}
+\item \textit{mezi¹vih}
+\item \textit{koneèný ¹vih}
 \end{itemize}
 
 \begin{figure}[h]
@@ -233,7 +233,7 @@ Po poèáteèním kontaktu pravé nohy nastává perioda dvojí opory, která konèí pøi o
 \end{center}
 \end{figure}
 
-Nyní si popí¹eme nìkteré termíny a parametry specifikující chùzi. Délka dvojkroku je vzdálenost mezi dvìma po sobì jdoucími kroky stejné nohy. Skládá se ze dvou délek kroku, levé a pravé, ka¾dá s nich urèuje vzdálenost o kterou se jedna noha pøesune pøed druhou. Mù¾e být napø. nulová, kdy¾ se levá noha pøesune na úroveò pravé a ne pøed ní. ©íøka dvojkroku je vzdálenost mezi pøímkami urèenými støedy pat obou nohou pøi chùzi. Úhel vytoèení chodidla urèuje úhel mezi zmínìnou pøímkou a pøímkou procházející støedem chodidla. Kadence je poèet krokù v daném èase. V jednom krokovém cyklu jsou dva kroky a tedy kadence je mìøítko  pùl-cyklù. Èas dvojkroku $c$ v sekundách se urèí jako $c = 120/kad$, kde $kad$ je kadence v krocích za minutu. Rychlost chùze je vzdálenost u¹lá v èase. Okam¾itá rychlost je variabilní v prùbìhu kroku, ale prùmìrná rychlost je výsledkem kadence a délky dvojkroku. Rychlost chùze $r$ se spoèítá jako $r = d/c$, kde $d$ je délka dvojkroku. Rychlost chùze tedy závisí na délce kroku, které závisí na délce ¹vihové fáze.
+Nyní si popí¹eme nìkteré termíny a parametry specifikující chùzi (obr. \ref{step_length}). \textit{Délka dvojkroku} je vzdálenost mezi dvìma po sobì jdoucími kroky stejné nohy. Skládá se ze dvou délek kroku, levé a pravé, ka¾dá s nich urèuje vzdálenost o kterou se jedna noha pøesune pøed druhou. Mù¾e být napø. nulová, kdy¾ se levá noha pøesune na úroveò pravé a ne pøed ní. \textit{©íøka dvojkroku} je vzdálenost mezi pøímkami urèenými støedy pat obou nohou pøi chùzi. \textit{Úhel vytoèení chodidla} urèuje úhel mezi zmínìnou pøímkou a pøímkou procházející støedem chodidla. \textit{Kadence} je poèet krokù v daném èase. V jednom krokovém cyklu jsou dva kroky a tedy kadence je mìøítko  pùl-cyklù. Èas dvojkroku $c$ v sekundách se urèí jako $c = 120/kad$, kde $kad$ je kadence v krocích za minutu. \textit{Rychlost chùze} je vzdálenost u¹lá v èase. Okam¾itá rychlost je variabilní v prùbìhu kroku, ale prùmìrná rychlost je výsledkem kadence a délky dvojkroku. Rychlost chùze $r$ se spoèítá jako $r = d/c$, kde $d$ je délka dvojkroku. Rychlost chùze tedy závisí na délce kroku, které závisí na délce ¹vihové fáze.
 
 \begin{figure}[h]
 \begin{center}
@@ -298,14 +298,14 @@ Pro definici trajektorie chodidla nohy ve ¹vihové fázi se pou¾ijí Beziérovy køiv
 \chapter{Návrh a realizace øe¹ení}
 Øe¹ení je implementováno v jazyce C++. 3D grafika je vykreslena pomocí rozhraní OpenGL. OpenGL je multiplatformní rozhraní, podporováno mno¾stvím programovacích jazykù, umo¾òující vykreslování 2D a 3D grafiky. Komunikuje s grafickým procesorem pro hardwarovì akcelerované vykreslování. Pro zpracování vstupù a vytvoøení kontextu OpenGL je vyu¾ita knihovna SDL 2.0. SDL je multiplatformní knihovna umo¾òující nízkoúrovòový pøístup ke klávesnici, my¹i, zvuku a grafickému hardwaru. Funguje nativnì v C++.
 
-Aplikace umo¾òuje naètení pøedpøipraveného modelu s pøipojenou kostrou. Pøípadnì u¾ivatel mù¾e vyu¾ít poskytnutou pøedpøipravenou kostru a na ní si pøipojit vlastní model. A ten poté vyexportovat v Blenderu do formátu COLLADA (.dae). Aplikace model zobrazí za vyu¾ití Linear blend skinning (kapitola \ref{linear_blend_skinning}) algoritmu. U¾ivatel má mo¾nost zobrazení pouze kù¾e modelu, nebo kostry, nebo obojí zároveò. Model je animován. Je mo¾nost pomocí nìkolika parametrù upravit animaci chùze. K tomu slou¾í grafické u¾ivatelské rozhraní. Animace mù¾e být vyexportována a následnì pou¾ita napøíklad v Unity enginu.
+Aplikace bude umo¾òovat naètení pøedpøipraveného modelu s pøipojenou kostrou. Pøípadnì u¾ivatel mù¾e vyu¾ít poskytnutou pøedpøipravenou kostru a na ní pøipojit vlastní mode a ten poté vyexportovat v Blenderu do formátu \textit{COLLADA}. Aplikace model zobrazí za vyu¾ití Linear blend skinning (kapitola \ref{linear_blend_skinning}) algoritmu. U¾ivatel bude mít mo¾nost zobrazení pouze kù¾e modelu, nebo kostry, nebo obojího zároveò. Model bude rozhýbán animací chùze. Bude mo¾né upravit animaci pomocí nìkolika parametrù. K tomu bude vyu¾ito grafické u¾ivatelské rozhraní. Animace následnì bude moct být vyexportována a následnì pou¾ita napøíklad v herním enginu Unity.
 
-\subsection{Naètení modelu}
+\section{Naètení modelu}
 Model je naèítán z formátu COLLADA, který podporuje ulo¾ení geometrie, efektù, fyziky, animace, kinematik scény aj. Vyu¾ívá XML schéma. Pøi naèítání uva¾ujeme, ¾e model do tohoto formátu byl exportován z Blenderu.
 
-Zaène se naètením geometrie modelu z XML elementu  \texttt{library\_geometries}. Ulo¾í se pole s pozicemi vrcholù, normálami a texturovacími koordináty. Naètou se seznamy polygonù, které jsou urèeny odkazy do polí naètených v pøedchozím kroku. Oèekává se pou¾ití pouze trojúhelníkù. Tìchto seznamù mù¾e být více, li¹í se pou¾itým materiálem a v na¹í aplikaci jeden tento seznam tvoøí jeden  \texttt{Mesh} (kód \ref{weighted_mesh}). Název materiálu je nastavený v Blenderu a pøi naèítání modelu se oèekává pøilo¾ení textury se shodným názvem a pøíponou "\_D" pro difuzní texturu.
+Zaène se naètením geometrie modelu z XML elementu  \texttt{library\_geometries}. Ulo¾í se pole s pozicemi vrcholù, normálami a texturovacími koordináty. Naètou se seznamy polygonù, které jsou urèeny odkazy do polí naètených v pøedchozím kroku. Oèekává se pou¾ití pouze trojúhelníkù. Tìchto seznamù mù¾e být více, li¹í se pou¾itým materiálem a v na¹í aplikaci jeden tento seznam tvoøí jeden  \textit{Mesh} (kód \ref{weighted_mesh}). Název materiálu je nastavený v Blenderu a pøi naèítání modelu se oèekává pøilo¾ení textury se shodným názvem a pøíponou \texttt{\_D} pro difuzní texturu.
 
-\begin{lstlisting}[language=C++, caption={Tøída modelu.}, label={weighted_mesh}]
+\begin{lstlisting}[float,floatplacement=H,language=C++, caption={Tøída modelu.}, label={weighted_mesh}]
 class Mesh {
 protected:
   std::vector<glm::vec3> v; //pozice vrcholu
@@ -323,11 +323,11 @@ public:
   /* ... */ };
 \end{lstlisting}
 
-Následuje naètení vah a pøiøazení kostí vrcholùm z XML elementu  \texttt{library\_controllers}. První se pøeète bind shape matice. Ta popisuje transformaci geometrie do správného souøadného systému pro pou¾ití s klouby. Poté je naèten seznam názvù kostí, seznam inverzních bind pose matic $\mathbf{B}_i$ (viz rovnice \ref{r.transform_mat}) pro ka¾dou kost a seznam vah vrcholù. Následuje seznam, který urèuje pro ka¾dý vrchol poèet kloubù, které ho ovlivòují a stejný poèet odkazù do seznamu kloubù a vah.
+Následuje naètení vah a pøiøazení kostí vrcholùm z XML elementu  \texttt{library\_controllers}. První se pøeète \textit{bind shape} matice. Ta popisuje transformaci geometrie do správného souøadného systému pro pou¾ití s klouby. Poté je naèten seznam názvù kostí, seznam inverzních bind pose matic $\mathbf{B}_i$ (viz rovnice \ref{r.transform_mat}) pro ka¾dou kost a seznam vah vrcholù. Následuje seznam, který urèuje pro ka¾dý vrchol poèet kostí, které ho ovlivòují a stejný poèet odkazù do seznamu kostí a vah.
 
-Nyní se naète samotná hierarchie kostry z XML elementu \texttt{library\_visual\_scenes}. První uzel obsahuje koøenovou transformaci, od které se odvíjí dal¹í transformace v¹ech kostí. Kosti jsou hierarchicky zanoøené, obsahují název a lokální transformaèní matici, viz kód \ref{collada_skeleton}. Kosti se ukládají do 2D pole, kde ka¾dá kost má ulo¾ený index nadøazeného uzlu, tedy rodièovské kosti. A $0 \dots n$ indexù na své potomky, viz obrázek kód \ref{class_skeleton}. Kostem se následnì pøidají inverzní bind pose matice vynásobené bind shape maticí, ta se dále neukládá. Pro správné zobrazení kostry je nutné urèit velikost kostí, ta se urèí jako rozdíl pozice dané kosti a jejího potomka. Pokud ale kost nemá ¾ádného potomka nemù¾eme zjistit její velikost. Proto uva¾ujeme polovièní velikost ne¾ je velikost rodièovské kosti. Dále jsme zavedli mo¾nost pøidat kost, která se pou¾ije pouze pro urèení velikosti a poté se odstraní, taková kost musí ve svém názvu obsahovat "empty".
+Nyní se naète samotná hierarchie kostry z XML elementu \texttt{library\_visual\_scenes}. První uzel obsahuje koøenovou transformaci, od které se odvíjí dal¹í transformace v¹ech kostí. Kosti jsou hierarchicky zanoøené, obsahují název a lokální transformaèní matici, viz kód \ref{collada_skeleton}. Kosti se ukládají do 2D pole, kde ka¾dá kost má ulo¾ený index nadøazeného uzlu, tedy rodièovské kosti a $0 \dots n$ indexù na své potomky, viz kód \ref{class_skeleton}. Kostem se následnì pøiøadí inverzní bind pose matice vynásobené bind shape maticí, ta se dále neukládá. Pro správné zobrazení kostry je nutné urèit velikost kostí, ta se urèí jako rozdíl pozice dané kosti a jejího potomka. Pokud ale kost nemá ¾ádného potomka nemù¾eme zjistit její velikost. Proto uva¾ujeme polovièní velikost ne¾ je velikost rodièovské kosti. Dále jsme zavedli mo¾nost pøidat kost, která se pou¾ije pouze pro urèení velikosti a poté se odstraní, taková kost musí ve svém názvu obsahovat \textit{empty}.
 
-\begin{lstlisting}[language=C++, caption={Tøída kostry.}, label={class_skeleton}
+\begin{lstlisting}[float,floatplacement=H,language=C++, caption={Tøída kostry.}, label={class_skeleton}
 ]
 struct Bone {
   glm::mat4 localMat; //lokalni transformace
@@ -347,9 +347,9 @@ public:
   /* ... */ };
 \end{lstlisting}
 
-Nakonec jsou naplnìny objekty tøídy \texttt{WeightedMesh} (kód \ref{weighted_mesh}). Proto¾e z hardwarových dùvodù je vhodné mít pro ka¾dý vrchol kù¾e pøiøazeny pouze ètyøi kosti a jejich váhy, abychom mohly pou¾ít \texttt{vec4} ve vertex shaderu. Musí být nìkteré kosti zanedbány, pokud jich vrchol  pou¾ívá více. Ètyøi kosti jsou dostateèné a pokud je jich více, mají nìkteré velmi nízké váhy. Proto jsou pro ka¾dý vrchol v¹echny jeho kosti seøazeny sestupnì podle vah a ukládají se pouze první ètyøi. Váhy ostatních jsou rozlo¾eny rovnomìrnì mezi tyto ètyøi kosti, aby zùstala zachována podmínka o celkovém souètu v¹ech vah (viz \ref{weight_sum}).
+Nakonec jsou naplnìny objekty tøídy \texttt{WeightedMesh} (kód \ref{weighted_mesh}). Abychom mohli pou¾ít \texttt{vec4} pro vstup kostí do vertex shaderu, musí mít ka¾dý vrchol pøiøazené maximálnì ètyøi kosti. Pro model lidského tìla jsou ètyøi kosti dostateèné a pokud je jich více, mají nìkteré velmi nízké váhy. Proto jsou pro ka¾dý vrchol seøazeny v¹echny jeho kosti sestupnì podle vah a ulo¾eny pouze první ètyøi. Váhy ostatních jsou rozlo¾eny rovnomìrnì mezi ostatní, aby zùstala zachována podmínka o celkovém souètu v¹ech vah (viz \ref{weight_sum}).
 
-\begin{lstlisting}[language=XML, caption={Ukázka ulo¾ení hierarchie kostry ve formátu COLLADA.}, label={collada_skeleton}]
+\begin{lstlisting}[float,floatplacement=H,language=XML, caption={Ukázka ulo¾ení hierarchie kostry ve formátu COLLADA.}, label={collada_skeleton}]
 <library_visual_scenes>
   <visual_scene id="Scene" name="Scene">
     <!-- ... -->
@@ -378,10 +378,10 @@ Nakonec jsou naplnìny objekty tøídy \texttt{WeightedMesh} (kód \ref{weighted_mes
 </library_visual_scenes>
 \end{lstlisting}
 
-\subsection{Zobrazení}
-Pøed ka¾dým zobrazením snímku je nutné spoèítat globální matice pro v¹echny kosti kostry. Proto procházíme pole s kostmi a pro ka¾dou kost vynásobíme globální matici rodièe s její lokální maticí. Poté získáme transformaèní matici $\mathbf{T}$ podle rovnice \ref{r.transform_mat}. Vezmeme koøenovou transformaèní matici a nastavíme jí jako model matici do vertex shaderu. Následnì ve vertex shaderu získáme pozici vrcholu násobením maticí $\mathbf{T}$ a odpovídající vahou pro ètyøi pøiøazené kosti. Pøepoèítáváme také normálu, viz kód \ref{animation_shader}.
+\section{Zobrazení}
+Pøed ka¾dým zobrazením snímku je nutné spoèítat globální transformaèní matice pro v¹echny kosti kostry. Proto procházíme pole s kostmi a pro ka¾dou kost vynásobíme globální matici rodièe s její lokální maticí. Poté získáme transformaèní matici $\mathbf{T}$ podle rovnice \ref{r.transform_mat}. Následnì nastavíme koøenovou transformaèní matici jako transformaèní matici modelu. Dále ve vertex shaderu získáme pozici vrcholu kù¾e násobením maticí $\mathbf{T}$ a odpovídající vahou pro ètyøi pøiøazené kosti. Pøepoèítáváme také normálu, viz kód \ref{animation_shader}.
 
-\begin{lstlisting}[language=GLSL, caption={Ukázka z vertex shaderu pro animovaný model. Výpoèet pro pozici a normálu se provede \(4 \times \), pro komponenty \texttt{x}, \texttt{y}, \texttt{z} a \texttt{w} vektorù \texttt{v\_weights} a \texttt{v\_joints}.}, label={animation_shader}]
+\begin{lstlisting}[float,floatplacement=H,language=GLSL, caption={Ukázka z vertex shaderu pro animovaný model. Výpoèet pro pozici a normálu se provede \(4 \times \), pro komponenty \texttt{x}, \texttt{y}, \texttt{z} a \texttt{w} vektorù \texttt{v\_weights} a \texttt{v\_joints}.}, label={animation_shader}]
 vec4 pos = vec4(0.0);
 pos += T[v_joints.x] * vec4(v_pos, 1.0) * v_weights.x;
 /* ... */
@@ -391,22 +391,43 @@ norm += transpose(inverse(T[v_joints.x])) * vec4(v_norm, 1.0) * v_weights.x;
 gl_Position = mvp * vec4(pos.xyz, 1.0);
 \end{lstlisting}
 
-Následuje zobrazení kostry. Pro ka¾dou kost se pou¾ije shodný model. Pro kosti se pou¾ívají globální matice shodné jako pøi zobrazování kù¾e, ale je v nich zapoèítané zvìt¹ení, aby na sebe kosti navazovaly.  Výsledná model matice kosti je koøenová transformace vynásobená s touto globální maticí kosti. Pøed zobrazením je vyèi¹tìn hloubkový buffer, aby se kostra pøekreslila pøes model. 
+Následuje zobrazení kostry. Pro ka¾dou kost se pou¾ije shodný model. Pro kosti se pou¾ívají globální matice shodné jako pøi zobrazování kù¾e, ale je v nich zapoèítané zvìt¹ení, aby na sebe kosti navazovaly.  Výsledná transformaèní matice kosti je koøenová transformace vynásobená s touto globální maticí kosti. Pøed zobrazením je vyèi¹tìn hloubkový buffer, aby se kostra pøekreslila pøes kù¾i. 
 
-Pro zobrazení jsou pou¾ity difuzní textury a Phongùv osvìtlovací model. Výsledný výstup viz obrázek \ref{graphical_output}.
+Pro zobrazení jsou pou¾ity difuzní textury a Phongùv osvìtlovací model. Výsledný výstup je na obrázku \ref{graphical_output}.
 
 \begin{figure}[h]
 \begin{center}
 \subfloat{{\includegraphics[width=5cm]{fig/rigged.png}}}
 \qquad
 \subfloat{{\includegraphics[width=7cm]{fig/joker.png}}}
-\caption{Grafický výstup aplikace pro dva rùzné modely. Model vpravo má rotované nìkteré kosti (ruènì, uvnitø kódu).} \label{graphical_output}
+\caption{Grafický výstup aplikace pro dva rùzné modely. Model vpravo má rotované nìkteré kosti (uvnitø kódu).} \label{graphical_output}
+\end{center}
+\end{figure}
+
+\section{Animace}
+Pohyb koøene kostry, pánve, bude aproximován pomocí interpolaèního Catmull-Rom splinu, podobnì jako na obrázku \ref{chung_pelvis}. Pro rotaci a náklon pánve budou vyu¾ity grafy na obrázku \ref{pelvic kinematics}. Pozice paty a prstù nohy se urèí ze znalostí fází chùze. Bìhem stadia zatì¾ování je pata na zemi a chodidlo je zvednuté a postupnì se dotýká zemì. V mezistoji bude chodidlo nehybné. Bìhem koneèného stoje a pøed¹vihové fáze jsou prsty nehybnì na zemi a zvedá se pata, a¾ se nakonec zvednou i prsty. V následujících fázích se poloha chodidla pøesouvá postupnì do polohy, kterou bude mít v poèáteèním kontaktu. Rotace kotníku se aproximuje pomocí interpolaèních splinù, viz obr \ref{ankle_kinematics}. Rotace kyèle a kolene se dopoèítá pomocí inverzní kinematiky, pou¾ije se metoda CCD (kapitola \ref{ccd}). Horní konèetiny se budou hýbat opaènì k dolním konèetinám v rozsahu nastavitelným parametry.
+
+\begin{figure}[h]
+\begin{center}
+\subfloat{{\includegraphics[width=6cm]{fig/pelvic_rotation.png}}}
+\qquad
+\subfloat{{\includegraphics[width=6cm]{fig/pelvic_tilt.png}}}
+\caption{Rotace a náklon pánve v prùbìhu krokového cyklu. Pøevzato z \cite{biomechanika_chuze}} \label{pelvic kinematics}
+\end{center}
+\end{figure}
+
+\begin{figure}[h]
+\begin{center}
+\scalebox{0.4}{\includegraphics{fig/ankle_kinematics.png}}
+\caption{Kinematika hlezenního kloubu (kotníku). Pøevzato z \cite{biomechanika_chuze}.} \label{ankle_kinematics}
 \end{center}
 \end{figure}
 
 
 \chapter{Závìr}
-Bylo implementováno naètení modelu èlovìka spolu s pøipojenou kostrou a jeho zobrazení. Výsledná aplikace má ... øádkù kódu. Byly popsány nìkteré existující implementace procedurální animace a metody øe¹ení inverzní kinematiky. V rámci dal¹ího vývoje bude potøeba implementovat systém tvorby animace a její vyexportování do souboru.
+Byla pøedstavena skeletální animace a metody tvorby animace. Definovány kinematiky a popsány nìkteré metody øe¹ení inverzní kinematiky. Dále byly popsány fáze lidské chùze a nìkterá existující øe¹ení procedurální animace chùze. Následnì byl popsán návrh a implementace èástí øe¹ení. 
+
+V rámci semestrálního projektu  bylo implementováno naètení modelu èlovìka spolu s pøipojenou kostrou a jeho zobrazení. Výsledná aplikace má pøes 2000 øádkù kódu. V rámci dal¹ího vývoje bude potøeba implementovat systém tvorby animace a její vyexportování do souboru.
 
 
 %=========================================================================

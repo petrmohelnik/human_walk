@@ -8,6 +8,10 @@
 \providecommand{\selectlanguage}[1]{\relax}
 \providecommand{\eprint}[2][]{\url{#2}}
 
+\bibitem{biomechanika_chuze}
+Biomechanika chůze.
+  {\url{http://ftk.upol.cz/fileadmin/user_upload/FTK-katedry/biomechanika/BIAP_Chuze.pdf}}.
+
 \bibitem{gait_img}
 Gait in prosthetic rehabilitation.
   {\url{http://www.physio-pedia.com/Gait\_in\_prosthetic\_rehabilitation}}.

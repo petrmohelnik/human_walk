@@ -53,15 +53,28 @@ void SDLHandler::mainLoop(Application &app)
 	while (1)
 	{
 		SDL_Event event;
+		bool quit = false;
 		while (SDL_PollEvent(&event))
 		{
+			if (event.type == SDL_QUIT || (event.key.keysym.sym == SDLK_ESCAPE && event.type == SDL_KEYDOWN)) {
+				quit = true;
+				break;
+			}
 			app.sdlEvent(event);
 		}
-		//	if (event.key.keysym.sym == SDLK_ESCAPE) 
-		//		break; //konec kdyz ESC
 
+		if (quit)
+			break;
+
+		Uint32 tics = SDL_GetTicks();
+		if (lastTics == 0)
+			lastTics = tics;
+		Uint32 dt = tics - lastTics;
+		lastTics = tics;
+
+		app.update(dt * 0.001f);
 		app.display();
 		SDL_GL_SwapWindow(mainwindow);
 	}
 
-}
+} 

@@ -28,7 +28,7 @@ bool RiggedModelRenderer::initRenderer(Model &m, GLuint p)
 
 void RiggedModelRenderer::render(Camera &cam, std::vector<Light> &lights, glm::vec3 ambientLight)
 {
-	skeleton->countGlobalMatrices();
+	//skeleton->countGlobalMatrices();
 
 	for (unsigned int i = 0; i < technique.size(); i++)
 	{
@@ -38,7 +38,7 @@ void RiggedModelRenderer::render(Camera &cam, std::vector<Light> &lights, glm::v
 		technique[i]->setP(cam.getProjection());
 		technique[i]->setV(cam.getView());
 		technique[i]->setViewPos(cam.getPos());
-		technique[i]->setSkinningMatrices(skeleton->getSkinningMatrices());
+		technique[i]->setSkinningMatrices(skeleton->getSkinningMatrices(), skeleton->getTISkinningMatrices());
 		technique[i]->bindTexDif(0);
 
 		glm::mat4 skeletonM = skeleton->getRootTransformMatrix();

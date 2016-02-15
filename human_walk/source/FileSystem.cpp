@@ -168,7 +168,8 @@ bool FileSystem::loadModelAndSkeletonDae(const char *path, Model &m, Skeleton &s
 
 	glm::mat4 bindShapeMatrix;
 	std::vector<float> v, n, t, w;
-	std::vector<std::string> jointNames;
+	//std::vector<std::string> jointNames;
+	//std::vector<int> jointNamesIDs;
 	std::vector<glm::mat4> bindPoses;
 	std::vector<std::vector<int> > weightJoints, weightWeights, indices;
 	std::vector<std::string> polylistMaterials;
@@ -272,7 +273,8 @@ bool FileSystem::loadModelAndSkeletonDae(const char *path, Model &m, Skeleton &s
 				std::vector<std::string> tokens = split(values, ' ');
 				for (unsigned int i = 0; i < tokens.size(); i++) {
 					if ((pos = line.find("-joints-array")) != std::string::npos) {
-						jointNames.push_back(tokens[i]);
+					//	jointNames.push_back(tokens[i]);
+					//	jointNamesIDs.push_back(0);
 					}
 					else if ((pos = line.find("-bind_poses-array")) != std::string::npos) {
 						glm::mat4 m;
@@ -360,7 +362,15 @@ bool FileSystem::loadModelAndSkeletonDae(const char *path, Model &m, Skeleton &s
 				glm::mat4 m;
 				for (unsigned int i = 0; i < 16; i++)
 					m[i / 4][i % 4] = (float)atof(tokens[i].c_str());
-				s.addBone(glm::transpose(m), findLastOpen(closed), name.c_str());
+
+				/*int j = 0;
+				for (auto &n : jointNames) {
+					if (n == name)
+						break;
+					j++;
+				}
+				jointNamesIDs[j] = s.addBone(glm::transpose(m), findLastOpen(closed));*/
+				s.addBone(glm::transpose(m), findLastOpen(closed));
 
 				closed.push_back(false);
 			}
@@ -374,15 +384,15 @@ bool FileSystem::loadModelAndSkeletonDae(const char *path, Model &m, Skeleton &s
 
 		//add inverse bind pose matrices
 		for (unsigned int i = 0; i < bindPoses.size(); i++) {
-			s.getBone(s.getBoneByName(jointNames[i].c_str()))->inverseBindMatrix = glm::transpose(bindPoses[i]) * bindShapeMatrix;
+			s.getBone(i)->inverseBindMatrix = glm::transpose(bindPoses[i]) * bindShapeMatrix;
 		}
 
 		s.fixScale();
 
-		std::vector<int> jointNamesIndices;
+		/*std::vector<int> jointNamesIndices;
 		for (unsigned int i = 0; i < jointNames.size(); i++) {
-			jointNamesIndices.push_back(s.getBoneByName(jointNames[i].c_str()));
-		}
+			jointNamesIndices.push_back(jointNamesIDs[i]);
+		}*/
 
 		//sort weights
 		std::vector<std::vector<float> > wSorted;
@@ -395,18 +405,18 @@ bool FileSystem::loadModelAndSkeletonDae(const char *path, Model &m, Skeleton &s
 			for (unsigned int j = 0; j < weightJoints[i].size(); j++) {
 				if (j == 0) {
 					wSorted[i].push_back(w[weightWeights[i][j]]);
-					jSorted[i].push_back(jointNamesIndices[weightJoints[i][j]]);
+					jSorted[i].push_back(weightJoints[i][j]);
 				}
 				else {
 					for (unsigned int k = 0; k < wSorted[i].size(); k++) {
 						if (w[weightWeights[i][j]] > wSorted[i][k]) {
 							wSorted[i].insert(wSorted[i].begin() + k, w[weightWeights[i][j]]);
-							jSorted[i].insert(jSorted[i].begin() + k, jointNamesIndices[weightJoints[i][j]]);
+							jSorted[i].insert(jSorted[i].begin() + k, weightJoints[i][j]);
 							break;
 						}
 						if (k == wSorted[i].size() - 1) {
 							wSorted[i].push_back(w[weightWeights[i][j]]);
-							jSorted[i].push_back(jointNamesIndices[weightJoints[i][j]]);
+							jSorted[i].push_back(weightJoints[i][j]);
 							break;
 						}
 					}

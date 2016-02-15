@@ -16,6 +16,7 @@ public:
 	bool setActiveScene(const char *name);
 	std::shared_ptr<Scene> getScene(const char *name);
 	void display();
+	void update(float dt);
 	void sdlEvent(SDL_Event &event);
 };
 

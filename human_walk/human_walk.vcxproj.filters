@@ -107,6 +107,9 @@
     <ClInclude Include="source\lodepng.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="source\Update.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="resource\basic.fs">

@@ -33,6 +33,11 @@ void Application::display()
 	activeScene->render();
 }
 
+void Application::update(float dt)
+{
+	activeScene->update(dt);
+}
+
 void Application::sdlEvent(SDL_Event &event)
 {
 	activeScene->handleSdlEvent(event);

@@ -11,7 +11,7 @@ private:
 	SDL_Window *mainwindow; //window handle
 	SDL_GLContext maincontext; //context handle
 	int width, height;
-
+	Uint32 lastTics = 0;
 public:
 	SDLHandler(int w, int h);
 	bool init();

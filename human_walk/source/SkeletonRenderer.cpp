@@ -33,7 +33,7 @@ void SkeletonRenderer::render(Camera &cam, std::vector<Light> &lights, glm::vec3
 	glm::mat4 skeletonM = skeleton->getRootTransformMatrix();
 	skeletonM = glm::translate(skeletonM, pos);
 
-	skeleton->countGlobalMatrices();
+	//skeleton->countGlobalMatrices();
 	std::vector<glm::mat4> bones = skeleton->getScaledGlobalMatrices();
 	//glm::mat4 modelview = glm::mat4(1.0f);
 

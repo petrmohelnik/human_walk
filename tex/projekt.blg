@@ -1,9 +1,11 @@
 This is BibTeX, Version 0.99dThe top-level auxiliary file: projekt.aux
 The style file: czechiso.bst
 Database file #1: literatura.bib
+Warning--entry type for "male_mesh" isn't style-file defined
+--line 192 of file literatura.bib
 Warning--to sort, need author or key in bindPose
+Warning--to sort, need author or key in venom
 Warning--to sort, need author or key in envelopes
-Warning--to sort, need author or key in gait_img
 Warning--to sort, need author or key in biomechanika_chuze
 Warning--empty pages in skinningMethods
-(There were 5 warnings)
+(There were 6 warnings)

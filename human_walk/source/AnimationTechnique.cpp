@@ -17,7 +17,8 @@ void AnimationTechnique::init(WeightedMesh &m, GLuint p)
 	viewPosUniform = glGetUniformLocation(program, "viewPos");
 	lightPosUniform = glGetUniformLocation(program, "lightPos");
 	ambientLightUniform = glGetUniformLocation(program, "ambientLight");
-	skinningMatrixUniform = glGetUniformLocation(program, "skinningMatrix");
+	skinningMatrixUniform = glGetUniformLocation(program, "T");
+	ti_skinningMatrixUniform = glGetUniformLocation(program, "ti_T");
 	texDifSamplerUniform = glGetUniformLocation(program, "texDifSampler");
 
 	GLint attr = glGetAttribLocation(program, "v_pos");
@@ -73,6 +74,7 @@ void AnimationTechnique::draw()
 	glUniform3f(lightPosUniform, lightPos.x, lightPos.y, lightPos.z);
 	glUniform3f(ambientLightUniform, ambientLight.x, ambientLight.y, ambientLight.z);
 	glUniformMatrix4fv(skinningMatrixUniform, skinningMatrices.size(), GL_FALSE, glm::value_ptr(skinningMatrices[0]));
+	glUniformMatrix3fv(ti_skinningMatrixUniform, ti_skinningMatrices.size(), GL_FALSE, glm::value_ptr(ti_skinningMatrices[0]));
 	glUniform1i(texDifSamplerUniform, texDifSampler);
 
 	glBindVertexArray(vao);
@@ -80,7 +82,8 @@ void AnimationTechnique::draw()
 	glBindVertexArray(0);
 }
 
-void AnimationTechnique::setSkinningMatrices(std::vector<glm::mat4> &m)
+void AnimationTechnique::setSkinningMatrices(std::vector<glm::mat4> &m, std::vector<glm::mat3> &ti_m)
 {
 	skinningMatrices = m;
+	ti_skinningMatrices = ti_m;
 }

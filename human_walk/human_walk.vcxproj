@@ -155,6 +155,7 @@
     <ClInclude Include="source\Shader.h" />
     <ClInclude Include="source\Skeleton.h" />
     <ClInclude Include="source\SkeletonRenderer.h" />
+    <ClInclude Include="source\Update.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resource\animation.vs" />

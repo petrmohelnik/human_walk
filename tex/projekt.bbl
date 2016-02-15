@@ -9,19 +9,20 @@
 \providecommand{\eprint}[2][]{\url{#2}}
 
 \bibitem{biomechanika_chuze}
-Biomechanika chÅ¯ze.
-  {\url{http://ftk.upol.cz/fileadmin/user_upload/FTK-katedry/biomechanika/BIAP_Chuze.pdf}}.
-
-\bibitem{gait_img}
-Gait in prosthetic rehabilitation.
-  {\url{http://www.physio-pedia.com/Gait\_in\_prosthetic\_rehabilitation}}.
+Biomechanika chùze. [online].
+\newline\urlprefix\url{{http://ftk.upol.cz/fileadmin/user_upload/FTK-katedry/biomechanika/BIAP_Chuze.pdf}}
 
 \bibitem{envelopes}
-Skinning to Shapes.
-  {\url{http://wiki.blender.org/index.php/Doc:2.4/Manual/Rigging/Skinning/ObData}}.
+Blender Wiki: Skinning to Shapes. [online].
+\newline\urlprefix\url{{http://wiki.blender.org/index.php/Doc:2.4/Manual/Rigging/Skinning/ObData}}
 
 \bibitem{bindPose}
-Vertex Skinning. {\url{http://ruh.li/AnimationVertexSkinning.html}}.
+Vertex Skinning. [online].
+\newline\urlprefix\url{{http://ruh.li/AnimationVertexSkinning.html}}
+
+\bibitem{venom}
+Venom joker rigged. [online], 2012.
+\newline\urlprefix\url{{http://tf3dm.com/3d-model/venom-joker-rigged-36682.html}}
 
 \bibitem{gait_review}
 A.~Kharb, Y. K.~J., V.~Saini; Dhiman, S.: A review of gait cycle and its
@@ -43,11 +44,14 @@ Bruderlin, A.; Calvert, T.: Interactive animation of personalized human
 Buss, S.~R.: Introduction to inverse kinematics with Jacobian transpose,
   pseudoinverse and damped least squares methods. 2009.
 
+\bibitem{gait_img}
+Cain, A.: Physiopedia: Gait in prosthetic rehabilitation. [online].
+\newline\urlprefix\url{{http://www.physio-pedia.com/Gait_in_prosthetic_rehabilitation}}
+
 \bibitem{chung}
 Chung, S.-k.; Hahn, J.~K.: Animation of Human Walking in Virtual Environments.
   In \emph{Proceedings of the Computer Animation}, CA '99, Washington, DC, USA:
   IEEE Computer Society, 1999, ISBN 0-7695-0167-2, s. 4--.
-\newline\urlprefix\url{http://dl.acm.org/citation.cfm?id=791217.791557}
 
 \bibitem{skinningMethods}
 Jacobson, A.; Deng, Z.; Kavan, L.; aj.: Skinning: Real-time Shape Deformation.
@@ -68,12 +72,15 @@ Kirk, A.; O'Brien, J.; Forsyth, D.: Skeletal parameter estimation from optical
 Multon, F.; France, L.; Cani-Gascuel, M.-P.; aj.: Computer Animation of Human
   Walking: a Survey. 1999.
 
+\bibitem{male_mesh}
+{Paul Chen}: Male Base Mesh. [online], 2015.
+\newline\urlprefix\url{{http://tf3dm.com/3d-model/male-base-mesh-6682.html}}
+
 \bibitem{survey}
 Van~Welbergen, H.; Van~Basten, B. J.~H.; Egges, A.; aj.: Real Time Animation of
   Virtual Humans: A Trade-off Between Naturalness and Control. \emph{Computer
   Graphics Forum}, roèník~29, è.~8, 2010: s. 2530--2554, ISSN 1467-8659,
   \doi{10.1111/j.1467-8659.2010.01822.x}.
-\newline\urlprefix\url{http://dx.doi.org/10.1111/j.1467-8659.2010.01822.x}
 
 \bibitem{welman}
 Welman, C.: \emph{{Inverse kinematics and geometric constraints for articulated

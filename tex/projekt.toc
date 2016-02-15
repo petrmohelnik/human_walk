@@ -4,16 +4,18 @@
 \contentsline {section}{\numberline {2.1}Kostra}{3}{section.2.1}
 \contentsline {section}{\numberline {2.2}Skinning}{4}{section.2.2}
 \contentsline {subsection}{\numberline {2.2.1}Linear blend skinning}{5}{subsection.2.2.1}
-\contentsline {section}{\numberline {2.3}Tvorba animace}{6}{section.2.3}
-\contentsline {subsection}{\numberline {2.3.1}Procedur\'aln\IeC {\'\i } simulace}{7}{subsection.2.3.1}
-\contentsline {subsection}{\numberline {2.3.2}Fyzik\'aln\IeC {\'\i } simulace}{7}{subsection.2.3.2}
+\contentsline {subsection}{\numberline {2.2.2}Dual quaternion skinning}{6}{subsection.2.2.2}
+\contentsline {subsection}{\numberline {2.2.3}Metoda ob\'alek}{6}{subsection.2.2.3}
+\contentsline {section}{\numberline {2.3}Tvorba animace}{7}{section.2.3}
+\contentsline {subsection}{\numberline {2.3.1}Procedur\'aln\IeC {\'\i } animace}{7}{subsection.2.3.1}
+\contentsline {subsection}{\numberline {2.3.2}Fyzik\'aln\v e zalo\v zen\'a simulace}{8}{subsection.2.3.2}
 \contentsline {subsection}{\numberline {2.3.3}Editace pohybu}{8}{subsection.2.3.3}
 \contentsline {chapter}{\numberline {3}Kinematiky}{10}{chapter.3}
 \contentsline {section}{\numberline {3.1}Jacobiho inverzn\IeC {\'\i } metoda}{11}{section.3.1}
 \contentsline {section}{\numberline {3.2}Cyclic Coordinate Descent}{12}{section.3.2}
 \contentsline {chapter}{\numberline {4}Lidsk\'a ch\r uze}{14}{chapter.4}
 \contentsline {section}{\numberline {4.1}F\'aze krokov\'eho cyklu}{15}{section.4.1}
-\contentsline {subsection}{\numberline {4.1.1}Po\v c\'ate\v cn\IeC {\'\i } kontakt}{15}{subsection.4.1.1}
+\contentsline {subsection}{\numberline {4.1.1}Po\v c\'ate\v cn\IeC {\'\i } kontakt}{16}{subsection.4.1.1}
 \contentsline {subsection}{\numberline {4.1.2}Stadium zat\v e\v zov\'an\IeC {\'\i }}{16}{subsection.4.1.2}
 \contentsline {subsection}{\numberline {4.1.3}Mezistoj}{16}{subsection.4.1.3}
 \contentsline {subsection}{\numberline {4.1.4}Kone\v cn\'y stoj}{16}{subsection.4.1.4}
@@ -21,10 +23,11 @@
 \contentsline {subsection}{\numberline {4.1.6}Po\v c\'ate\v cn\IeC {\'\i } \v svih}{16}{subsection.4.1.6}
 \contentsline {subsection}{\numberline {4.1.7}Mezi\v svih}{16}{subsection.4.1.7}
 \contentsline {subsection}{\numberline {4.1.8}Kone\v cn\'y \v svih}{17}{subsection.4.1.8}
-\contentsline {section}{\numberline {4.2}Interactive Animation of Personalized Human Locomotion}{17}{section.4.2}
-\contentsline {section}{\numberline {4.3}Animation of Human Walking in Virtual Environments}{18}{section.4.3}
-\contentsline {chapter}{\numberline {5}N\'avrh a realizace \v re\v sen\IeC {\'\i }}{20}{chapter.5}
-\contentsline {section}{\numberline {5.1}Na\v cten\IeC {\'\i } modelu}{20}{section.5.1}
-\contentsline {section}{\numberline {5.2}Zobrazen\IeC {\'\i }}{21}{section.5.2}
-\contentsline {section}{\numberline {5.3}Animace}{23}{section.5.3}
-\contentsline {chapter}{\numberline {6}Z\'av\v er}{25}{chapter.6}
+\contentsline {chapter}{\numberline {5}Existuj\IeC {\'\i }c\IeC {\'\i } implementace}{18}{chapter.5}
+\contentsline {section}{\numberline {5.1}Interactive Animation of Personalized Human Locomotion}{18}{section.5.1}
+\contentsline {section}{\numberline {5.2}Animation of Human Walking in Virtual Environments}{19}{section.5.2}
+\contentsline {chapter}{\numberline {6}N\'avrh a realizace \v re\v sen\IeC {\'\i }}{21}{chapter.6}
+\contentsline {section}{\numberline {6.1}Na\v cten\IeC {\'\i } modelu}{21}{section.6.1}
+\contentsline {section}{\numberline {6.2}Zobrazen\IeC {\'\i }}{22}{section.6.2}
+\contentsline {section}{\numberline {6.3}Animace}{24}{section.6.3}
+\contentsline {chapter}{\numberline {7}Z\'av\v er}{26}{chapter.7}

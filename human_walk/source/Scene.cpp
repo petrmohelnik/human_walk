@@ -10,6 +10,11 @@ void Scene::addObject(std::shared_ptr<Renderer> o)
 	objects.push_back(o);
 }
 
+void Scene::addUpdate(std::shared_ptr<Update> u)
+{
+	updates.push_back(u);
+}
+
 void Scene::addLight(Light l)
 {
 	lights.push_back(l);
@@ -35,6 +40,14 @@ void Scene::render()
 	for (unsigned int i = 0; i < objects.size(); i++)
 	{
 		objects[i]->render(camera, lights, ambientLight);
+	}
+}
+
+void Scene::update(float dt)
+{
+	for (auto &u : updates)
+	{
+		u->onUpdate(dt);
 	}
 }
 
@@ -129,5 +142,13 @@ void MainScene::render()
 	for (unsigned int i = 0; i < objects.size(); i++)
 	{
 		objects[i]->render(camera, lights, ambientLight);
+	}
+}
+
+void MainScene::update(float dt)
+{
+	for (auto &u : updates)
+	{
+		u->onUpdate(dt);
 	}
 }

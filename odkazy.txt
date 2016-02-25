@@ -67,6 +67,9 @@ http://ftk.upol.cz/fileadmin/user_upload/FTK-katedry/biomechanika/BIAP_Chuze.pdf
 
 
 
+modifikace rest pose
+https://nixart.wordpress.com/2013/03/28/modifying-the-rest-pose-in-blender/
+
 
 http://blender.stackexchange.com/questions/3778/why-does-the-collada-exporter-not-export-texture-references
 http://tf3dm.com/3d-model/male-base-mesh-6682.html

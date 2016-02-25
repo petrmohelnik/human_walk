@@ -4,8 +4,8 @@
 #include <vector>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtx/rotate_vector.hpp>
 #include "Update.h"
+#include "Leg.h"
 
 #define HIPS 0
 #define SPINE 1
@@ -29,29 +29,25 @@
 #define FOOT_R 19
 #define TOE_R 20
 
-#define PI 3.14159265f
+const float pelvisVerticalControlPoints[4]{-0.1, -0.1, 0.0, 0.0};
+const float pelvisLateralControlPoints[4]{-0.06, -0.06, 0.06, 0.06};
 
-struct Bone
-{
-	glm::mat4 localMat; //lokalni transformace
-	glm::mat4 inverseBindMatrix; //inverzni bind pose matice
-	int parent; //odkaz na rodicovskou kost
-	std::vector<int> childs; //odkaz na potomky
-	float scale; //velikost kosti, slouzi pro zobrazeni kosti
-	Bone(glm::mat4 mat, int parent) : localMat(mat), parent(parent), scale(1.0f) {}
-};
+#define PI 3.14159265f
 
 class Skeleton : public Update
 {
 private:
 	std::vector<Bone> bones;
 	glm::mat4 rootTransform;
-	std::vector<glm::mat4> globalMat; //globalni transformace
-	float kneeRot_L = 0.0, kneeRot_R = 0.0; //actual rotation in knee joint
+//	std::vector<glm::mat4> globalMat; //globalni transformace
+	//float kneeRot_L = 0.0, kneeRot_R = 0.0; //actual rotation in knee joint
 	float t = 0.0; //time passed
-	float width_L = 0.0, width_R = 0.0; //distance of fot from the center
-	glm::mat4 thighBindMat_L, thighBindMat_R; //original transformation of thigh
-	void solveLegIK(glm::vec3 desiredPos, int sphericalJoint, int hingeJoint, int endEffector, float &actPhi, glm::mat4 thighBindMat);
+	//float width_L = 0.0, width_R = 0.0; //distance of fot from the center
+	//glm::mat4 thighBindMat_L, thighBindMat_R; //original transformation of thigh
+	//void solveLegIK(glm::vec3 desiredPos, int sphericalJoint, int hingeJoint, int endEffector, float &actPhi, glm::mat4 thighBindMat);
+	Leg leftLeg, rightLeg;
+	std::vector<float> pelvisVerticalControlPointsVec;
+	std::vector<float> pelvisLateralControlPointsVec;
 public:
 	void init();
 	void onUpdate(float dt);
@@ -68,8 +64,9 @@ public:
 	std::vector<glm::mat3> getTISkinningMatrices();
 	void setRootTransformMatrix(glm::mat4 m);
 	glm::mat4 getRootTransformMatrix();
-	void setLeftAnklePos(glm::vec3 desiredPos);
-	void setRightAnklePos(glm::vec3 desiredPos);
+	void setBonesNumber(int n) { bones.reserve(n); };
+	//void setLeftAnklePos(glm::vec3 desiredPos);
+	//void setRightAnklePos(glm::vec3 desiredPos);
 };
 
 #endif //SKELETON_H

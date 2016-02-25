@@ -339,6 +339,8 @@ bool FileSystem::loadModelAndSkeletonDae(const char *path, Model &m, Skeleton &s
 			s.setRootTransformMatrix(glm::transpose(m));
 		}
 
+		s.setBonesNumber(bindPoses.size());
+
 		//load skeleton
 		while (fileStream.good())
 		{

@@ -26,7 +26,7 @@ bool RiggedModelRenderer::initRenderer(Model &m, GLuint p)
 	return true;
 }
 
-void RiggedModelRenderer::render(Camera &cam, std::vector<Light> &lights, glm::vec3 ambientLight)
+void RiggedModelRenderer::render(Camera &cam, const std::vector<Light> &lights, const glm::vec3 ambientLight)
 {
 	//skeleton->countGlobalMatrices();
 

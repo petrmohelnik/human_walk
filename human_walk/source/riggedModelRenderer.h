@@ -21,7 +21,7 @@ private:
 public:
 	RiggedModelRenderer(glm::vec3 p, std::shared_ptr<Skeleton> s);
 	bool initRenderer(Model &m, GLuint p);
-	void render(Camera &cam, std::vector<Light> &lights, glm::vec3 ambientLight);
+	void render(Camera &cam, const std::vector<Light> &lights, const glm::vec3 ambientLight);
 };
 
 #endif //RIGGED_MODEL_RENDERER_H

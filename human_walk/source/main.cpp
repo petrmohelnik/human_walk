@@ -11,6 +11,7 @@
 #include "Application.h"
 #include "Model.h"
 #include "riggedModelRenderer.h"
+#include "BasicRenderer.h"
 #ifdef main
 #undef main //remove SDL's main() hook if it exists
 #endif
@@ -62,65 +63,37 @@ int main(int argc, char **argv)
 
 	Shader s;
 	string strVs, strFs, strAnimationVs;
-	if (!f.loadFile("resource/basic.vs", strVs)) {
-		cin.get();
-		return -1;
-	}
-	if (!f.loadFile("resource/basic.fs", strFs)) {
-		cin.get();
-		return -1;
-	}
-	if (!f.loadFile("resource/animation.vs", strAnimationVs)) {
-		cin.get();
-		return -1;
-	}
+	if (!f.loadFile("resource/basic.vs", strVs)) { cin.get(); return -1; }
+	if (!f.loadFile("resource/basic.fs", strFs)) { cin.get(); return -1; }
+	if (!f.loadFile("resource/animation.vs", strAnimationVs))  { cin.get(); return -1; }
 	GLuint vs, fs, animationVs;
-	if (!s.compileShader(strVs.c_str(), GL_VERTEX_SHADER, "basic_vs", vs)) {
-		cin.get();
-		return -1;
-	}
-	if (!s.compileShader(strAnimationVs.c_str(), GL_VERTEX_SHADER, "animation_vs", animationVs)) {
-		cin.get();
-		return -1;
-	}
-	if (!s.compileShader(strFs.c_str(), GL_FRAGMENT_SHADER, "basic_fs", fs)) {
-		cin.get();
-		return -1;
-	}
-	if (!s.linkProgram(vs, fs, "basic_program")) {
-		cin.get();
-		return -1;
-	}
-	if (!s.linkProgram(animationVs, fs, "animation_program")) {
-		cin.get();
-		return -1;
-	}
+	if (!s.compileShader(strVs.c_str(), GL_VERTEX_SHADER, "basic_vs", vs)) { cin.get(); return -1; }
+	if (!s.compileShader(strAnimationVs.c_str(), GL_VERTEX_SHADER, "animation_vs", animationVs)) { cin.get(); return -1; }
+	if (!s.compileShader(strFs.c_str(), GL_FRAGMENT_SHADER, "basic_fs", fs)) { cin.get(); return -1; }
+	if (!s.linkProgram(vs, fs, "basic_program")) { cin.get(); return -1; }
+	if (!s.linkProgram(animationVs, fs, "animation_program")) { cin.get(); return -1; }
 
 	Model m;
-	if (!f.parseObj("resource/bone.obj", m)) {
-		cin.get();
-		return -1;
-	}
+	if (!f.parseObj("resource/bone.obj", m)) { cin.get(); return -1; }
+	Model ground;
+	if (!f.parseObj("resource/groundFlat.obj", ground)) { cin.get(); return -1; }
+	Texture grassTex;
+	if (!f.loadTexture("resource/grass.png", grassTex))
+		return false;
+	ground.getMeshes()[0]->getMaterial()->setDifTex(grassTex);
 	Model m2;
 	std::shared_ptr<Skeleton> skeleton(new Skeleton);
-	if (!f.loadModelAndSkeletonDae("resource/riggedY.dae", m2, *skeleton.get())) {
-		cin.get();
-		return -1;
-	}
-	skeleton->init();
+	if (!f.loadModelAndSkeletonDae("resource/riggedYHeelFingers.dae", m2, *skeleton.get())) { cin.get(); return -1; }
 	std::shared_ptr<SkeletonRenderer> skeletonRenderer(new SkeletonRenderer(glm::vec3(0.0, 0.0f, 0.0), skeleton));
-	if (!skeletonRenderer->initRenderer(m, s.getProgram("basic_program"))) {
-		cin.get();
-		return -1;
-	}
+	if (!skeletonRenderer->initRenderer(m, s.getProgram("basic_program"))) { cin.get(); return -1; }
 	std::shared_ptr<RiggedModelRenderer> riggedModelRenderer(new RiggedModelRenderer(glm::vec3(0.0, 0.0f, 0.0), skeleton));
-	if (!riggedModelRenderer->initRenderer(m2, s.getProgram("animation_program"))) {
-		cin.get();
-		return -1;
-	}
+	if (!riggedModelRenderer->initRenderer(m2, s.getProgram("animation_program"))) { cin.get(); return -1; }
+	std::shared_ptr<BasicRenderer> groundRenderer(new BasicRenderer(glm::vec3(0.0, 0.0f, 0.0)));
+	if (!groundRenderer->initRenderer(ground, s.getProgram("basic_program"))) { cin.get(); return -1; }
 
 	std::shared_ptr<MainScene> scene(new MainScene);
 	scene->setName("mainScene");
+	scene->addObject(groundRenderer);
 	scene->addUpdate(skeleton);
 	scene->addObject(riggedModelRenderer);
 	scene->addObject(skeletonRenderer);
@@ -129,6 +102,7 @@ int main(int argc, char **argv)
 	Light light(glm::vec3(10.0, 10.0, 10.0));
 	scene->addLight(light);
 	scene->setAmbientLight(glm::vec3(0.2, 0.2, 0.2));
+	skeleton->init();
 	
 	app.addScene(scene);
 	app.setActiveScene("mainScene");

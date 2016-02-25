@@ -18,7 +18,7 @@ bool SkeletonRenderer::initRenderer(Model &m, GLuint p)
 	return true;
 }
 
-void SkeletonRenderer::render(Camera &cam, std::vector<Light> &lights, glm::vec3 ambientLight)
+void SkeletonRenderer::render(Camera &cam, const std::vector<Light> &lights, const glm::vec3 ambientLight)
 {
 	glClear(GL_DEPTH_BUFFER_BIT);
 

@@ -1,7 +1,8 @@
 #include "FileSystem.h"
 
-std::vector<std::string> &FileSystem::split(const std::string &s, char delim, std::vector<std::string> &elems) {
-	std::stringstream ss(s);
+std::vector<std::string> &FileSystem::split(std::string::iterator b, std::string::iterator e, char delim, std::vector<std::string> &elems) {
+	std::stringstream ss;
+	std::copy(b, e, std::ostream_iterator<char>(ss));
 	std::string item;
 	while (std::getline(ss, item, delim)) {
 		elems.push_back(item);
@@ -9,9 +10,29 @@ std::vector<std::string> &FileSystem::split(const std::string &s, char delim, st
 	return elems;
 }
 
-std::vector<std::string> FileSystem::split(const std::string &s, char delim) {
+std::vector<int> &FileSystem::split(std::string::iterator b, std::string::iterator e, char delim, std::vector<int> &elems) {
+	std::stringstream ss;
+	std::copy(b, e, std::ostream_iterator<char>(ss));
+	std::string item;
+	while (std::getline(ss, item, delim)) {
+		elems.push_back(atoi(item.c_str()));
+	}
+	return elems;
+}
+
+std::vector<float> &FileSystem::split(std::string::iterator b, std::string::iterator e, char delim, std::vector<float> &elems) {
+	std::stringstream ss;
+	std::copy(b, e, std::ostream_iterator<char>(ss));
+	std::string item;
+	while (std::getline(ss, item, delim)) {
+		elems.push_back((float)atof(item.c_str()));
+	}
+	return elems;
+}
+
+std::vector<std::string> FileSystem::split(std::string &s, char delim) {
 	std::vector<std::string> elems;
-	split(s, delim, elems);
+	split(s.begin(), s.end(), delim, elems);
 	return elems;
 }
 
@@ -168,8 +189,6 @@ bool FileSystem::loadModelAndSkeletonDae(const char *path, Model &m, Skeleton &s
 
 	glm::mat4 bindShapeMatrix;
 	std::vector<float> v, n, t, w;
-	//std::vector<std::string> jointNames;
-	//std::vector<int> jointNamesIDs;
 	std::vector<glm::mat4> bindPoses;
 	std::vector<std::vector<int> > weightJoints, weightWeights, indices;
 	std::vector<std::string> polylistMaterials;
@@ -196,40 +215,32 @@ bool FileSystem::loadModelAndSkeletonDae(const char *path, Model &m, Skeleton &s
 				std::string id = line;
 
 				getline(fileStream, line);
-				std::string values = line.substr((pos = line.find_first_of(">")) + 1, line.find_first_of("<", pos + 1) - (pos + 1));
-				std::vector<std::string> tokens = split(values, ' ');
-				for (unsigned int i = 0; i < tokens.size(); i++) {
-					if ((pos = id.find("-positions")) != std::string::npos) {
-						if (v.capacity() < tokens.size())
-							v.reserve(tokens.size());
-						v.push_back((float)atof(tokens[i].c_str()));
-					}
-					else if ((pos = id.find("-normals")) != std::string::npos) {
-						if (n.capacity() < tokens.size())
-							n.reserve(tokens.size());
-						n.push_back((float)atof(tokens[i].c_str()));
-					}
-					else if ((pos = id.find("-map")) != std::string::npos) {
-						if (t.capacity() < tokens.size())
-							t.reserve(tokens.size());
-						t.push_back((float)atof(tokens[i].c_str()));
-					}
+				std::string::iterator begIt = line.begin() + (pos = line.find_first_of(">")) + 1;
+				std::string::iterator endIt = line.begin() + line.find_first_of("<", pos + 1);
+
+				if ((pos = id.find("-positions")) != std::string::npos) {
+					v.reserve(atoi(line.substr((pos = line.find("count=\"")) + 7, line.find_first_of("\"", pos + 1) - (pos + 1)).c_str()));
+					split(begIt, endIt, ' ', v);
+				}
+				else if ((pos = id.find("-normals")) != std::string::npos) {
+					n.reserve(atoi(line.substr((pos = line.find("count=\"")) + 7, line.find_first_of("\"", pos + 1) - (pos + 1)).c_str()));
+					split(begIt, endIt, ' ', n);
+				}
+				else if ((pos = id.find("-map")) != std::string::npos) {
+					t.reserve(atoi(line.substr((pos = line.find("count=\"")) + 7, line.find_first_of("\"", pos + 1) - (pos + 1)).c_str()));
+					split(begIt, endIt, ' ', t);
 				}
 			}
 			else if ((pos = line.find("<polylist")) != std::string::npos) {
-				size_t posMat = line.find("material=\"") + 9;
 				polylistMaterials.push_back(line.substr((pos = line.find("material=\"") + 10), line.find("-material\"", pos + 1) - pos));
+				indices.push_back(std::vector<int>());
+				indices.back().reserve(atoi(line.substr((pos = line.find("count=\"")) + 7, line.find_first_of("\"", pos + 1) - (pos + 1)).c_str()));
 				while (line.find("<p>") == std::string::npos && fileStream.good()) {
 					getline(fileStream, line);
 				}
-				std::vector<int> polylist;
-				std::string values = line.substr((pos = line.find_first_of(">")) + 1, line.find_first_of("<", pos + 1) - (pos + 1));
-				std::vector<std::string> tokens = split(values, ' ');
-				indices.reserve(tokens.size());
-				for (unsigned int i = 0; i < tokens.size(); i++) {
-					polylist.push_back(atoi(tokens[i].c_str()));
-				}
-				indices.push_back(polylist);
+				std::string::iterator begIt = line.begin() + (pos = line.find_first_of(">")) + 1;
+				std::string::iterator endIt = line.begin() + line.find_first_of("<", pos + 1);
+				split(begIt, endIt, ' ', indices.back());
 			}
 			else if ((pos = line.find("</mesh>")) != std::string::npos) {
 				break;
@@ -255,10 +266,12 @@ bool FileSystem::loadModelAndSkeletonDae(const char *path, Model &m, Skeleton &s
 			getline(fileStream, line);
 		}
 		{
-			std::string values = line.substr((pos = line.find_first_of(">")) + 1, line.find_first_of("<", pos + 1) - (pos + 1));
-			std::vector<std::string> tokens = split(values, ' ');
+			std::string::iterator begIt = line.begin() + (pos = line.find_first_of(">")) + 1;
+			std::string::iterator endIt = line.begin() + line.find_first_of("<", pos + 1);
+			std::vector<float> matrixValues;
+			split(begIt, endIt, ' ', matrixValues);
 			for (unsigned int i = 0; i < 16; i++)
-				bindShapeMatrix[i / 4][i % 4] = (float)atof(tokens[i].c_str());
+				bindShapeMatrix[i / 4][i % 4] = matrixValues[i];
 			bindShapeMatrix = glm::transpose(bindShapeMatrix);
 		}
 
@@ -269,56 +282,58 @@ bool FileSystem::loadModelAndSkeletonDae(const char *path, Model &m, Skeleton &s
 
 			if ((pos = line.find("<source id=")) != std::string::npos) {
 				getline(fileStream, line);
-				std::string values = line.substr((pos = line.find_first_of(">")) + 1, line.find_first_of("<", pos + 1) - (pos + 1));
-				std::vector<std::string> tokens = split(values, ' ');
-				for (unsigned int i = 0; i < tokens.size(); i++) {
-					if ((pos = line.find("-joints-array")) != std::string::npos) {
-					//	jointNames.push_back(tokens[i]);
-					//	jointNamesIDs.push_back(0);
-					}
-					else if ((pos = line.find("-bind_poses-array")) != std::string::npos) {
+				std::string::iterator begIt = line.begin() + (pos = line.find_first_of(">")) + 1;
+				std::string::iterator endIt = line.begin() + line.find_first_of("<", pos + 1);
+
+				if ((pos = line.find("-bind_poses-array")) != std::string::npos) {
+					std::vector<float> matrixValues;
+					matrixValues.reserve(atoi(line.substr((pos = line.find("count=\"")) + 7, line.find_first_of("\"", pos + 1) - (pos + 1)).c_str()));
+					split(begIt, endIt, ' ', matrixValues);
+					for (unsigned int i = 0; i < matrixValues.size(); i++) {
 						glm::mat4 m;
 						for (int j = 0; j < 16; j++) {
-							m[j / 4][j % 4] = (float)atof(tokens[i].c_str());
+							m[j / 4][j % 4] = matrixValues[i];
 							i++;
 						}
 						i--;
 						bindPoses.push_back(m);
 					}
-					else if ((pos = line.find("-weights-array")) != std::string::npos) {
-						if (w.capacity() < tokens.size())
-							w.reserve(tokens.size());
-						w.push_back((float)atof(tokens[i].c_str()));
-					}
+				}
+				else if ((pos = line.find("-weights-array")) != std::string::npos) {
+					w.reserve(atoi(line.substr((pos = line.find("count=\"")) + 7, line.find_first_of("\"", pos + 1) - (pos + 1)).c_str()));
+					split(begIt, endIt, ' ', w);
 				}
 			}
 			else if (line.find("<vertex_weights") != std::string::npos)
 				break;
 		}
 
+		int weightsCount = atoi(line.substr((pos = line.find("count=\"")) + 7, line.find_first_of("\"", pos + 1) - (pos + 1)).c_str());
+
 		while (line.find("<vcount>") == std::string::npos && fileStream.good()) {
 			getline(fileStream, line);
 		}
-		std::string values = line.substr((pos = line.find_first_of(">")) + 1, line.find_first_of("<", pos + 1) - (pos + 1));
-		std::vector<std::string> tokens = split(values, ' ');
-		vcount.reserve(tokens.size());
-		for (unsigned int i = 0; i < tokens.size(); i++) {
-			vcount.push_back(atoi(tokens[i].c_str()));
-		}
+		std::string::iterator begIt = line.begin() + (pos = line.find_first_of(">")) + 1;
+		std::string::iterator endIt = line.begin() + line.find_first_of("<", pos + 1);
+		vcount.reserve(weightsCount);
+		split(begIt, endIt, ' ', vcount);
 		while (line.find("<v>") == std::string::npos && fileStream.good()) {
 			getline(fileStream, line);
 		}
-		values = line.substr((pos = line.find_first_of(">")) + 1, line.find_first_of("<", pos + 1) - (pos + 1));
-		tokens = split(values, ' ');
+		begIt = line.begin() + (pos = line.find_first_of(">")) + 1;
+		endIt = line.begin() + line.find_first_of("<", pos + 1);
+		std::vector<int> weights;
+		weights.reserve(weightsCount);
+		split(begIt, endIt, ' ', weights);
 		int k = 0;
 		weightJoints.reserve(vcount.size());
 		weightWeights.reserve(vcount.size());
 		for (unsigned int i = 0; i < vcount.size(); i++) {
-			weightJoints.push_back(std::vector<int>());
-			weightWeights.push_back(std::vector<int>());
+			weightJoints.push_back(std::vector<int>()); weightJoints.back().reserve(vcount[i]);
+			weightWeights.push_back(std::vector<int>()); weightWeights.back().reserve(vcount[i]);
 			for (int j = 0; j < vcount[i]; j++) {
-				weightJoints[i].push_back(atoi(tokens[k].c_str())); k++;
-				weightWeights[i].push_back(atoi(tokens[k].c_str())); k++;
+				weightJoints[i].push_back(weights[k]); k++;
+				weightWeights[i].push_back(weights[k]); k++;
 			}
 		}
 
@@ -331,11 +346,13 @@ bool FileSystem::loadModelAndSkeletonDae(const char *path, Model &m, Skeleton &s
 		}
 		getline(fileStream, line);
 		{
-			std::string matrix = line.substr((pos = line.find_first_of(">")) + 1, line.find_first_of("<", pos + 1) - (pos + 1));
-			std::vector<std::string> tokens = split(matrix, ' ');
+			std::string::iterator begIt = line.begin() + (pos = line.find_first_of(">")) + 1;
+			std::string::iterator endIt = line.begin() + line.find_first_of("<", pos + 1);
+			std::vector<float> mat; mat.reserve(16);
+			split(begIt, endIt, ' ', mat);
 			glm::mat4 m;
 			for (unsigned int i = 0; i < 16; i++)
-				m[i / 4][i % 4] = (float)atof(tokens[i].c_str());
+				m[i / 4][i % 4] = mat[i];
 			s.setRootTransformMatrix(glm::transpose(m));
 		}
 
@@ -359,19 +376,14 @@ bool FileSystem::loadModelAndSkeletonDae(const char *path, Model &m, Skeleton &s
 				std::string name = line.substr((pos = line.find_first_of("\"")) + 1, line.find_first_of("\"", pos + 1) - (pos + 1));
 					
 				getline(fileStream, line);
-				std::string matrix = line.substr((pos = line.find_first_of(">")) + 1, line.find_first_of("<", pos + 1) - (pos + 1));
-				std::vector<std::string> tokens = split(matrix, ' ');
+				std::string::iterator begIt = line.begin() + (pos = line.find_first_of(">")) + 1;
+				std::string::iterator endIt = line.begin() + line.find_first_of("<", pos + 1);
+				std::vector<float> mat; mat.reserve(16);
+				split(begIt, endIt, ' ', mat);
 				glm::mat4 m;
 				for (unsigned int i = 0; i < 16; i++)
-					m[i / 4][i % 4] = (float)atof(tokens[i].c_str());
+					m[i / 4][i % 4] = mat[i];
 
-				/*int j = 0;
-				for (auto &n : jointNames) {
-					if (n == name)
-						break;
-					j++;
-				}
-				jointNamesIDs[j] = s.addBone(glm::transpose(m), findLastOpen(closed));*/
 				s.addBone(glm::transpose(m), findLastOpen(closed));
 
 				closed.push_back(false);
@@ -391,19 +403,14 @@ bool FileSystem::loadModelAndSkeletonDae(const char *path, Model &m, Skeleton &s
 
 		s.fixScale();
 
-		/*std::vector<int> jointNamesIndices;
-		for (unsigned int i = 0; i < jointNames.size(); i++) {
-			jointNamesIndices.push_back(jointNamesIDs[i]);
-		}*/
-
 		//sort weights
 		std::vector<std::vector<float> > wSorted;
 		std::vector<std::vector<int> > jSorted;
 		wSorted.reserve(weightJoints.size());
 		jSorted.reserve(weightJoints.size());
 		for (unsigned int i = 0; i < weightJoints.size(); i++) {
-			wSorted.push_back(std::vector<float>());
-			jSorted.push_back(std::vector<int>());
+			wSorted.push_back(std::vector<float>()); wSorted.back().reserve(weightJoints[i].size());
+			jSorted.push_back(std::vector<int>()); jSorted.back().reserve(weightJoints[i].size());
 			for (unsigned int j = 0; j < weightJoints[i].size(); j++) {
 				if (j == 0) {
 					wSorted[i].push_back(w[weightWeights[i][j]]);
@@ -442,6 +449,7 @@ bool FileSystem::loadModelAndSkeletonDae(const char *path, Model &m, Skeleton &s
 		for (unsigned int k = 0; k < indices.size(); k++)
 		{
 			WeightedMesh mesh;
+			mesh.reserve(indices[k].size());
 			for (unsigned int i = 0; i < indices[k].size(); i += 3) {
 				glm::vec3 vertex, normal;
 				glm::vec2 texCoord;
@@ -454,8 +462,6 @@ bool FileSystem::loadModelAndSkeletonDae(const char *path, Model &m, Skeleton &s
 				weights = glm::vec4(0.0f); joints = glm::ivec4(0);
 
 				for (unsigned int j = 0; j < wSorted[indices[k][i]].size(); j++) {
-					//if (j >= 4)
-					//	break;
 					weights[j] = wSorted[indices[k][i]][j];
 					joints[j] = jSorted[indices[k][i]][j];
 				}
@@ -473,7 +479,6 @@ bool FileSystem::loadModelAndSkeletonDae(const char *path, Model &m, Skeleton &s
 
 				mesh.addVertex(vertex, normal, texCoord, weights, joints);
 			}
-			//mesh.setBindMatrix(bindShapeMatrix);
 
 			std::shared_ptr<Material> mat(new Material);
 			Texture tex;

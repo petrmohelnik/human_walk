@@ -17,6 +17,13 @@ void Mesh::addVertex(glm::vec3 vertex, glm::vec3 normal, glm::vec2 texCoord)
 	t.push_back(texCoord);
 }
 
+void Mesh::reserve(int size)
+{
+	v.reserve(size);
+	n.reserve(size);
+	t.reserve(size);
+}
+
 void Mesh::addMaterial(std::shared_ptr<Material> mat)
 {
 	m = mat;
@@ -54,6 +61,15 @@ void WeightedMesh::addVertex(glm::vec3 vertex, glm::vec3 normal, glm::vec2 texCo
 	t.push_back(texCoord);
 	weights.push_back(w);
 	jointIndices.push_back(j);
+}
+
+void WeightedMesh::reserve(int size)
+{
+	v.reserve(size);
+	n.reserve(size);
+	t.reserve(size);
+	weights.reserve(size);
+	jointIndices.reserve(size);
 }
 
 void WeightedMesh::initWeightVectors()

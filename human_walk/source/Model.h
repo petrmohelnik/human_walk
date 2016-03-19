@@ -30,6 +30,7 @@ protected:
 	std::shared_ptr<Material> m; //material
 public:
 	virtual void addVertex(glm::vec3 vertex, glm::vec3 normal, glm::vec2 texCoord);
+	virtual void reserve(int size);
 	void addMaterial(std::shared_ptr<Material> mat);
 	float *getVertices();
 	float *getNormals();
@@ -46,6 +47,7 @@ private:
 	//glm::mat4 bindMatrix;
 public:
 	void addVertex(glm::vec3 vertex, glm::vec3 normal, glm::vec2 texCoord, glm::vec4 w, glm::ivec4 j);
+	void reserve(int size);
 	void initWeightVectors();
 	void addWeight(int i, glm::vec4 w, glm::ivec4 j);
 	float *getWeights();

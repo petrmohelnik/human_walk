@@ -57,13 +57,24 @@ http://graphics.ucsd.edu/courses/cse169_w04/welman.pdf
 http://www.cescg.org/CESCG-2002/LBarinka/paper.pdf
 http://www.andreasaristidou.com/publications/CUEDF-INFENG,%20TR-632.pdf
 
-lidkska chuze:
+lidska chuze:
 http://ijcem.org/papers72011/72011_14.pdf
 http://www.salford.ac.uk/__data/assets/pdf_file/0019/131059/Temporal-spatial-data,-the-gait-cycle-and-gait-graphs-Introductory.pdf
 http://www.gla.ac.uk/t4/~fbls/files/fab/tutorial/anatomy/hfgait.html
 http://courses.washington.edu/anatomy/KinesiologySyllabus/GaitPhasesKineticsKinematics.pdf
 http://faculty.utpa.edu/rafree/res/biomechanics/Virtual%20Biomechanics%20Laboratory/phases_of_the_normal_gait_cycle.html
 http://ftk.upol.cz/fileadmin/user_upload/FTK-katedry/biomechanika/BIAP_Chuze.pdf
+http://www.sfu.ca/~stever/kin201/lecture_outlines/lecture_17_clinical_biomechanics_of_gait.pdf
+http://moon.ouhsc.edu/dthompso/gait/knmatics/gait.htm
+http://www.oandplibrary.org/alp/chap13-01.asp
+http://www.rehab.research.va.gov/jour/04/41/6/orendurff.html
+http://www.foundationpilates.com/happens-walk-save-energy/
+http://rspb.royalsocietypublishing.org/content/276/1673/3679
+http://www.slideshare.net/ramachandrareddy5/gait-analysis-andppt-by-ramachandra
+
+bezier:
+http://www.geometrictools.com/Documentation/MovingAlongCurveSpecifiedSpeed.pdf
+http://pomax.github.io/bezierinfo/#derivatives
 
 
 
@@ -73,6 +84,9 @@ https://nixart.wordpress.com/2013/03/28/modifying-the-rest-pose-in-blender/
 
 http://blender.stackexchange.com/questions/3778/why-does-the-collada-exporter-not-export-texture-references
 http://tf3dm.com/3d-model/male-base-mesh-6682.html
+http://tf3dm.com/3d-model/bloodwing-14095.html
+http://tf3dm.com/3d-model/lara-croft-18784.html
+http://tf3dm.com/3d-model/ted-bear-99005.html
 
 
 gui:

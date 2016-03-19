@@ -14,6 +14,7 @@ private:
 public:
 	void addScene(std::shared_ptr<Scene> s);
 	bool setActiveScene(const char *name);
+	void setActiveNextScene();
 	std::shared_ptr<Scene> getScene(const char *name);
 	void display();
 	void update(float dt);

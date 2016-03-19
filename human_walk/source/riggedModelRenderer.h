@@ -8,8 +8,8 @@
 #include "Model.h"
 #include "Skeleton.h"
 #include "AnimationTechnique.h"
-#include "Scene.h"
 #include "Camera.h"
+#include "Light.h"
 
 class RiggedModelRenderer : public Renderer
 {
@@ -18,6 +18,8 @@ private:
 	std::vector<std::shared_ptr<AnimationTechnique> > technique;
 	std::vector<glm::mat4> bindMatrix;
 	glm::vec3 pos;
+	std::vector<glm::mat4> skinningMat;
+	std::vector<glm::mat3> TISkinningMat;
 public:
 	RiggedModelRenderer(glm::vec3 p, std::shared_ptr<Skeleton> s);
 	bool initRenderer(Model &m, GLuint p);

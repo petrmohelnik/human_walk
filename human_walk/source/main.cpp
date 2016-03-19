@@ -81,30 +81,93 @@ int main(int argc, char **argv)
 	if (!f.loadTexture("resource/grass.png", grassTex))
 		return false;
 	ground.getMeshes()[0]->getMaterial()->setDifTex(grassTex);
-	Model m2;
+
+	Model main, lara, venom, bloodwing, ted;
 	std::shared_ptr<Skeleton> skeleton(new Skeleton);
-	if (!f.loadModelAndSkeletonDae("resource/riggedYHeelFingers.dae", m2, *skeleton.get())) { cin.get(); return -1; }
+	if (!f.loadModelAndSkeletonDae("resource/riggedFixed2.dae", main, *skeleton.get())) { cin.get(); return -1; }
 	std::shared_ptr<SkeletonRenderer> skeletonRenderer(new SkeletonRenderer(glm::vec3(0.0, 0.0f, 0.0), skeleton));
 	if (!skeletonRenderer->initRenderer(m, s.getProgram("basic_program"))) { cin.get(); return -1; }
 	std::shared_ptr<RiggedModelRenderer> riggedModelRenderer(new RiggedModelRenderer(glm::vec3(0.0, 0.0f, 0.0), skeleton));
-	if (!riggedModelRenderer->initRenderer(m2, s.getProgram("animation_program"))) { cin.get(); return -1; }
+	if (!riggedModelRenderer->initRenderer(main, s.getProgram("animation_program"))) { cin.get(); return -1; }
+
+	std::shared_ptr<Skeleton> venomSkeleton(new Skeleton);
+	if (!f.loadModelAndSkeletonDae("resource/venom_ref.dae", venom, *venomSkeleton.get())) { cin.get(); return -1; }
+	std::shared_ptr<SkeletonRenderer> venomSkeletonRenderer(new SkeletonRenderer(glm::vec3(0.0, 0.0f, 0.0), venomSkeleton));
+	if (!venomSkeletonRenderer->initRenderer(m, s.getProgram("basic_program"))) { cin.get(); return -1; }
+	std::shared_ptr<RiggedModelRenderer> venomRiggedModelRenderer(new RiggedModelRenderer(glm::vec3(0.0, 0.0f, 0.0), venomSkeleton));
+	if (!venomRiggedModelRenderer->initRenderer(venom, s.getProgram("animation_program"))) { cin.get(); return -1; }
+	
+	std::shared_ptr<Skeleton> laraSkeleton(new Skeleton);
+	if (!f.loadModelAndSkeletonDae("resource/lara.dae", lara, *laraSkeleton.get())) { cin.get(); return -1; }
+	std::shared_ptr<SkeletonRenderer> laraSkeletonRenderer(new SkeletonRenderer(glm::vec3(0.0, 0.0f, 0.0), laraSkeleton));
+	if (!laraSkeletonRenderer->initRenderer(m, s.getProgram("basic_program"))) { cin.get(); return -1; }
+	std::shared_ptr<RiggedModelRenderer> laraRiggedModelRenderer(new RiggedModelRenderer(glm::vec3(0.0, 0.0f, 0.0), laraSkeleton));
+	if (!laraRiggedModelRenderer->initRenderer(lara, s.getProgram("animation_program"))) { cin.get(); return -1; }
+
+	/*std::shared_ptr<Skeleton> bloodwingSkeleton(new Skeleton);
+	if (!f.loadModelAndSkeletonDae("resource/bloodwing.dae", bloodwing, *bloodwingSkeleton.get())) { cin.get(); return -1; }
+	std::shared_ptr<SkeletonRenderer>  bloodwingSkeletonRenderer(new SkeletonRenderer(glm::vec3(2.0, 0.0f, 0.0), bloodwingSkeleton));
+	if (!bloodwingSkeletonRenderer->initRenderer(m, s.getProgram("basic_program"))) { cin.get(); return -1; }
+	std::shared_ptr<RiggedModelRenderer>  bloodwingRiggedModelRenderer(new RiggedModelRenderer(glm::vec3(2.0, 0.0f, 0.0), bloodwingSkeleton));
+	if (!bloodwingRiggedModelRenderer->initRenderer(bloodwing, s.getProgram("animation_program"))) { cin.get(); return -1; }
+
+	std::shared_ptr<Skeleton> tedSkeleton(new Skeleton);
+	if (!f.loadModelAndSkeletonDae("resource/ted.dae", ted, *tedSkeleton.get())) { cin.get(); return -1; }
+	std::shared_ptr<SkeletonRenderer>  tedSkeletonRenderer(new SkeletonRenderer(glm::vec3(-2.0, 0.0f, 0.0), tedSkeleton));
+	if (!tedSkeletonRenderer->initRenderer(m, s.getProgram("basic_program"))) { cin.get(); return -1; }
+	std::shared_ptr<RiggedModelRenderer>  tedRiggedModelRenderer(new RiggedModelRenderer(glm::vec3(-2.0, 0.0f, 0.0), tedSkeleton));
+	if (!tedRiggedModelRenderer->initRenderer(ted, s.getProgram("animation_program"))) { cin.get(); return -1; }*/
+	
 	std::shared_ptr<BasicRenderer> groundRenderer(new BasicRenderer(glm::vec3(0.0, 0.0f, 0.0)));
 	if (!groundRenderer->initRenderer(ground, s.getProgram("basic_program"))) { cin.get(); return -1; }
 
-	std::shared_ptr<MainScene> scene(new MainScene);
-	scene->setName("mainScene");
-	scene->addObject(groundRenderer);
-	scene->addUpdate(skeleton);
-	scene->addObject(riggedModelRenderer);
-	scene->addObject(skeletonRenderer);
-	scene->initCamera(45.0f, W_WIDTH, W_HEIGHT, 0.1f, 1000.0f, CAM_TRANS_ROT);
-	scene->getCamera()->translate(glm::vec3(0.0f, 1.0f, 2.0f));
-	Light light(glm::vec3(10.0, 10.0, 10.0));
-	scene->addLight(light);
-	scene->setAmbientLight(glm::vec3(0.2, 0.2, 0.2));
-	skeleton->init();
+	std::shared_ptr<MainScene> scenes[3];
+	for (int i = 0; i < 3; i++)
+		scenes[i] = std::shared_ptr<MainScene>(new MainScene);
+
+	scenes[0]->setName("mainScene");
+	scenes[1]->setName("secondScene");
+	scenes[2]->setName("thirdScene");
+
+	scenes[0]->addObject(groundRenderer);
+	scenes[0]->addSkeleton(skeleton);
+	scenes[0]->addRiggedModelRenderer(riggedModelRenderer);
+	scenes[0]->addSkeletonRenderer(skeletonRenderer);
 	
-	app.addScene(scene);
+	scenes[1]->addObject(groundRenderer);
+	scenes[1]->addSkeleton(laraSkeleton);
+	scenes[1]->addRiggedModelRenderer(laraRiggedModelRenderer);
+	scenes[1]->addSkeletonRenderer(laraSkeletonRenderer);
+
+	scenes[2]->addObject(groundRenderer);
+	scenes[2]->addSkeleton(venomSkeleton);
+	scenes[2]->addRiggedModelRenderer(venomRiggedModelRenderer);
+	scenes[2]->addSkeletonRenderer(venomSkeletonRenderer);
+
+/*	scene->addUpdate(bloodwingSkeleton);
+	scene->addObject(bloodwingRiggedModelRenderer);
+	scene->addObject(bloodwingSkeletonRenderer);
+
+	scene->addUpdate(tedSkeleton);
+	scene->addObject(tedRiggedModelRenderer);
+	scene->addObject(tedSkeletonRenderer);*/
+	
+	for (int i = 0; i < 3; i++) {
+		scenes[i]->initCamera(45.0f, W_WIDTH, W_HEIGHT, 0.1f, 1000.0f, CAM_TRANS_ROT);
+		scenes[i]->getCamera()->translateRelative(glm::vec3(0.0f, 0.0f, 2.0f));
+		Light light(glm::vec3(1000.0, 1000.0, 1000.0));
+		scenes[i]->addLight(light);
+		scenes[i]->setAmbientLight(glm::vec3(0.2, 0.2, 0.2));
+	}
+
+	skeleton->init();
+	laraSkeleton->init();
+	venomSkeleton->init();
+	/*bloodwingSkeleton->init();
+	tedSkeleton->init();*/
+	
+	for (int i = 0; i < 3; i++)
+		app.addScene(scenes[i]);
 	app.setActiveScene("mainScene");
 
 	sdl.mainLoop(app);

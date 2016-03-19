@@ -27,6 +27,11 @@ void Camera::translate(glm::vec3 t)
 	pos -= t;
 }
 
+void Camera::translateRelative(glm::vec3 t)
+{
+	relativePos -= t;
+}
+
 glm::mat4 Camera::getProjection()
 {
 	return glm::perspective(fov, width / (float)height, nearPlane, farPlane);
@@ -42,9 +47,10 @@ glm::mat4 Camera::getView()
 		view = glm::translate(view, pos);
 	}
 	else {
-		view = glm::translate(view, pos);
+		view = glm::translate(view, relativePos);
 		view = glm::rotate(view, rot.y, glm::vec3(1.0f, 0.0f, 0.0f));
 		view = glm::rotate(view, rot.x, glm::vec3(0.0f, 1.0f, 0.0f));
+		view = glm::translate(view, pos);
 	}
 
 	return view;

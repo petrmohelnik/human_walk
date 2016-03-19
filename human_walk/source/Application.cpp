@@ -40,5 +40,21 @@ void Application::update(float dt)
 
 void Application::sdlEvent(SDL_Event &event)
 {
-	activeScene->handleSdlEvent(event);
+	if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_TAB)
+		setActiveNextScene();
+	else
+		activeScene->handleSdlEvent(event);
+}
+
+void Application::setActiveNextScene()
+{
+	int i = 0;
+	for (; i < scenes.size(); i++) {
+		if (scenes[i] == activeScene)
+			break;
+	}
+	i++;
+	i = i >= scenes.size() ? 0 : i;
+
+	activeScene = scenes[i];
 }

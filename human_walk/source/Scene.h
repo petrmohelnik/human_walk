@@ -8,9 +8,10 @@
 #include <memory>
 #include <SDL/SDL.h>
 #include "Camera.h"
-#include "Renderer.h"
 #include "Update.h"
 #include "Light.h"
+#include "SkeletonRenderer.h"
+#include "RiggedModelRenderer.h"
 
 class Scene
 {
@@ -39,6 +40,12 @@ class MainScene : public Scene
 {
 private:
 	int cameraMode;
+	std::shared_ptr<Skeleton> skeleton;
+	std::shared_ptr<SkeletonRenderer> skeletonRenderer;
+	std::shared_ptr<RiggedModelRenderer> riggedModelRenderer;
+	bool displaySkeleton = true;
+	bool displayRiggedModel = true;
+	glm::vec3 prevCamPos;
 public:
 	void handleSdlEvent(SDL_Event &event);
 	void onKeyDown(SDL_Keycode key);
@@ -48,6 +55,9 @@ public:
 	void initCamera(float fov, int width, int height, float nearPlane, float farPlane, int mode = CAM_ROT_TRANS);
 	void render();
 	void update(float dt);
+	void addSkeleton(std::shared_ptr<Skeleton> s) { updates.push_back(s); skeleton = s; }
+	void addSkeletonRenderer(std::shared_ptr<SkeletonRenderer> s) { objects.push_back(s); skeletonRenderer = s; }
+	void addRiggedModelRenderer(std::shared_ptr<RiggedModelRenderer> s) { objects.push_back(s); riggedModelRenderer = s; }
 };
 
 #endif //SCENE_H

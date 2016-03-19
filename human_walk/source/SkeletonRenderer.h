@@ -18,6 +18,7 @@ private:
 	std::shared_ptr<BasicTechnique> technique;
 	glm::vec3 pos;
 	std::shared_ptr<Skeleton> skeleton;
+	std::vector<glm::mat4> bones;
 public:
 	SkeletonRenderer(glm::vec3 p, std::shared_ptr<Skeleton> s);
 	bool initRenderer(Model &m, GLuint p);

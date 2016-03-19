@@ -34,7 +34,7 @@ void SkeletonRenderer::render(Camera &cam, const std::vector<Light> &lights, con
 	skeletonM = glm::translate(skeletonM, pos);
 
 	//skeleton->countGlobalMatrices();
-	std::vector<glm::mat4> bones = skeleton->getScaledGlobalMatrices();
+	skeleton->getScaledGlobalMatrices(bones);
 	//glm::mat4 modelview = glm::mat4(1.0f);
 
 	/*for (unsigned int i = 0; i < bones.size(); i++)

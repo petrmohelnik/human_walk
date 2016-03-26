@@ -19,6 +19,8 @@ public:
 	void display();
 	void update(float dt);
 	void sdlEvent(SDL_Event &event);
+	void handleGui() { activeScene->handleGui(); }
+	void onWindowResize(int width, int height);
 };
 
 #endif //APPLICATION_H

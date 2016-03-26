@@ -103,7 +103,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>..\lib\glew32s.lib;..\lib\glew32.lib;..\lib\SDL2.lib;..\lib\SDL2main.lib;..\lib\SDL2test.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\lib\glew32s.lib;..\lib\glew32.lib;..\lib\SDL2.lib;..\lib\SDL2main.lib;..\lib\SDL2test.lib;..\lib\AntTweakBar.lib;..\lib\AntTweakBar64.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -131,6 +131,10 @@
     <ClCompile Include="source\BezierCurve.cpp" />
     <ClCompile Include="source\Camera.cpp" />
     <ClCompile Include="source\FileSystem.cpp" />
+    <ClCompile Include="source\imgui.cpp" />
+    <ClCompile Include="source\imgui_demo.cpp" />
+    <ClCompile Include="source\imgui_draw.cpp" />
+    <ClCompile Include="source\imgui_impl_sdl_gl3.cpp" />
     <ClCompile Include="source\Leg.cpp" />
     <ClCompile Include="source\lodepng.cpp" />
     <ClCompile Include="source\main.cpp" />
@@ -141,6 +145,7 @@
     <ClCompile Include="source\Shader.cpp" />
     <ClCompile Include="source\Skeleton.cpp" />
     <ClCompile Include="source\SkeletonRenderer.cpp" />
+    <ClCompile Include="source\Terrain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\AnimationTechnique.h" />
@@ -151,11 +156,18 @@
     <ClInclude Include="source\BezierCurve.h" />
     <ClInclude Include="source\Camera.h" />
     <ClInclude Include="source\FileSystem.h" />
+    <ClInclude Include="source\imconfig.h" />
+    <ClInclude Include="source\imgui.h" />
+    <ClInclude Include="source\imgui_impl_sdl_gl3.h" />
+    <ClInclude Include="source\imgui_internal.h" />
     <ClInclude Include="source\Leg.h" />
     <ClInclude Include="source\Light.h" />
     <ClInclude Include="source\lodepng.h" />
     <ClInclude Include="source\Model.h" />
     <ClInclude Include="source\Renderer.h" />
+    <ClInclude Include="source\stb_rect_pack.h" />
+    <ClInclude Include="source\stb_textedit.h" />
+    <ClInclude Include="source\stb_truetype.h" />
     <ClInclude Include="source\Technique.h" />
     <ClInclude Include="source\RiggedModelRenderer.h" />
     <ClInclude Include="source\Scene.h" />
@@ -163,6 +175,7 @@
     <ClInclude Include="source\Shader.h" />
     <ClInclude Include="source\Skeleton.h" />
     <ClInclude Include="source\SkeletonRenderer.h" />
+    <ClInclude Include="source\Terrain.h" />
     <ClInclude Include="source\Update.h" />
   </ItemGroup>
   <ItemGroup>

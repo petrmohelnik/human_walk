@@ -102,15 +102,6 @@ void Arm::solveIK(glm::vec3 desiredPos)
 
 	twoJointsIK(desiredPos, upperArm, forearm, elbowRot, referenceVec);
 }
-/*
-void Arm::fixShoulderRotationAndTilt(float prevRot, float actRot, float prevTilt, float actTilt)
-{
-	upperArm->localMat = glm::rotate(upperArm->localMat, -prevTilt, glm::vec3(0.0, 0.0, 1.0));
-	upperArm->localMat = glm::rotate(upperArm->localMat, -prevRot, glm::vec3(0.0, 1.0, 0.0));
-
-	upperArm->localMat = glm::rotate(upperArm->localMat, actRot, glm::vec3(0.0, 1.0, 0.0));
-	upperArm->localMat = glm::rotate(upperArm->localMat, actTilt, glm::vec3(0.0, 0.0, 1.0));
-}*/
 
 void Arm::incrementWidth(float a)
 {
@@ -121,7 +112,7 @@ void Arm::incrementWidth(float a)
 
 	upperArm->localMat = glm::rotate(upperArm->localMat, width > 0.0 ? a : -a , glm::vec3(0.0, 0.0, 1.0));
 
-	upperArm->localMat = glm::rotate(upperArm->localMat, -prevTiltSave, glm::vec3(0.0, 1.0, 0.0));
+	upperArm->localMat = glm::rotate(upperArm->localMat, -prevRotSave, glm::vec3(0.0, 1.0, 0.0));
 	upperArm->localMat = glm::rotate(upperArm->localMat, -prevTiltSave, glm::vec3(0.0, 0.0, 1.0));
 	upperArm->localMat = glm::rotate(upperArm->localMat, shoulderRot, glm::vec3(1.0, 0.0, 0.0));
 	forearm->localMat = glm::rotate(forearm->localMat, elbowRot, glm::vec3(1.0, 0.0, 0.0));

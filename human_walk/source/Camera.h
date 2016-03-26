@@ -21,7 +21,7 @@ private:
 	glm::vec2 rot;
 	int mode;
 public:
-	void init(float fov, int width, int height, float nearPlane, float farPlane, int _mode); //nacpat uhel pohledu a dalsi cipoviny
+	void init(float _fov, int _width, int _height, float _nearPlane, float _farPlane, int _mode); //nacpat uhel pohledu a dalsi cipoviny
 	void rotateX(float r);
 	void rotateY(float r);
 	void translate(glm::vec3 t);
@@ -31,6 +31,7 @@ public:
 	glm::vec3 getPos();
 	glm::vec2 getRotation();
 	void setMode(int mode);
+	void onWindowResize(int _width, int _height) { width = _width;  height = _height; }
 };
 
 #endif //CAMERA_H

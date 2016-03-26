@@ -17,7 +17,7 @@ void main()
 {
 	//vec3 color = vec3(0.7, 0.7, 0.7);
 	vec3 lightColor = vec3(1.0, 1.0, 1.0);
-	float shininess = 100.0;
+	float shininess = 10.0;
 
 	vec3 viewDir = normalize(viewPos - f_pos);
 	vec3 lightDir= normalize(lightPos - f_pos);
@@ -34,7 +34,7 @@ void main()
 	}
 	else
 	{
-		specularReflection = lightColor * pow(max(0.0, dot(reflect(-lightDir, normal), viewDir)), shininess);
+		specularReflection = vec3(0.5, 0.5, 0.5) * pow(max(0.0, dot(reflect(-lightDir, normal), viewDir)), shininess);
 	}
 
 	gl_FragColor = vec4(vec3(diffuseReflection + specularReflection + ambientReflection) * vec3(texture(texDifSampler, f_texCoord)), 1.0);

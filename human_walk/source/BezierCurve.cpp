@@ -26,6 +26,8 @@ BezierCurve::BezierCurve(const float *xPoints, const float *yPoints, int size, i
 			}
 		}
 	}
+
+	addCoeff.resize(size);
 }
 
 float BezierCurve::solveForT(float *x, float X)
@@ -82,18 +84,19 @@ float BezierCurve::YfromX(float X)
 	}
 
 	if (prevSegment != i || X < prevX) {
-		if (actCoeff != nextCoeff) {
+		if (actCoeff != nextCoeff || actAddCoeff != nextAddCoeff) {
 			for (int j = 0; j < 2; j++) {
-				y[i][j] = refY[i * 4 + j] * actCoeff;
+				y[i][j] = refY[i * 4 + j] * actCoeff + actAddCoeff;
 			}
-			for (int j = 3; j < 4; j++) {
-				y[i][j] = refY[i * 4 + j] * nextCoeff;
+			for (int j = 2; j < 4; j++) {
+				y[i][j] = refY[i * 4 + j] * nextCoeff + nextAddCoeff;
 			}
 			actCoeff = nextCoeff;
+			actAddCoeff = nextAddCoeff;
 		}
 		else {
 			for (int j = 0; j < 4; j++) {
-				y[i][j] = refY[i * 4 + j] * actCoeff;
+				y[i][j] = refY[i * 4 + j] * actCoeff + actAddCoeff;
 			}
 		}
 	}
@@ -102,6 +105,52 @@ float BezierCurve::YfromX(float X)
 	prevX = X;
 
 	return solve(&y[i][0], t);
+}
+
+float BezierCurve::YfromXSwingFoot(float X)
+{
+	int i = 0;
+	float t = 0.0;
+
+	for (auto segment : x) {
+		if (X <= segment[3]) {
+			t = solveForT(&segment[0], X);
+			break;
+		}
+		i++;
+	}
+
+	if (prevSegment != i || X < prevX) {
+		for (int j = 0; j < 4; j++) {
+			y[i][j] = refY[i * 4 + j] * actCoeff + addCoeff[i * 4 + j];
+		}
+	}
+
+	return solve(&y[i][0], t);
+}
+
+void BezierCurve::stepDown(float down)
+{
+	addCoeff[10] -= down;
+	addCoeff[11] -= down;
+}
+
+void BezierCurve::setSwingFootHeight(float c)
+{
+	for (int i = 0; i < addCoeff.size(); i++)
+		addCoeff[i] = c;
+}
+
+void BezierCurve::stepUp(float c)
+{
+	for (int i = 6; i < addCoeff.size(); i++)
+		addCoeff[i] += c;
+}
+
+void BezierCurve::swingIncrease(float inc)
+{
+	for (int i = 2; i < addCoeff.size() - 2; i++)
+		addCoeff[i] += inc;
 }
 
 float BezierCurve::solveY(float t)

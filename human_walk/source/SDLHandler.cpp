@@ -20,7 +20,7 @@ bool SDLHandler::init()
 
 	//create window
 	mainwindow = SDL_CreateWindow("human_walk", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-		width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+		width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 	if (!mainwindow) {
 		std::cout << "ERROR: Cannot create window\nSDL ERROR: " << SDL_GetError() << "\n";
 		return false;
@@ -36,11 +36,14 @@ bool SDLHandler::init()
 	//vertical synchronization
 	SDL_GL_SetSwapInterval(1);
 
+	ImGui_ImplSdlGL3_Init(mainwindow);
+
 	return true;
 }
 
 void SDLHandler::destroy()
 {
+	ImGui_ImplSdlGL3_Shutdown();
 	SDL_GL_DeleteContext(maincontext);
 	SDL_DestroyWindow(mainwindow);
 	SDL_Quit();
@@ -56,9 +59,17 @@ void SDLHandler::mainLoop(Application &app)
 		bool quit = false;
 		while (SDL_PollEvent(&event))
 		{
+			ImGui_ImplSdlGL3_ProcessEvent(&event);
+
 			if (event.type == SDL_QUIT || (event.key.keysym.sym == SDLK_ESCAPE && event.type == SDL_KEYDOWN)) {
 				quit = true;
 				break;
+			}
+			if (event.type == SDL_WINDOWEVENT) {
+				if (event.window.event == SDL_WINDOWEVENT_RESIZED) {
+					app.onWindowResize((GLsizei)event.window.data1, (GLsizei)event.window.data2);
+					glViewport(0, 0, (GLsizei)event.window.data1, (GLsizei)event.window.data2);
+				}
 			}
 			app.sdlEvent(event);
 		}
@@ -72,8 +83,21 @@ void SDLHandler::mainLoop(Application &app)
 		Uint32 dt = tics - lastTics;
 		lastTics = tics;
 
+		ImGui_ImplSdlGL3_NewFrame();
+
+		app.handleGui();
+		if (ImGui::Button("Next Model"))
+			app.setActiveNextScene();
+		ImGui::SameLine(150);
+		ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+		ImGui::Text("Rotate camera using RMB and zoom using mouse wheel.");
+		ImGui::End();
+
 		app.update(dt * 0.001f);
 		app.display();
+
+		ImGui::Render();
+
 		SDL_GL_SwapWindow(mainwindow);
 	}
 

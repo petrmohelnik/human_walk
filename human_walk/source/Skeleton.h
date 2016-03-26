@@ -42,8 +42,10 @@ const float pelvicTiltControlPoints[][16]{{ 0.0, 0.0575, 0.0644, 0.1042, 0.1042,
 { 0.0, -0.022253, -0.07505, -0.069412, -0.069412, -0.060388, 0.010908, 0.006493, 0.006493, 0.002321, -0.011135, -0.010681, -0.010681, -0.01035, -0.00541, 0.0}};
 const float pelvicTiltForwardControlPoints[][8]{{0.0, 0.0865, 0.2077, 0.2639, 0.2639, 0.3687, 0.4266, 0.5},
 { 0.0, 0.00423, 0.03163, 0.03049, 0.03049, 0.02859, 0.00359, 0.0 }};
-const float pelvisSpeedControlPoints[][8]{{ 0.0, 0.05, 0.105, 0.25, 0.25, 0.395, 0.45, 0.5},
-{ 0.5, 0.5, -0.314581, -0.3145900, -0.3145900, -0.314581, 0.5, 0.5 }}; //-0.31434047
+//integrate((1-t)^3*5*^-1+3*(1-t)^2*t*5*^-1+3*(1-t)* t^2*(-19.0 / 62.0)+t^3*(-19.0 / 62.0))*derivative((1-t)^3*0+3*(1-t)^2*t*2*^-1+3*(1-t)*t^2*4*^-1+t^3*1) from t=0 to 1
+//http://stackoverflow.com/a/24725575
+const float pelvisSpeedControlPoints[][8]{{ 0.0, 0.05, 0.1, 0.25, 0.25, 0.4, 0.45, 0.5},
+{ 0.5, 0.5, -19.0 / 62.0, -19.0 / 62.0, -19.0 / 62.0, -19.0 / 62.0, 0.5, 0.5 }}; //-0.31434047 -0.314332247557 -- -0.314581, -0.3145900
 const float pelvisSpeedIntegralControlPoints[][4]{{ 0.0, 0.2, 0.8, 1.0},
 { 1.0, 1.0, 0.0, 0.0 }};
 const float uniformX[4]{0.0, 0.333334, 0.666667, 1.0};
@@ -53,34 +55,34 @@ const float uniformX[4]{0.0, 0.333334, 0.666667, 1.0};
 class Skeleton : public Update
 {
 private:
+	std::shared_ptr<Terrain> terrain;
 	std::vector<Bone> bones;
 	glm::mat4 rootTransform;
 	float t = 0.0;
 	Leg leftLeg, rightLeg;
 	Arm leftArm, rightArm;
 	float pelvicRotation = 0.0, shoulderRotation = 0.0, pelvicTilt = 0.0, pelvicTiltForward = 0.0, spineRot = 0.0;// , headRot = 0.0;
-	float maxPelvisHeight = -0.02;
-	float stepLength = 1.6f;
+	float maxPelvisHeight = -0.01;
+	float stepLength = 1.4f;
 	float stepSpeedAccuracyCheck = 0.0;
-	glm::vec3 staticRootPos;
-	//std::vector<float> pelvisVerticalControlPointsVec;
+	glm::vec3 staticRootPos, staticRootPosSpeed;
+	glm::vec3 prevRootPos, nextRootPos;
 	BezierCurve pelvisVerticalCurve;
-	//std::vector<float> pelvisLateralControlPointsVec;
 	BezierCurve pelvisLateralCurve;
-	//std::vector<float> pelvicRotationControlPointsVec;
 	BezierCurve pelvicRotationCurve;
 	BezierCurve shoulderRotationCurve;
-	//std::vector<float> pelvicTiltControlPointsVec;
 	BezierCurve pelvicTiltCurve;
-	//std::vector<float> pelvicTiltForwardControlPointsVec;
 	BezierCurve pelvicTiltForwardCurve;
-	//std::vector<float> pelvisSpeedControlPointsVec;
 	BezierCurve pelvisSpeedCurve;
-	BezierCurve pelvisSpeedIntegralCurve;
 	std::vector<float> uniformXVec;
+
+	float heightTestHeight = 0.0f;
+	bool heightTest = false;
+
 	float spineEquation(float T, float hipAngle, float x);
 	float solveSpine(float dist, float hipAngle);
 public:
+	Skeleton(std::shared_ptr<Terrain> t);
 	void init();
 	void onUpdate(float dt);
 	int addBone(glm::mat4 m, int p);
@@ -88,7 +90,6 @@ public:
 	std::vector<Bone> getBones();
 	void countGlobalMatrices();
 	void fixScale();
-	//int getBoneByName(const char *n);
 	Bone* getBone(int i);
 	void getInverseMatrices(std::vector<glm::mat4> &vec);
 	void getGlobalMatrices(std::vector<glm::mat4> &vec);
@@ -116,6 +117,7 @@ public:
 	float getElbowCoeff() { return leftArm.getElbowCoeff(); }
 	void increaseArmWidth(float a) { leftArm.incrementWidth(a); rightArm.incrementWidth(a); }
 	glm::vec3 getStaticRootPos() { return staticRootPos; }
+	void testHeight(bool b) { heightTest = b; }
 };
 
 #endif //SKELETON_H

@@ -61,6 +61,12 @@ void Scene::handleSdlEvent(SDL_Event &event)
 
 }
 
+
+void Scene::handleGui()
+{
+
+}
+
 void MainScene::handleSdlEvent(SDL_Event &event)
 {
 	//Call proper event handlers
@@ -111,43 +117,43 @@ void MainScene::onKeyDown(SDL_Keycode key)
 		}
 		break;
 	case SDLK_t:
-		skeleton->setPelvicTiltCoeff(skeleton->getPelvicTiltCoeff() + 1.0f);
+		skeleton->setPelvicTiltCoeff(skeleton->getPelvicTiltCoeff() + 0.2f);
 		std::cout << "coeff: " << skeleton->getPelvicTiltCoeff() << std::endl;
 		break;
 	case SDLK_g:
-		skeleton->setPelvicTiltCoeff(skeleton->getPelvicTiltCoeff() - 1.0f);
+		skeleton->setPelvicTiltCoeff(skeleton->getPelvicTiltCoeff() - 0.2f);
 		std::cout << "coeff: " << skeleton->getPelvicTiltCoeff() << std::endl;
 		break;
 	case SDLK_y:
-		skeleton->setPelvicTiltForwardCoeff(skeleton->getPelvicTiltForwardCoeff() + 1.0f);
+		skeleton->setPelvicTiltForwardCoeff(skeleton->getPelvicTiltForwardCoeff() + 0.2f);
 		std::cout << "coeff: " << skeleton->getPelvicTiltForwardCoeff() << std::endl;
 		break;
 	case SDLK_h:
-		skeleton->setPelvicTiltForwardCoeff(skeleton->getPelvicTiltForwardCoeff() - 1.0f);
+		skeleton->setPelvicTiltForwardCoeff(skeleton->getPelvicTiltForwardCoeff() - 0.2f);
 		std::cout << "coeff: " << skeleton->getPelvicTiltForwardCoeff() << std::endl;
 		break;
 	case SDLK_r:
-		skeleton->setPelvicRotationCoeff(skeleton->getPelvicRotationCoeff() + 1.0f);
+		skeleton->setPelvicRotationCoeff(skeleton->getPelvicRotationCoeff() + 0.2f);
 		std::cout << "coeff: " << skeleton->getPelvicRotationCoeff() << std::endl;
 		break;
 	case SDLK_f:
-		skeleton->setPelvicRotationCoeff(skeleton->getPelvicRotationCoeff() - 1.0f);
+		skeleton->setPelvicRotationCoeff(skeleton->getPelvicRotationCoeff() - 0.2f);
 		std::cout << "coeff: " << skeleton->getPelvicRotationCoeff() << std::endl;
 		break;
 	case SDLK_e:
-		skeleton->setPelvisLateralCoeff(skeleton->getPelvisLateralCoeff() + 1.0f);
+		skeleton->setPelvisLateralCoeff(skeleton->getPelvisLateralCoeff() + 0.2f);
 		std::cout << "coeff: " << skeleton->getPelvisLateralCoeff() << std::endl;
 		break;
 	case SDLK_d:
-		skeleton->setPelvisLateralCoeff(skeleton->getPelvisLateralCoeff() - 1.0f);
+		skeleton->setPelvisLateralCoeff(skeleton->getPelvisLateralCoeff() - 0.2f);
 		std::cout << "coeff: " << skeleton->getPelvisLateralCoeff() << std::endl;
 		break;
 	case SDLK_w:
-		skeleton->setPelvisVerticalCoeff(skeleton->getPelvisVerticalCoeff() + 1.0f);
+		skeleton->setPelvisVerticalCoeff(skeleton->getPelvisVerticalCoeff() + 0.2f);
 		std::cout << "coeff: " << skeleton->getPelvisVerticalCoeff() << std::endl;
 		break;
 	case SDLK_s:
-		skeleton->setPelvisVerticalCoeff(skeleton->getPelvisVerticalCoeff() - 1.0f);
+		skeleton->setPelvisVerticalCoeff(skeleton->getPelvisVerticalCoeff() - 0.2f);
 		std::cout << "coeff: " << skeleton->getPelvisVerticalCoeff() << std::endl;
 		break;
 	case SDLK_q:
@@ -167,19 +173,19 @@ void MainScene::onKeyDown(SDL_Keycode key)
 		std::cout << "step width down" << std::endl;
 		break;
 	case SDLK_i:
-		skeleton->setShoulderCoeff(skeleton->getShoulderCoeff() + 0.1f);
+		skeleton->setShoulderCoeff(skeleton->getShoulderCoeff() + 0.2f);
 		std::cout << "shoulder coeff up" << skeleton->getShoulderCoeff() << std::endl;
 		break;
 	case SDLK_k:
-		skeleton->setShoulderCoeff(skeleton->getShoulderCoeff() - 0.1f);
+		skeleton->setShoulderCoeff(skeleton->getShoulderCoeff() - 0.2f);
 		std::cout << "shoulder coeff down" << skeleton->getShoulderCoeff() << std::endl;
 		break;
 	case SDLK_o:
-		skeleton->setElbowCoeff(skeleton->getElbowCoeff() + 0.1f);
+		skeleton->setElbowCoeff(skeleton->getElbowCoeff() + 0.2f);
 		std::cout << "elbow coeff up" << skeleton->getElbowCoeff() << std::endl;
 		break;
 	case SDLK_l:
-		skeleton->setElbowCoeff(skeleton->getElbowCoeff() - 0.1f);
+		skeleton->setElbowCoeff(skeleton->getElbowCoeff() - 0.2f);
 		std::cout << "elbow coeff down" << skeleton->getElbowCoeff() << std::endl;
 		break;
 	case SDLK_p:
@@ -196,6 +202,27 @@ void MainScene::onKeyDown(SDL_Keycode key)
 	case SDLK_2:
 		displayRiggedModel = !displayRiggedModel;
 		break;
+	case SDLK_KP_PLUS:
+		if (cameraMode == CAM_TRANS_ROT) {
+			camera.translateRelative(glm::vec3(0.0, 0.0, 0.2));
+		}
+		break;
+	case SDLK_KP_MINUS:
+		if (cameraMode == CAM_TRANS_ROT) {
+			camera.translateRelative(glm::vec3(0.0, 0.0, -0.2));
+		}
+		break;
+	case SDLK_SPACE:
+		pause = !pause;
+		break;
+	case SDLK_3:
+		speedCoeff += 0.1f;
+		break;
+	case SDLK_4:
+		speedCoeff -= 0.1f;
+		if (speedCoeff < 0.0f)
+			speedCoeff = 0.0f;
+		break;
 	}
 }
 
@@ -210,7 +237,7 @@ void MainScene::onMouseMove(Sint32 x, Sint32 y, Sint32 xrel, Sint32 yrel, Uint32
 void MainScene::onMouseWheel(Sint32 x, Sint32 y)
 {
 	if (cameraMode == CAM_TRANS_ROT) {
-		camera.translateRelative(glm::vec3(0.0, 0.0, y * 0.1));
+		camera.translateRelative(glm::vec3(0.0, 0.0, y * 0.2));
 	}
 }
 
@@ -242,11 +269,74 @@ void MainScene::render()
 
 void MainScene::update(float dt)
 {
-	for (auto &u : updates)
-	{
-		u->onUpdate(dt);
+	skeleton->setPelvicTiltCoeff(pelvicTilt);
+	skeleton->setPelvicTiltForwardCoeff(pelvicTiltForward);
+	skeleton->setPelvicRotationCoeff(pelvicRotation);
+	skeleton->setPelvisLateralCoeff(pelvisLateralDisp);
+	skeleton->setPelvisVerticalCoeff(pelvisVerticalDisp);
+	skeleton->setShoulderCoeff(shoulderSwing);
+	skeleton->setElbowCoeff(elbowSwing);
+	skeleton->testHeight(unevenTerrainWalk);
+
+	if (!pause) {
+		for (auto &u : updates)
+		{
+			u->onUpdate(dt * speedCoeff);
+		}
 	}
 
 	camera.translate(skeleton->getStaticRootPos() - prevCamPos);
 	prevCamPos = skeleton->getStaticRootPos();
+}
+
+void MainScene::handleGui()
+{
+	ImGui::Begin("Gait parameters:");
+	ImGui::SliderFloat("pelvicTilt", &pelvicTilt, 0.0f, 5.0f);
+	ImGui::SliderFloat("pelvicTiltForward", &pelvicTiltForward, 0.0f, 5.0f);
+	ImGui::SliderFloat("pelvicRotation", &pelvicRotation, 0.0f, 5.0f);
+	ImGui::SliderFloat("pelvisLateralDisp", &pelvisLateralDisp, 0.0f, 5.0f);
+	ImGui::SliderFloat("pelvisVerticalDisp", &pelvisVerticalDisp, 0.0f, 5.0f);
+	ImGui::SliderFloat("shoulderSwing", &shoulderSwing, 0.0f, 5.0f);
+	ImGui::SliderFloat("elbowSwing", &elbowSwing, 0.0f, 5.0f);
+	ImGui::SliderFloat("timeSpeed", &speedCoeff, 0.0f, 2.0f);
+
+	ImGui::Text("maxPelvisHeight:"); ImGui::SameLine();
+	ImGui::PushID(1);
+	if (ImGui::Button("+"))
+		skeleton->increaseMaxPelvisHeight(0.01f);
+	ImGui::PopID();
+	ImGui::SameLine();
+	ImGui::PushID(2);
+	if (ImGui::Button("-"))
+		skeleton->increaseMaxPelvisHeight(-0.01f);
+	ImGui::PopID();
+
+	ImGui::Text("stepWidth:"); ImGui::SameLine();
+	ImGui::PushID(3);
+	if (ImGui::Button("+"))
+		skeleton->increaseStepWidth(0.01f);
+	ImGui::PopID();
+	ImGui::SameLine();
+	ImGui::PushID(4);
+	if (ImGui::Button("-"))
+		skeleton->increaseStepWidth(+0.01f);
+	ImGui::PopID();
+
+	ImGui::Text("armWidth:"); ImGui::SameLine();
+	ImGui::PushID(5);
+	if (ImGui::Button("+"))
+		skeleton->increaseArmWidth(0.05f);
+	ImGui::PopID();
+	ImGui::SameLine();
+	ImGui::PushID(6);
+	if (ImGui::Button("-"))
+		skeleton->increaseArmWidth(-0.05f);
+	ImGui::PopID();
+
+	ImGui::Checkbox("Test uneven terrain walk", &unevenTerrainWalk);
+
+	ImGui::Checkbox("Display Skeleton", &displaySkeleton); ImGui::SameLine();
+	ImGui::Checkbox("Display Model", &displayRiggedModel);
+	ImGui::Checkbox("Pause", &pause);
 }

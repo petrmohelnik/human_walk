@@ -7,6 +7,7 @@
 #include <vector>
 #include <memory>
 #include <SDL/SDL.h>
+#include "imgui.h"
 #include "Camera.h"
 #include "Update.h"
 #include "Light.h"
@@ -34,6 +35,7 @@ public:
     virtual void update(float dt);
 	const char* getName();
 	virtual void handleSdlEvent(SDL_Event &event);
+	virtual void handleGui();
 };
 
 class MainScene : public Scene
@@ -46,6 +48,17 @@ private:
 	bool displaySkeleton = true;
 	bool displayRiggedModel = true;
 	glm::vec3 prevCamPos;
+	bool pause = false;
+	float speedCoeff = 0.7;
+
+	float pelvicTilt = 1.0;
+	float pelvicTiltForward = 1.0;
+	float pelvicRotation = 1.0;
+	float pelvisLateralDisp = 1.0;
+	float pelvisVerticalDisp = 1.0;
+	float shoulderSwing = 1.0;
+	float elbowSwing = 1.0;
+	bool unevenTerrainWalk = false;
 public:
 	void handleSdlEvent(SDL_Event &event);
 	void onKeyDown(SDL_Keycode key);
@@ -58,6 +71,7 @@ public:
 	void addSkeleton(std::shared_ptr<Skeleton> s) { updates.push_back(s); skeleton = s; }
 	void addSkeletonRenderer(std::shared_ptr<SkeletonRenderer> s) { objects.push_back(s); skeletonRenderer = s; }
 	void addRiggedModelRenderer(std::shared_ptr<RiggedModelRenderer> s) { objects.push_back(s); riggedModelRenderer = s; }
+	void handleGui();
 };
 
 #endif //SCENE_H

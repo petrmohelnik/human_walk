@@ -71,12 +71,14 @@ http://www.rehab.research.va.gov/jour/04/41/6/orendurff.html
 http://www.foundationpilates.com/happens-walk-save-energy/
 http://rspb.royalsocietypublishing.org/content/276/1673/3679
 http://www.slideshare.net/ramachandrareddy5/gait-analysis-andppt-by-ramachandra
+https://www.researchgate.net/publication/260212802_Quantitative_Evaluation_Of_The_Major_Determinants_Of_Human_Gait
 
 bezier:
 http://www.geometrictools.com/Documentation/MovingAlongCurveSpecifiedSpeed.pdf
 http://pomax.github.io/bezierinfo/#derivatives
 
-
+mid point:
+http://www.gameprogrammer.com/fractal.html
 
 modifikace rest pose
 https://nixart.wordpress.com/2013/03/28/modifying-the-rest-pose-in-blender/

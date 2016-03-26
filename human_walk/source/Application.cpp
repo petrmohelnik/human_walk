@@ -58,3 +58,9 @@ void Application::setActiveNextScene()
 
 	activeScene = scenes[i];
 }
+
+void Application::onWindowResize(int width, int height)
+{
+	for (auto &s : scenes)
+		s->getCamera()->onWindowResize(width, height);
+}

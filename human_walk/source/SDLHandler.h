@@ -3,6 +3,8 @@
 
 #include <SDL/SDL.h>
 #include <iostream>
+#include "imgui.h"
+#include "imgui_impl_sdl_gl3.h"
 #include "Application.h"
 
 class SDLHandler
@@ -17,6 +19,7 @@ public:
 	bool init();
 	void destroy();
 	void mainLoop(Application &app);
+	void swap() { SDL_GL_SwapWindow(mainwindow); }
 };
 
 #endif //SDL_HANDLER_H

@@ -24,16 +24,16 @@
 #define TERMINAL_STANCE_HEEL_RISE_ANGLE 0.25f
 #define PRE_SWING_HEEL_RISE_ANGLE 0.6f
 
-const float swingControlPoints[][12]{{ 0.0, 0.0690, 0.1340, 0.1976, 0.1976, 0.4371, 0.6320, 0.8174, 0.8174, 0.8810, 0.927, 1.0 },
-{ 0.2, 0.2382, 0.2531, 0.2531, 0.2531, 0.2531, 0.0365, 0.0189, 0.0189, 0.0135, 0.0271, 0.0 }};
-const float swingForwardControlPoints[][4]{{ 0.0, 0.4731, 0.6857, 1.0 },
-{ 0.0, 0.1161, 0.9679, 1.0 }};
-const float swingRotControlPoints[][4]{{0.0, 0.2172, 0.2357, 1.0},
-{ -0.2618, -0.28344, 0.1611, -0.044174 }};
-const float heelRiseControlPoints[][4]{{ 0.0, 0.3, 0.83, 1.0 },
-{ 0.0, 0.0, 0.45, 0.85 }};
-const float swingWidthFixControlPoints[][8]{{ 0.0, 0.15, 0.25, 0.5, 0.5, 0.75, 0.85, 1.0 },
-{ 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0}};
+const float swingControlPoints[][12]{{ 0.0f, 0.0690f, 0.1340f, 0.1976f, 0.1976f, 0.4371f, 0.6320f, 0.8174f, 0.8174f, 0.8810f, 0.927f, 1.0 },
+{ 0.2f, 0.2382f, 0.2531f, 0.2531f, 0.2531f, 0.2531f, 0.0365f, 0.0189f, 0.0189f, 0.0135f, 0.0271f, 0.0f }};
+const float swingForwardControlPoints[][4]{{ 0.0f, 0.4731f, 0.6857f, 1.0 },
+{ 0.0f, 0.1161f, 0.9679f, 1.0f }};
+const float swingRotControlPoints[][4]{{0.0f, 0.2172f, 0.2357f, 1.0},
+{ -0.2618f, -0.28344f, 0.1611f, -0.044174f }};
+const float heelRiseControlPoints[][4]{{ 0.0f, 0.3f, 0.83f, 1.0 },
+{ 0.0f, 0.0f, 0.45f, 0.85f }};
+const float swingWidthFixControlPoints[][8]{{ 0.0f, 0.15f, 0.25f, 0.5f, 0.5f, 0.75f, 0.85f, 1.0 },
+{ 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f}};
 
 struct Bone
 {
@@ -48,7 +48,8 @@ struct Bone
 
 float lerp(float start, float end, float t);
 float getAngle(const glm::vec3 &vec1, const glm::vec3 &vec2, const glm::mat4 &ref, const glm::vec3 &refDir);
-glm::vec3 twoJointsIK(glm::vec3 desiredPos, Bone *sphericalJoint, Bone *hingeJoint, float &hingeRot, glm::vec3 referenceVec);
+glm::vec3 twoJointsIK(glm::vec3 desiredPos, glm::mat4 &sphericalJointGlobal, glm::mat4 &sphericalJointLocal, float sphericalJointScale,
+	glm::mat4 &hingeJointLocal, float hingeJointScale, float &hingeRot, glm::vec3 referenceVec, glm::mat4 &rootGlobal);
 
 class Leg
 {
@@ -72,27 +73,35 @@ private:
 	glm::vec3 heelPos; //relative position of heel from ankle
 	glm::vec3 toePos; //relative position of foot under toe form toe
 	glm::mat4 thighBindMat; //original transformation of thigh
-	glm::mat4 rootStaticMat; //matrix of root without tilting/rotating of pelvis
+	//glm::mat4 rootStaticMat; //matrix of root without tilting/rotating of pelvis
 	BezierCurve swingCurve;
 	BezierCurve swingForwardCurve;
 	BezierCurve swingRotationCurve;
 	BezierCurve heelRiseCurve;
 	BezierCurve swingWidthFixCurve;
 	glm::vec3 prevPrevAnklePos;
+	std::shared_ptr<const BezierCurve> pelvisVerticalCurve, pelvisSpeedCurve;
+	std::shared_ptr<const glm::vec3> prevRootPos, nextRootPos;
+	std::shared_ptr<const float> maxPelvisHeight;
+	std::shared_ptr<const glm::mat4> staticRootMat;
 
-	glm::vec3 getToePos();
-	glm::vec3 getHeelPos(glm::vec3 pos);
-	glm::vec3 getAnklePosFromHeel(glm::vec3 pos);
+	glm::vec3 getToePos(glm::mat4 &footGlobal);
+	glm::vec3 getHeelPos(glm::vec3 pos, glm::mat4 &footGlobal);
+	glm::vec3 getAnklePosFromHeel(glm::vec3 pos, glm::mat4 &footGlobal);
 	void solveIK(glm::vec3 desiredPos);
-	void riseHeel(glm::vec3 &baseVec, float startAngle, float endAngle, float t);
+	void riseHeel(float angle);
 	void updateFootGlobal();
 	void updateToeGlobal();
+	float getFootAngleFromTerrain(glm::mat4 &footGlobal);
+	void configureSwing();
 public:
 	Leg() = default;
 	Leg(std::shared_ptr<Terrain> ter, Bone *hips, Bone *sphericalJoint, Bone *hingeJoint, Bone *endEffector, Bone *fingers, float length);
-	void init(int init, glm::vec3 center);
+	void init(int init, glm::vec3 center, std::shared_ptr<const BezierCurve> pVert, std::shared_ptr<const BezierCurve> pSpeed,
+		std::shared_ptr<const float> maxPelvisH, std::shared_ptr<const glm::vec3> _prevRootPos, 
+		std::shared_ptr<const glm::vec3> _nextRootPos, std::shared_ptr<const glm::mat4> staticRootM);
 	void update(float dt);
-	void translateStaticRoot(glm::vec3 t);
+//	void translateStaticRoot(glm::vec3 t);
 	float getLegLength();
 	void increaseStepWidth(float i) { thighWidth > 0.0 ? footWidth += i : footWidth -= i; nextHeelPos.x = footWidth; }
 	bool getIKFalse();

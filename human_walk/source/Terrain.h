@@ -18,6 +18,7 @@ private:
 public:
 	Terrain(float _z1, float _z2, float maxH, float w, float res);
 	void midPoint(float range, float H);
+	void stairs(int length, float height);
 	void fillModel(Model &m, Texture &t);
 	float getHeight(glm::vec3 pos);
 };

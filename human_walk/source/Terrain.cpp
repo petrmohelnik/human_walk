@@ -17,8 +17,8 @@ void Terrain::midPointStep(int i, int j, float range, float H)
 		return;
 
 	int mid = (i + j) / 2;
-	y[mid] = (y[i] + y[j]) / 2.0f + ((double)rand() / (RAND_MAX)) * 2 * range - range;
-	range = range * pow(2, -H);
+	y[mid] = (y[i] + y[j]) / 2.0f + static_cast<float>((double)rand() / (RAND_MAX)) * 2.0f * range - range;
+	range = range * static_cast<float>(pow(2, -H));
 
 	midPointStep(i, mid, range, H);
 	midPointStep(mid, j, range, H);
@@ -27,6 +27,14 @@ void Terrain::midPointStep(int i, int j, float range, float H)
 void Terrain::midPoint(float range, float H)
 {
 	midPointStep(0, y.size() - 1, range, H);
+}
+
+void Terrain::stairs(int length, float height)
+{
+	for (unsigned int i = 2; i < y.size() - 1; i+=2) {
+		y[i] = y[i - 1] + ((i / length) % 2 == 0 ? height : -height);
+		y[i + 1] = y[i];
+	}
 }
 
 void Terrain::fillModel(Model &m, Texture &t)
@@ -65,6 +73,6 @@ float Terrain::getHeight(glm::vec3 pos)
 	if (i < 0 || pos.z > z2 || abs(pos.x) > width / 2.0f)
 		return 0.0f;
 	
-	float t = (pos.z - i * resolution) / resolution;
+	float t = (pos.z - (z1 + i * resolution)) / resolution;
 	return y[i] + (y[i + 1] - y[i]) * t;
 }

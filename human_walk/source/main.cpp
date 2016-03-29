@@ -75,8 +75,9 @@ int main(int argc, char **argv)
 
 	std::cout << "\nLoading models......\n" << std::endl;
 
-	std::shared_ptr<Terrain> terrain(new Terrain(0.0f, 100.0f, 1.0f, 5.0f, 0.5f));
+	std::shared_ptr<Terrain> terrain(new Terrain(0.4f, 100.0f, 1.0f, 5.0f, 0.5f));
 	terrain->midPoint(1.0f, 0.4f);
+	//terrain->stairs(20, 0.15f);
 
 	Model m;
 	if (!f.parseObj("resource/bone.obj", m)) { cin.get(); return -1; }

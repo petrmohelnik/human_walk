@@ -49,15 +49,15 @@ private:
 	bool displayRiggedModel = true;
 	glm::vec3 prevCamPos;
 	bool pause = false;
-	float speedCoeff = 0.7;
+	float speedCoeff = 0.7f;
 
-	float pelvicTilt = 1.0;
-	float pelvicTiltForward = 1.0;
-	float pelvicRotation = 1.0;
-	float pelvisLateralDisp = 1.0;
-	float pelvisVerticalDisp = 1.0;
-	float shoulderSwing = 1.0;
-	float elbowSwing = 1.0;
+	float pelvicTilt = 1.0f;
+	float pelvicTiltForward = 1.0f;
+	float pelvicRotation = 1.0f;
+	float pelvisLateralDisp = 1.0f;
+	float pelvisVerticalDisp = 1.0f;
+	float shoulderSwing = 1.0f;
+	float elbowSwing = 1.0f;
 	bool unevenTerrainWalk = false;
 public:
 	void handleSdlEvent(SDL_Event &event);

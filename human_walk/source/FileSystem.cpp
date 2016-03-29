@@ -433,7 +433,7 @@ bool FileSystem::loadModelAndSkeletonDae(const char *path, Model &m, Skeleton &s
 			}
 		}
 
-		for (int i = 0; i < wSorted.size(); i++) {
+		for (unsigned int i = 0; i < wSorted.size(); i++) {
 			if (wSorted[i].size() > 4) {
 				for (unsigned int j = wSorted[i].size() - 1; j > 3; j--) {
 					for (int k = 0; k < 4; k++)
@@ -472,7 +472,7 @@ bool FileSystem::loadModelAndSkeletonDae(const char *path, Model &m, Skeleton &s
 
 				if (t.size() > 0) {
 					texCoord.x = t[indices[k][i + 2] * 2];
-					texCoord.y = 1.0 - t[indices[k][i + 2] * 2 + 1]; //OpenGL coords
+					texCoord.y = 1.0f - t[indices[k][i + 2] * 2 + 1]; //OpenGL coords
 				}
 				else
 					texCoord = glm::vec2(0.0f);

@@ -48,7 +48,7 @@ void Application::sdlEvent(SDL_Event &event)
 
 void Application::setActiveNextScene()
 {
-	int i = 0;
+	unsigned int i = 0;
 	for (; i < scenes.size(); i++) {
 		if (scenes[i] == activeScene)
 			break;

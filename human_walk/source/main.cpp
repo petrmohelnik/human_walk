@@ -75,24 +75,32 @@ int main(int argc, char **argv)
 
 	std::cout << "\nLoading models......\n" << std::endl;
 
-	std::shared_ptr<Terrain> terrain(new Terrain(0.4f, 100.0f, 1.0f, 5.0f, 0.5f));
-	terrain->midPoint(1.0f, 0.4f);
-	//terrain->stairs(20, 0.15f);
-
+	std::shared_ptr<Terrain> terrain(new Terrain(0.0f, 1000.0f, 1.0f, 5.0f, 5.0f));
+	std::shared_ptr<Terrain> terrain2(new Terrain(0.4f, 1000.0f, 1.0f, 5.0f, 0.4f));
+	std::shared_ptr<Terrain> terrain3(new Terrain(0.0f, 1000.0f, 1.0f, 5.0f, 0.5f));
+	terrain3->midPoint(1.0f, 0.15f);
+	terrain2->stairs(30, 0.15f);
+	
 	Model m;
 	if (!f.parseObj("resource/bone.obj", m)) { cin.get(); return -1; }
-	Model ground;
+	Model ground, ground2, ground3;
 	//if (!f.parseObj("resource/groundFlat.obj", ground)) { cin.get(); return -1; }
 	Texture grassTex;
 	if (!f.loadTexture("resource/grass.png", grassTex))
 		return false;
 	terrain->fillModel(ground, grassTex);
+	terrain2->fillModel(ground2, grassTex);
+	terrain3->fillModel(ground3, grassTex);
 	//ground.getMeshes()[0]->getMaterial()->setDifTex(grassTex);
 
 	std::shared_ptr<BasicRenderer> groundRenderer(new BasicRenderer(glm::vec3(0.0, 0.0f, 0.0)));
 	if (!groundRenderer->initRenderer(ground, s.getProgram("basic_program"))) { cin.get(); return -1; }
+	std::shared_ptr<BasicRenderer> ground2Renderer(new BasicRenderer(glm::vec3(0.0, 0.0f, 0.0)));
+	if (!ground2Renderer->initRenderer(ground2, s.getProgram("basic_program"))) { cin.get(); return -1; }
+	std::shared_ptr<BasicRenderer> ground3Renderer(new BasicRenderer(glm::vec3(0.0, 0.0f, 0.0)));
+	if (!ground3Renderer->initRenderer(ground3, s.getProgram("basic_program"))) { cin.get(); return -1; }
 
-	int scenesNum = 1;
+	int scenesNum = 3;
 	std::shared_ptr<MainScene> *scenes = new std::shared_ptr<MainScene>[scenesNum];
 	for (int i = 0; i < scenesNum; i++)
 		scenes[i] = std::shared_ptr<MainScene>(new MainScene);
@@ -109,6 +117,9 @@ int main(int argc, char **argv)
 	scenes[0]->addSkeleton(skeleton);
 	scenes[0]->addRiggedModelRenderer(riggedModelRenderer);
 	scenes[0]->addSkeletonRenderer(skeletonRenderer);
+	scenes[0]->addTerrain(terrain, groundRenderer);
+	scenes[0]->addTerrain(terrain2, ground2Renderer);
+	scenes[0]->addTerrain(terrain3, ground3Renderer);
 
 	skeleton->init();
 
@@ -124,6 +135,9 @@ int main(int argc, char **argv)
 		scenes[1]->addSkeleton(venomSkeleton);
 		scenes[1]->addRiggedModelRenderer(venomRiggedModelRenderer);
 		scenes[1]->addSkeletonRenderer(venomSkeletonRenderer);
+		scenes[1]->addTerrain(terrain, groundRenderer);
+		scenes[1]->addTerrain(terrain2, ground2Renderer);
+		scenes[1]->addTerrain(terrain3, ground3Renderer);
 
 		venomSkeleton->init();
 	}
@@ -140,6 +154,9 @@ int main(int argc, char **argv)
 		scenes[2]->addSkeleton(laraSkeleton);
 		scenes[2]->addRiggedModelRenderer(laraRiggedModelRenderer);
 		scenes[2]->addSkeletonRenderer(laraSkeletonRenderer);
+		scenes[2]->addTerrain(terrain, groundRenderer);
+		scenes[2]->addTerrain(terrain2, ground2Renderer);
+		scenes[2]->addTerrain(terrain3, ground3Renderer);
 
 		laraSkeleton->init();
 	}

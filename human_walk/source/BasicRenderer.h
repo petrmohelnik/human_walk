@@ -8,8 +8,8 @@
 #include "BasicTechnique.h"
 #include "Renderer.h"
 #include "Model.h"
-#include "Scene.h"
 #include "Camera.h"
+#include "light.h"
 
 class BasicRenderer : public Renderer
 {

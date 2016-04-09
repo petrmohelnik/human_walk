@@ -56,6 +56,7 @@ https://www.math.ucsd.edu/~sbuss/ResearchWeb/ikmethods/iksurvey.pdf
 http://graphics.ucsd.edu/courses/cse169_w04/welman.pdf
 http://www.cescg.org/CESCG-2002/LBarinka/paper.pdf
 http://www.andreasaristidou.com/publications/CUEDF-INFENG,%20TR-632.pdf
+http://www.gamasutra.com/view/news/129168/Inverse_Kinematics_two_joints_for_foot_placement.php
 
 lidska chuze:
 http://ijcem.org/papers72011/72011_14.pdf
@@ -89,6 +90,8 @@ http://tf3dm.com/3d-model/male-base-mesh-6682.html
 http://tf3dm.com/3d-model/bloodwing-14095.html
 http://tf3dm.com/3d-model/lara-croft-18784.html
 http://tf3dm.com/3d-model/ted-bear-99005.html
+
+http://mmmovania.blogspot.cz/2014/03/making-opengl-object-look-at-another.html
 
 
 gui:

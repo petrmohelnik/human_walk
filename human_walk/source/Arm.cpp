@@ -50,7 +50,7 @@ void Arm::move(float prevRot, float actRot, float prevTilt, float actTilt)
 	prevRotSave = prevRot;
 	prevTiltSave = prevTilt;
 
-	elbowRot = elbowCurve.YfromX(armT) + ELBOW_MINIMUM_ROT;// *(elbowCurve.getCoeff() > 1.0f ? 1.0f / elbowCurve.getCoeff() : 1.0f);
+	elbowRot = elbowCurve.YfromX(armT) + maxElbowExtenstion;// *(elbowCurve.getCoeff() > 1.0f ? 1.0f / elbowCurve.getCoeff() : 1.0f);
 	shoulderRot = shoulderCurve.YfromX(armT);
 	upperArm->localMat = glm::rotate(upperArm->localMat, -actRot, glm::vec3(0.0, 1.0, 0.0));
 	upperArm->localMat = glm::rotate(upperArm->localMat, -actTilt, glm::vec3(0.0, 0.0, 1.0));
@@ -81,18 +81,19 @@ void Arm::solveIK(glm::vec3 desiredPos)
 		forearm->scale, elbowRot, referenceVec, upperArm->parent->globalMat);
 }
 
-void Arm::incrementWidth(float a)
+void Arm::setWidth(float a)
 {
 	forearm->localMat = glm::rotate(forearm->localMat, -elbowRot, glm::vec3(1.0, 0.0, 0.0));
 	upperArm->localMat = glm::rotate(upperArm->localMat, -shoulderRot, glm::vec3(1.0, 0.0, 0.0));
 	upperArm->localMat = glm::rotate(upperArm->localMat, prevTiltSave, glm::vec3(0.0, 0.0, 1.0));
 	upperArm->localMat = glm::rotate(upperArm->localMat, prevRotSave, glm::vec3(0.0, 1.0, 0.0));
 
-	upperArm->localMat = glm::rotate(upperArm->localMat, width > 0.0 ? a : -a , glm::vec3(0.0, 0.0, 1.0));
+	upperArm->localMat = glm::rotate(upperArm->localMat, width > 0.0 ? a - widthRot : -(a - widthRot), glm::vec3(0.0, 0.0, 1.0));
+	widthRot = a;
 
 	upperArm->localMat = glm::rotate(upperArm->localMat, -prevRotSave, glm::vec3(0.0, 1.0, 0.0));
 	upperArm->localMat = glm::rotate(upperArm->localMat, -prevTiltSave, glm::vec3(0.0, 0.0, 1.0));
 	upperArm->localMat = glm::rotate(upperArm->localMat, shoulderRot, glm::vec3(1.0, 0.0, 0.0));
 	forearm->localMat = glm::rotate(forearm->localMat, elbowRot, glm::vec3(1.0, 0.0, 0.0));
-
 }
+

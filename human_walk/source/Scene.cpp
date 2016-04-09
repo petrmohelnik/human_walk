@@ -156,14 +156,14 @@ void MainScene::onKeyDown(SDL_Keycode key)
 		skeleton->setPelvisVerticalCoeff(skeleton->getPelvisVerticalCoeff() - 0.2f);
 		std::cout << "coeff: " << skeleton->getPelvisVerticalCoeff() << std::endl;
 		break;
-	case SDLK_q:
+	/*case SDLK_q:
 		skeleton->increaseMaxPelvisHeight(0.01f);
 		std::cout << "height up" << std::endl;
 		break;
 	case SDLK_a:
 		skeleton->increaseMaxPelvisHeight(-0.01f);
 		std::cout << "height down" << std::endl;
-		break;
+		break;*/
 	case SDLK_u:
 		skeleton->increaseStepWidth(0.01f);
 		std::cout << "step width up" << std::endl;
@@ -188,14 +188,14 @@ void MainScene::onKeyDown(SDL_Keycode key)
 		skeleton->setElbowCoeff(skeleton->getElbowCoeff() - 0.2f);
 		std::cout << "elbow coeff down" << skeleton->getElbowCoeff() << std::endl;
 		break;
-	case SDLK_p:
+/*	case SDLK_p:
 		skeleton->increaseArmWidth(0.05f);
 		std::cout << "arm width up" << std::endl;
 		break;
 	case SDLK_SEMICOLON:
 		skeleton->increaseArmWidth(-0.05f);
 		std::cout << "arm width down" << std::endl;
-		break;
+		break;*/
 	case SDLK_1:
 		displaySkeleton = !displaySkeleton;
 		break;
@@ -204,12 +204,12 @@ void MainScene::onKeyDown(SDL_Keycode key)
 		break;
 	case SDLK_KP_PLUS:
 		if (cameraMode == CAM_TRANS_ROT) {
-			camera.translateRelative(glm::vec3(0.0, 0.0, 0.2));
+			camera.translateRelative(glm::vec3(0.0, 0.0, -0.2));
 		}
 		break;
 	case SDLK_KP_MINUS:
 		if (cameraMode == CAM_TRANS_ROT) {
-			camera.translateRelative(glm::vec3(0.0, 0.0, -0.2));
+			camera.translateRelative(glm::vec3(0.0, 0.0, 0.2));
 		}
 		break;
 	case SDLK_SPACE:
@@ -269,6 +269,22 @@ void MainScene::render()
 
 void MainScene::update(float dt)
 {
+	if (walkingSpeed != prevWalkingSpeed) {
+		stepLength = walkingSpeed / 3.0f + 0.3666666f;
+		speedCoeff = walkingSpeed / (stepLength * 2.0f);
+		pelvisLateralDisp = (-walkingSpeed / 50.0f + 0.049f) / 0.02f;
+		pelvisVerticalDisp = (walkingSpeed / 50.0f + 0.016f) / 0.05f;
+		stepWidth = -walkingSpeed / 32.0f + 0.135f;
+		maxPelvisHeight = (-2.0f * stepLength / 20.0f + 0.055f);
+
+		prevWalkingSpeed = walkingSpeed;
+	}
+
+	float minMaxPelvisHeight = (-2.0f * stepLength / 20.0f + 0.055f);
+	minMaxPelvisHeight = (minMaxPelvisHeight > 0.0f) ? 0.0f : minMaxPelvisHeight;
+	if (maxPelvisHeight > minMaxPelvisHeight)
+		maxPelvisHeight = minMaxPelvisHeight;
+
 	skeleton->setPelvicTiltCoeff(pelvicTilt);
 	skeleton->setPelvicTiltForwardCoeff(pelvicTiltForward);
 	skeleton->setPelvicRotationCoeff(pelvicRotation);
@@ -276,67 +292,134 @@ void MainScene::update(float dt)
 	skeleton->setPelvisVerticalCoeff(pelvisVerticalDisp);
 	skeleton->setShoulderCoeff(shoulderSwing);
 	skeleton->setElbowCoeff(elbowSwing);
-	skeleton->testHeight(unevenTerrainWalk);
+	skeleton->setStepLength(2.0f * stepLength);
+	skeleton->setToeOutAngle(toeOutAngle);
+	skeleton->setPelvisMidStanceOffset(pelvisMidStanceDisp);
+	skeleton->setJointWeights(jointWeights);
+	skeleton->setTimeSpeedCoeff(speedCoeff);
+	skeleton->setRotationForward(rotationForward);
+	skeleton->setStepWidth(stepWidth);
+	skeleton->setArmWidth(armWidth);
+	skeleton->setMaxPelvisHeight(maxPelvisHeight);
+	skeleton->setMaxElbowExtension(maxElbowExtension);
+	skeleton->setFootUpCoeff(footUpCoeff);
 
 	if (!pause) {
 		for (auto &u : updates)
 		{
-			u->onUpdate(dt * speedCoeff);
+			u->onUpdate(dt);
 		}
 	}
 
-	camera.translate(skeleton->getStaticRootPos() - prevCamPos);
-	prevCamPos = skeleton->getStaticRootPos();
+	camera.translate(skeleton->getCameraPos() - prevCamPos);
+	prevCamPos = skeleton->getCameraPos();
 }
 
 void MainScene::handleGui()
 {
-	ImGui::Begin("Gait parameters:");
-	ImGui::SliderFloat("pelvicTilt", &pelvicTilt, 0.0f, 5.0f);
-	ImGui::SliderFloat("pelvicTiltForward", &pelvicTiltForward, 0.0f, 5.0f);
+	ImGui::Begin("Predefined walks:");
+	if (ImGui::Button("wide")) {
+		pelvicRotation = 1.5f;
+		pelvicTilt = 2.0f;
+		pelvisLateralDisp = 5.0f;
+		pelvisVerticalDisp = 2.5f;
+		pelvicTiltForward = 2.0f;
+		stepWidth = 0.2f;
+		footUpCoeff = 0.0f;
+		elbowSwing = 1.0f;
+		shoulderSwing = 1.0f;
+	} ImGui::SameLine();
+	if (ImGui::Button("narrow")) {
+		pelvicTilt = 2.5f;
+		stepWidth = 0.0f;
+		pelvisLateralDisp = 1.8f;
+		pelvicRotation = 0.8f;
+		rotationForward = -0.05f;
+		elbowSwing = 1.3f;
+		shoulderSwing = 1.0f;
+		maxElbowExtension = 0.2f;
+		footUpCoeff = 0.0f;
+	} ImGui::SameLine();
+	if (ImGui::Button("careful")) {
+		pelvicRotation = 2.5f;
+		pelvisLateralDisp = 2.5f;
+		maxPelvisHeight = -0.04f;
+		pelvisVerticalDisp = 2.5f;
+		pelvicTiltForward = 5.0f;
+		pelvisMidStanceDisp = -0.075f;
+		rotationForward = -0.09f;
+		stepLength = 0.9f;
+		footUpCoeff = 0.2f;
+		speedCoeff = 0.6f;
+		elbowSwing = 1.5f;
+		shoulderSwing = 1.5f;
+		maxElbowExtension = 0.68f;
+	} ImGui::SameLine();
+	ImGui::End();
+
+	ImGui::Begin("Set parameters based on walking speed:");
+	ImGui::SliderFloat("walking speed", &walkingSpeed, 0.4f, 1.6f);
+	ImGui::End();
+
+	ImGui::Begin("Determinants of gait:");
 	ImGui::SliderFloat("pelvicRotation", &pelvicRotation, 0.0f, 5.0f);
+	ImGui::SliderFloat("pelvicTilt", &pelvicTilt, 0.0f, 5.0f);
 	ImGui::SliderFloat("pelvisLateralDisp", &pelvisLateralDisp, 0.0f, 5.0f);
+	ImGui::SliderFloat("maxPelvisHeight", &maxPelvisHeight, -0.5f, 0.0f);
+	ImGui::End();
+
+	ImGui::Begin("Secondary parameters:");
 	ImGui::SliderFloat("pelvisVerticalDisp", &pelvisVerticalDisp, 0.0f, 5.0f);
-	ImGui::SliderFloat("shoulderSwing", &shoulderSwing, 0.0f, 5.0f);
-	ImGui::SliderFloat("elbowSwing", &elbowSwing, 0.0f, 5.0f);
+	ImGui::SliderFloat("pelvicTiltForward", &pelvicTiltForward, 0.0f, 5.0f);
+	ImGui::SliderFloat("pelvisMidStanceDisp", &pelvisMidStanceDisp, -0.1f, 0.1f);
+	ImGui::SliderFloat("rotationForward", &rotationForward, -0.25f, 0.25f);
+	ImGui::Separator();
+	ImGui::SliderFloat("stepLength", &stepLength, 0.3f, 0.9f);
+	ImGui::SliderFloat("stepWidth", &stepWidth, 0.0f, 0.3f);
+	ImGui::SliderFloat("toeOutAngle", &toeOutAngle, -0.25f, 0.25f);
+	ImGui::SliderFloat("footUpCoeff", &footUpCoeff, 0.0f, 0.25f);
 	ImGui::SliderFloat("timeSpeed", &speedCoeff, 0.0f, 2.0f);
+	ImGui::Separator();
+	ImGui::SliderFloat("shoulderSwing", &shoulderSwing, 0.0f, 2.0f);
+	ImGui::SliderFloat("elbowSwing", &elbowSwing, 0.0f, 2.0f);
+	ImGui::SliderFloat("armWidth", &armWidth, -0.2f, 0.5f);
+	ImGui::SliderFloat("maxElbowExtension", &maxElbowExtension, 0.0f, 0.8f);
+	ImGui::Separator();
+	ImGui::SliderFloat("hip weight", &jointWeights.x, 0.0f, 10.0f);
+	ImGui::SliderFloat("knee weight", &jointWeights.y, 0.0f, 10.0f);
+	ImGui::SliderFloat("ankle weight", &jointWeights.z, 0.0f, 10.0f);
+	ImGui::End();
 
-	ImGui::Text("maxPelvisHeight:"); ImGui::SameLine();
-	ImGui::PushID(1);
-	if (ImGui::Button("+"))
-		skeleton->increaseMaxPelvisHeight(0.01f);
-	ImGui::PopID();
-	ImGui::SameLine();
-	ImGui::PushID(2);
-	if (ImGui::Button("-"))
-		skeleton->increaseMaxPelvisHeight(-0.01f);
-	ImGui::PopID();
-
-	ImGui::Text("stepWidth:"); ImGui::SameLine();
-	ImGui::PushID(3);
-	if (ImGui::Button("+"))
-		skeleton->increaseStepWidth(0.01f);
-	ImGui::PopID();
-	ImGui::SameLine();
-	ImGui::PushID(4);
-	if (ImGui::Button("-"))
-		skeleton->increaseStepWidth(+0.01f);
-	ImGui::PopID();
-
-	ImGui::Text("armWidth:"); ImGui::SameLine();
-	ImGui::PushID(5);
-	if (ImGui::Button("+"))
-		skeleton->increaseArmWidth(0.05f);
-	ImGui::PopID();
-	ImGui::SameLine();
-	ImGui::PushID(6);
-	if (ImGui::Button("-"))
-		skeleton->increaseArmWidth(-0.05f);
-	ImGui::PopID();
-
-	ImGui::Checkbox("Test uneven terrain walk", &unevenTerrainWalk);
-
+	ImGui::Begin("Display and scene settings:");
 	ImGui::Checkbox("Display Skeleton", &displaySkeleton); ImGui::SameLine();
 	ImGui::Checkbox("Display Model", &displayRiggedModel);
 	ImGui::Checkbox("Pause", &pause);
+
+	if (ImGui::Button("Next Terrain")) {
+		int prev = activeTerrain;
+		activeTerrain++;
+		activeTerrain = activeTerrain >= terrain.size() ? 0 : activeTerrain;
+		for (unsigned int i = 0; i < objects.size(); i++) {
+			if (objects[i] == terrainRenderer[prev])
+				objects[i] = terrainRenderer[activeTerrain];
+		}
+		skeleton->setTerrain(terrain[activeTerrain]);
+	}
+	ImGui::End();
+
+	ImGui::Begin("Interesting curves:");
+	skeleton->getHeelSwingCurvePoints(heelSwingCurve);
+	std::vector<float>::iterator min = std::min_element(heelSwingCurve.begin(), heelSwingCurve.end());
+	std::vector<float>::iterator max = std::max_element(heelSwingCurve.begin(), heelSwingCurve.end());
+	ImGui::PlotLines("Heel swing curve", &heelSwingCurve[0], heelSwingCurve.size(), 0, "", *min, *max, ImVec2(0, 80));
+
+	skeleton->getPelvisVerticalCurvePoints(pelvisVerticalCurve);
+	min = std::min_element(pelvisVerticalCurve.begin(), pelvisVerticalCurve.end());
+	max = std::max_element(pelvisVerticalCurve.begin(), pelvisVerticalCurve.end());
+	ImGui::PlotLines("Pelvis vertical curve", &pelvisVerticalCurve[0], pelvisVerticalCurve.size(), 0, "", *min, *max, ImVec2(0, 80));
+
+	skeleton->getPelvisSpeedCurvePoints(pelvisSpeed1Curve);
+	min = std::min_element(pelvisSpeed1Curve.begin(), pelvisSpeed1Curve.end());
+	max = std::max_element(pelvisSpeed1Curve.begin(), pelvisSpeed1Curve.end());
+	ImGui::PlotLines("Pelvis speed1 curve", &pelvisSpeed1Curve[0], pelvisSpeed1Curve.size(), 0, "", *min, *max, ImVec2(0, 200));
 }

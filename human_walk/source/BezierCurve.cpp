@@ -28,7 +28,7 @@ BezierCurve::BezierCurve(const float *xPoints, const float *yPoints, int size, i
 		}
 	}
 
-	addCoeff.resize(size);
+	addCoeff.resize(size * repeat, 0.0f);
 }
 
 float BezierCurve::solveForT(const float *x, float X) const
@@ -101,6 +101,9 @@ float BezierCurve::YfromX(float X)
 				x[i][j] = refX[i * 4 + j];
 			}
 		}
+		for (int j = 0; j < 4; j++) {
+			y[i][j] += addCoeff[i * 4 + j];
+		}
 	}
 
 	t = solveForT(&x[i][0], X);
@@ -122,37 +125,40 @@ float BezierCurve::YfromX(float X) const
 
 	float constY[4], constX[4];
 
-	if (prevSegment != i || X < prevX) {
-		if (actCoeff != nextCoeff || actAddCoeff != nextAddCoeff) {
-			for (int j = 0; j < 2; j++) {
-				constY[j] = refY[i * 4 + j] * actCoeff + actAddCoeff;
-				constX[j] = refX[i * 4 + j];
-			}
-			//x[i][1] = x[i][0] + (x[i][1] - x[i][0]) * (nextCoeff);
-			//y[i][1] = y[i][0] + (y[i][1] - y[i][0]) * (nextCoeff);
-			for (int j = 2; j < 4; j++) {
-				constY[j] = refY[i * 4 + j] * nextCoeff + nextAddCoeff;
-				constX[j] = refX[i * 4 + j];
-			}
+
+	if (actCoeff != nextCoeff || actAddCoeff != nextAddCoeff) {
+		for (int j = 0; j < 2; j++) {
+			constY[j] = refY[i * 4 + j] * actCoeff + actAddCoeff;
+			constX[j] = refX[i * 4 + j];
 		}
-		else {
-			for (int j = 0; j < 4; j++) {
-				constY[j] = refY[i * 4 + j] * actCoeff + actAddCoeff;
-				constX[j] = refX[i * 4 + j];
-			}
+		//x[i][1] = x[i][0] + (x[i][1] - x[i][0]) * (nextCoeff);
+		//y[i][1] = y[i][0] + (y[i][1] - y[i][0]) * (nextCoeff);
+		for (int j = 2; j < 4; j++) {
+			constY[j] = refY[i * 4 + j] * nextCoeff + nextAddCoeff;
+			constX[j] = refX[i * 4 + j];
+		}
+	}
+	else {
+		for (int j = 0; j < 4; j++) {
+			constY[j] = refY[i * 4 + j] * actCoeff + actAddCoeff;
+			constX[j] = refX[i * 4 + j];
 		}
 	}
 
-	for (int j = 0; j < 4; j++) {
+
+/*	for (int j = 0; j < 4; j++) {
 		constY[j] = refY[i * 4 + j] * actCoeff + actAddCoeff;
 		constX[j] = refX[i * 4 + j];
+	}*/
+	for (int j = 0; j < 4; j++) {
+		constY[j] += addCoeff[i * 4 + j];
 	}
 
 	t = solveForT(&constX[0], X);
 
 	return solve(&constY[0], t);
 }
-
+/*
 float BezierCurve::YfromXSwingFoot(float X)
 {
 	int i = 0;
@@ -174,23 +180,104 @@ float BezierCurve::YfromXSwingFoot(float X)
 
 	return solve(&y[i][0], t);
 }
-
+*/
 void BezierCurve::stepDown(float down)
 {
-	addCoeff[10] -= down;
-	addCoeff[11] -= down;
+//	addCoeff[10] -= down;
+//	addCoeff[11] -= down;
+	for (unsigned int i = 0; i < refX.size(); i++) {
+		addCoeff[i] = down * refX[i];
+	}
+}
+
+void BezierCurve::resetPelvisAddCoeff()
+{
+	nextAddCoeff += addCoeff.back();
+	actAddCoeff = nextAddCoeff;
+
+	for (auto &c : addCoeff)
+		c = 0.0f;
+}
+
+void BezierCurve::resetPelvisAddCoeff(float lastAddCoeff)
+{
+	nextAddCoeff += lastAddCoeff;
+	actAddCoeff = nextAddCoeff;
+
+	for (auto &c : addCoeff)
+		c = 0.0f;
+}
+
+void BezierCurve::pelvisUp(float up)
+{
+	for (unsigned int i = 2; i < 8; i++)
+		addCoeff[i] += up;
+}
+
+void BezierCurve::pelvisDown(float down)
+{
+	for (unsigned int i = 6; i < 8; i++)
+		addCoeff[i] += down;
+}
+
+void BezierCurve::stepUp(float up)
+{
+//	for (unsigned int i = 6; i < addCoeff.size(); i++)
+//		addCoeff[i] += c;
+	for (unsigned int i = 0; i < refX.size(); i++) {
+		addCoeff[i] = up * refX[i];
+	}
+}
+
+void BezierCurve::controlPointUp(unsigned int i, float up)
+{
+	for (unsigned int j = i * 4 - 2; j <= i * 4 + 1; j++) {
+		if (j < 1 || j >= refX.size() - 1)
+			continue;
+		addCoeff[j] += (refX[j] / refX[i == 0 ? 0 : i * 4 - 1]) * up;
+	}
+}
+
+void BezierCurve::increase(float pos, float up)
+{
+	if (pos <= refX[3]) {
+		controlPointUp(0, up);
+		controlPointUp(1, up);
+	}
+	else if (pos <= refX[7]) {
+		float halfPos = refX[3] + (refX[7] - refX[3]) * 0.5f;
+		if (pos <= halfPos) {
+			controlPointUp(1, up);
+			controlPointUp(2, ((pos - refX[3]) / (halfPos - refX[3])) * up);
+		}
+		else {
+			controlPointUp(1, ((pos - refX[7]) / (halfPos - refX[7])) * up);
+			controlPointUp(2, up);
+		}
+	}
+	/*else if (pos <= refX[11]) {
+		float halfPos = refX[7] + (refX[11] - refX[7]) * 0.5f;
+		if (pos <= halfPos) {
+			controlPointUp(2, up);
+			controlPointUp(3, ((pos - refX[7]) / (halfPos - refX[7])) * up);
+		}
+		else {
+			controlPointUp(2, ((pos - refX[11]) / (halfPos - refX[11])) * up);
+			controlPointUp(3, up);
+		}
+	}*/
+	else {
+		controlPointUp(2, up);
+		controlPointUp(3, up);
+	}
+
+	prevSegment = -1;
 }
 
 void BezierCurve::setSwingFootHeight(float c)
 {
 	for (unsigned int i = 0; i < addCoeff.size(); i++)
 		addCoeff[i] = c;
-}
-
-void BezierCurve::stepUp(float c)
-{
-	for (unsigned int i = 6; i < addCoeff.size(); i++)
-		addCoeff[i] += c;
 }
 
 void BezierCurve::swingIncrease(float inc)
@@ -205,19 +292,28 @@ float BezierCurve::solveY(float t)
 	i = i >= y.size() ? i - 1 : i;
 
 	if (prevSegment != i || t < prevX) {
-		if (actCoeff != nextCoeff) {
+		if (actCoeff != nextCoeff || actAddCoeff != nextAddCoeff) {
 			for (int j = 0; j < 2; j++) {
-				y[i][j] = refY[i * 4 + j] * actCoeff;
+				y[i][j] = refY[i * 4 + j] * actCoeff + actAddCoeff;
+				x[i][j] = refX[i * 4 + j];
 			}
-			for (int j = 3; j < 4; j++) {
-				y[i][j] = refY[i * 4 + j] * nextCoeff;
+			//x[i][1] = x[i][0] + (x[i][1] - x[i][0]) * (nextCoeff);
+			//y[i][1] = y[i][0] + (y[i][1] - y[i][0]) * (nextCoeff);
+			for (int j = 2; j < 4; j++) {
+				y[i][j] = refY[i * 4 + j] * nextCoeff + nextAddCoeff;
+				x[i][j] = refX[i * 4 + j];
 			}
 			actCoeff = nextCoeff;
+			actAddCoeff = nextAddCoeff;
 		}
 		else {
 			for (int j = 0; j < 4; j++) {
-				y[i][j] = refY[i * 4 + j] * actCoeff;
+				y[i][j] = refY[i * 4 + j] * actCoeff + actAddCoeff;
+				x[i][j] = refX[i * 4 + j];
 			}
+		}
+		for (int j = 0; j < 4; j++) {
+			y[i][j] += addCoeff[i * 4 + j];
 		}
 	}
 
@@ -227,12 +323,46 @@ float BezierCurve::solveY(float t)
 	return solve(&y[i][0], t - i);
 }
 
-float BezierCurve::solveX(float t)
+float BezierCurve::solveX(float t) const
 {
 	unsigned int i = static_cast<int>(t);
 	i = i >= x.size() ? i - 1 : i;
 
 	return solve(&x[i][0], t - i);
+}
+
+float BezierCurve::solveY(float t) const
+{
+	unsigned int i = static_cast<int>(t);
+	i = i >= y.size() ? i - 1 : i;
+
+	float constY[4], constX[4];
+
+	if (prevSegment != i || t < prevX) {
+		if (actCoeff != nextCoeff || actAddCoeff != nextAddCoeff) {
+			for (int j = 0; j < 2; j++) {
+				constY[j] = refY[i * 4 + j] * actCoeff + actAddCoeff;
+				constX[j] = refX[i * 4 + j];
+			}
+			//x[i][1] = x[i][0] + (x[i][1] - x[i][0]) * (nextCoeff);
+			//y[i][1] = y[i][0] + (y[i][1] - y[i][0]) * (nextCoeff);
+			for (int j = 2; j < 4; j++) {
+				constY[j] = refY[i * 4 + j] * nextCoeff + nextAddCoeff;
+				constX[j] = refX[i * 4 + j];
+			}
+		}
+		else {
+			for (int j = 0; j < 4; j++) {
+				constY[j] = refY[i * 4 + j] * actCoeff + actAddCoeff;
+				constX[j] = refX[i * 4 + j];
+			}
+		}
+		for (int j = 0; j < 4; j++) {
+			constY[j] += addCoeff[i * 4 + j];
+		}
+	}
+
+	return solve(&y[i][0], t - i);
 }
 
 float BezierCurve::solve(const float *P, float t) const

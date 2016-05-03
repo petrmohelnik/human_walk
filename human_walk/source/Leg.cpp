@@ -164,6 +164,7 @@ float Leg::getFootAngleFromTerrain(glm::mat4 &footGlobal)
 glm::vec3 Leg::setNextPosition(float step)
 {
 	stepLengthSum += step;
+	//stepLength = step;
 
 	nextHeelPos.z += step;
 	float height = terrain->getHeight(nextHeelPos);
@@ -268,6 +269,7 @@ void Leg::update(float dt)
 		if (t - dt < MID_STANCE) {
 			toeOffPos = getHeelPos(prevAnklePos, foot->globalMat); //position from which we start swing phase
 			toePosInit = glm::vec3(toe->globalMat[3]) + prevAnklePos - glm::vec3(foot->globalMat[3]);
+			//float stepDist = glm::length(glm::vec3(nextHeelPos.x, 0.0, nextHeelPos.z) - glm::vec3(prevHeelPos.x, 0.0, prevHeelPos.z));
 			heelRiseCurve.setCoeffImmediately(pow(stepLength / 1.8f, 2.0f));
 		}
 

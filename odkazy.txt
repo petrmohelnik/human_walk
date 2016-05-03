@@ -73,6 +73,10 @@ http://www.foundationpilates.com/happens-walk-save-energy/
 http://rspb.royalsocietypublishing.org/content/276/1673/3679
 http://www.slideshare.net/ramachandrareddy5/gait-analysis-andppt-by-ramachandra
 https://www.researchgate.net/publication/260212802_Quantitative_Evaluation_Of_The_Major_Determinants_Of_Human_Gait
+http://www.fjasmin.net/walk_cycle_tutorial/index.html
+http://sme-chinoises-euronext.typepad.fr/artbot/2014/09/human-gait-cycle-some-graphs.html
+http://sme-chinoises-euronext.typepad.fr/artbot/2014/09/a-study-of-walking-in-order-to-design-a-biped-robot.html
+http://www.utdallas.edu/atec/midori/Handouts/walkingGraphs.htm
 
 bezier:
 http://www.geometrictools.com/Documentation/MovingAlongCurveSpecifiedSpeed.pdf

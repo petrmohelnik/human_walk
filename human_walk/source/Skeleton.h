@@ -89,7 +89,7 @@ private:
 	float spineEquation(float T, float hipAngle, float x);
 	float solveSpine(float dist, float hipAngle);
 	void configurePelvis(Leg &stanceLeg, Leg &swingLeg);
-	float pelvisSpeedCurve(float t);
+	float pelvisSpeedCurve(float _t);
 	float configurePelvisFindBestScore(Leg &stanceLeg, Leg &swingLeg, int iter, float lowRange, float highRange, float actVerticalCoeff,
 		float lastVerticaCoeff);
 public:
@@ -136,7 +136,7 @@ public:
 	void getPelvisSpeed2CurvePoints(std::vector<float> &vec);
 	void getPelvisSpeedCurvePoints(std::vector<float> &vec);
 	void setToeOutAngle(float a) { leftLeg.setToeOutAngle(a); rightLeg.setToeOutAngle(a); }
-	void setStepLength(float l) { stepLength = l; leftLeg.setStepLength(l); rightLeg.setStepLength(l); }
+	void setStepLength(float l) { stepLength = l; /*leftLeg.setStepLength(l); rightLeg.setStepLength(l);*/ }
 	void setPelvisMidStanceOffset(float o) { leftLeg.setPelvisMidStanceOffset(o); rightLeg.setPelvisMidStanceOffset(o); }
 	void setJointWeights(glm::vec3 &w) { jointWeights = w; }
 	void setTimeSpeedCoeff(float c) { timeSpeedCoeff = c; }

@@ -5,13 +5,15 @@ Skeleton::Skeleton(std::shared_ptr<Terrain> t)
 	terrain = t;
 }
 
-float Skeleton::pelvisSpeedCurve(float t)
+float Skeleton::pelvisSpeedCurve(float _t)
 {
-	if (t <= 0.5f)
-		return pelvisSpeed1Curve->YfromX(t * 2.0f);
+	if (_t > 1.0f)
+		_t = 1.0f;
+	if (_t <= 0.5f)
+		return pelvisSpeed1Curve->YfromX(_t * 2.0f);
 	else 
 		//return pelvisSpeed1Curve->getNextCoeff() + pelvisSpeed2Curve->YfromX((t - 0.5f) * 2.0f);
-		return pelvisSpeed1Curve->getNextCoeff() + pelvisSpeed1Curve->getLastAddCoeff() + pelvisSpeed2Curve->YfromX((t - 0.5f) * 2.0f);
+		return pelvisSpeed1Curve->getNextCoeff() + pelvisSpeed1Curve->getLastAddCoeff() + pelvisSpeed2Curve->YfromX((_t - 0.5f) * 2.0f);
 }
 
 void Skeleton::init()
@@ -545,10 +547,12 @@ void Skeleton::onUpdate(float dt)
 {
 	dt *= timeSpeedCoeff;
 	dt = dt > 0.04f ? 0.04f : dt;
+	//dt = 0.02f;
 	t += dt;
 
-	if (t > TERMINAL_SWING) 
+	if (t > TERMINAL_SWING)
 		t -= TERMINAL_SWING;
+		//t = 0.02f;
 
 	//std::cout << bones[HIPS].localMat[3].z << std::endl;
 
@@ -559,6 +563,12 @@ void Skeleton::onUpdate(float dt)
 
 		float distToStance = rightLeg.getStepLengthSum() - leftLeg.getStepLengthSum();
 		leftLeg.setNextPosition(distToStance + stepLength * 0.5f); // , heightTestHeight);
+		rightLeg.setStepLength(stepLength);
+		
+		/*float minMaxPelvisHeight = (-2.0f * (distToStance + stepLength * 0.5f) / 20.0f + 0.055f);
+		minMaxPelvisHeight = (minMaxPelvisHeight > 0.0f) ? 0.0f : minMaxPelvisHeight;
+		if ((*maxPelvisHeight - defaultPelvisHeight) > minMaxPelvisHeight)
+			*maxPelvisHeight = minMaxPelvisHeight + defaultPelvisHeight;*/
 
 		configurePelvis(rightLeg, leftLeg);
 		/*
@@ -591,6 +601,12 @@ void Skeleton::onUpdate(float dt)
 //		pelvisVerticalCurve.incrementAddCoeff(0.2);
 		float distToStance = leftLeg.getStepLengthSum() - rightLeg.getStepLengthSum();
 		rightLeg.setNextPosition(distToStance + stepLength * 0.5f);// , heightTestHeight);
+		leftLeg.setStepLength(stepLength);
+
+		/*float minMaxPelvisHeight = (-2.0f * (distToStance + stepLength * 0.5f) / 20.0f + 0.055f);
+		minMaxPelvisHeight = (minMaxPelvisHeight > 0.0f) ? 0.0f : minMaxPelvisHeight;
+		if ((*maxPelvisHeight - defaultPelvisHeight) > minMaxPelvisHeight)
+			*maxPelvisHeight = minMaxPelvisHeight + defaultPelvisHeight;*/
 
 		configurePelvis(leftLeg, rightLeg);
 
@@ -633,7 +649,7 @@ void Skeleton::onUpdate(float dt)
 	//pelvisSpeedCurve.setCoeffImmediately(0.2);
 	//glm::vec3 forwardDispSpeed = 2*dt * (nextRootPos - prevRootPos) * (pelvisSpeedCurve.YfromX(pelvicVerticalT) + 1.0f);
 	//stepSpeedAccuracyCheck += forwardDispSpeed;
-	bones[HIPS].localMat[3].z = prevRootPos->z + pelvisSpeedCurve(pelvicVerticalT); //pelvisSpeedCurve->YfromX(pelvicVerticalT);
+	bones[HIPS].localMat[3].z = prevRootPos->z + pelvisSpeedCurve(pelvicVerticalT >= 1.0f ? pelvicVerticalT - 1.0f : pelvicVerticalT); //pelvisSpeedCurve->YfromX(pelvicVerticalT);
 	//std::cout << "bones[HIPS].localMat[3].z:" << bones[HIPS].localMat[3].z << std::endl;
 	(*staticRootMat)[3] += glm::vec4(forwardDisp, 0.0);
 	//cameraPos.x += dt * stepLength * glm::normalize((*nextRootPos).x - cameraPos.x);
@@ -695,7 +711,14 @@ void Skeleton::onUpdate(float dt)
 	rightLeg.update(dt);
 	leftArm.update(dt, shoulderRotFix, shoulderRotFixUpdated, shoulderTiltFix, shoulderTiltFixUpdated);
 	rightArm.update(dt, shoulderRotFix, shoulderRotFixUpdated, shoulderTiltFix, shoulderTiltFixUpdated);
-	
+
+	/*static glm::vec3 prevHeadPos;
+	float difff = glm::length(prevHeadPos - glm::vec3(bones[HEAD].globalMat[3]));
+	prevHeadPos = glm::vec3(bones[HEAD].globalMat[3]);
+	std::cout << "t: " << t << " headDiff: " << difff << std::endl;
+	if (difff > 0.2f && t != 0.0f)
+		exit(-1);*/
+
 	countGlobalMatrices();
 }
 

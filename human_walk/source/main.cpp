@@ -75,11 +75,11 @@ int main(int argc, char **argv)
 
 	std::cout << "\nLoading models......\n" << std::endl;
 
-	std::shared_ptr<Terrain> terrain(new Terrain(0.0f, 1000.0f, 1.0f, 5.0f, 5.0f));
-	std::shared_ptr<Terrain> terrain2(new Terrain(0.4f, 1000.0f, 1.0f, 5.0f, 0.4f));
-	std::shared_ptr<Terrain> terrain3(new Terrain(0.0f, 1000.0f, 1.0f, 5.0f, 0.5f));
-	terrain3->midPoint(1.0f, 0.15f);
-	terrain2->stairs(30, 0.15f);
+	std::shared_ptr<Terrain> terrain3(new Terrain(0.0f, 1000.0f, 1.0f, 5.0f, 5.0f));
+	std::shared_ptr<Terrain> terrain2(new Terrain(0.35f, 1000.0f, 1.0f, 5.0f, 0.35f));
+	std::shared_ptr<Terrain> terrain(new Terrain(0.0f, 1000.0f, 1.0f, 5.0f, 0.5f));
+	terrain->midPoint(1.0f, 0.3f);
+	terrain2->stairs(10, 0.15f);
 	
 	Model m;
 	if (!f.parseObj("resource/bone.obj", m)) { cin.get(); return -1; }
@@ -88,9 +88,9 @@ int main(int argc, char **argv)
 	Texture grassTex;
 	if (!f.loadTexture("resource/grass.png", grassTex))
 		return false;
-	terrain->fillModel(ground, grassTex);
-	terrain2->fillModel(ground2, grassTex);
 	terrain3->fillModel(ground3, grassTex);
+	terrain2->fillModel(ground2, grassTex);
+	terrain->fillModel(ground, grassTex);
 	//ground.getMeshes()[0]->getMaterial()->setDifTex(grassTex);
 
 	std::shared_ptr<BasicRenderer> groundRenderer(new BasicRenderer(glm::vec3(0.0, 0.0f, 0.0)));
@@ -100,12 +100,12 @@ int main(int argc, char **argv)
 	std::shared_ptr<BasicRenderer> ground3Renderer(new BasicRenderer(glm::vec3(0.0, 0.0f, 0.0)));
 	if (!ground3Renderer->initRenderer(ground3, s.getProgram("basic_program"))) { cin.get(); return -1; }
 
-	int scenesNum = 3;
+	int scenesNum = 6;
 	std::shared_ptr<MainScene> *scenes = new std::shared_ptr<MainScene>[scenesNum];
 	for (int i = 0; i < scenesNum; i++)
 		scenes[i] = std::shared_ptr<MainScene>(new MainScene);
 
-	Model main, lara, venom, bloodwing, ted;
+	Model main, lara, venom, astronaut, deadpool, witch, bolter;
 	std::shared_ptr<Skeleton> skeleton(new Skeleton(terrain));
 	if (!f.loadModelAndSkeletonDae("resource/riggedFixed2.dae", main, *skeleton.get())) { cin.get(); return -1; }
 	std::shared_ptr<SkeletonRenderer> skeletonRenderer(new SkeletonRenderer(glm::vec3(0.0, 0.0f, 0.0), skeleton));
@@ -144,7 +144,7 @@ int main(int argc, char **argv)
 	
 	if (scenesNum >= 3) {
 		std::shared_ptr<Skeleton> laraSkeleton(new Skeleton(terrain));
-		if (!f.loadModelAndSkeletonDae("resource/lara.dae", lara, *laraSkeleton.get())) { cin.get(); return -1; }
+		if (!f.loadModelAndSkeletonDae("resource/lara3.dae", lara, *laraSkeleton.get())) { cin.get(); return -1; }
 		std::shared_ptr<SkeletonRenderer> laraSkeletonRenderer(new SkeletonRenderer(glm::vec3(0.0, 0.0f, 0.0), laraSkeleton));
 		if (!laraSkeletonRenderer->initRenderer(m, s.getProgram("basic_program"))) { cin.get(); return -1; }
 		std::shared_ptr<RiggedModelRenderer> laraRiggedModelRenderer(new RiggedModelRenderer(glm::vec3(0.0, 0.0f, 0.0), laraSkeleton));
@@ -159,6 +159,82 @@ int main(int argc, char **argv)
 		scenes[2]->addTerrain(terrain3, ground3Renderer);
 
 		laraSkeleton->init();
+	}
+
+	if (scenesNum >= 4) {
+		std::shared_ptr<Skeleton> deadpoolSkeleton(new Skeleton(terrain));
+		if (!f.loadModelAndSkeletonDae("resource/deadpool.dae", deadpool, *deadpoolSkeleton.get())) { cin.get(); return -1; }
+		std::shared_ptr<SkeletonRenderer> deadpoolSkeletonRenderer(new SkeletonRenderer(glm::vec3(0.0, 0.0f, 0.0), deadpoolSkeleton));
+		if (!deadpoolSkeletonRenderer->initRenderer(m, s.getProgram("basic_program"))) { cin.get(); return -1; }
+		std::shared_ptr<RiggedModelRenderer> deadpoolRiggedModelRenderer(new RiggedModelRenderer(glm::vec3(0.0, 0.0f, 0.0), deadpoolSkeleton));
+		if (!deadpoolRiggedModelRenderer->initRenderer(deadpool, s.getProgram("animation_program"))) { cin.get(); return -1; }
+
+		scenes[3]->addObject(groundRenderer);
+		scenes[3]->addSkeleton(deadpoolSkeleton);
+		scenes[3]->addRiggedModelRenderer(deadpoolRiggedModelRenderer);
+		scenes[3]->addSkeletonRenderer(deadpoolSkeletonRenderer);
+		scenes[3]->addTerrain(terrain, groundRenderer);
+		scenes[3]->addTerrain(terrain2, ground2Renderer);
+		scenes[3]->addTerrain(terrain3, ground3Renderer);
+
+		deadpoolSkeleton->init();
+	}
+
+	if (scenesNum >= 5) {
+		std::shared_ptr<Skeleton> bolterSkeleton(new Skeleton(terrain));
+		if (!f.loadModelAndSkeletonDae("resource/bolter.dae", bolter, *bolterSkeleton.get())) { cin.get(); return -1; }
+		std::shared_ptr<SkeletonRenderer> bolterSkeletonRenderer(new SkeletonRenderer(glm::vec3(0.0, 0.0f, 0.0), bolterSkeleton));
+		if (!bolterSkeletonRenderer->initRenderer(m, s.getProgram("basic_program"))) { cin.get(); return -1; }
+		std::shared_ptr<RiggedModelRenderer> bolterRiggedModelRenderer(new RiggedModelRenderer(glm::vec3(0.0, 0.0f, 0.0), bolterSkeleton));
+		if (!bolterRiggedModelRenderer->initRenderer(bolter, s.getProgram("animation_program"))) { cin.get(); return -1; }
+
+		scenes[4]->addObject(groundRenderer);
+		scenes[4]->addSkeleton(bolterSkeleton);
+		scenes[4]->addRiggedModelRenderer(bolterRiggedModelRenderer);
+		scenes[4]->addSkeletonRenderer(bolterSkeletonRenderer);
+		scenes[4]->addTerrain(terrain, groundRenderer);
+		scenes[4]->addTerrain(terrain2, ground2Renderer);
+		scenes[4]->addTerrain(terrain3, ground3Renderer);
+
+		bolterSkeleton->init();
+	}
+
+	if (scenesNum >= 6) {
+		std::shared_ptr<Skeleton> astronautSkeleton(new Skeleton(terrain));
+		if (!f.loadModelAndSkeletonDae("resource/astronaut.dae", astronaut, *astronautSkeleton.get())) { cin.get(); return -1; }
+		std::shared_ptr<SkeletonRenderer> astronautSkeletonRenderer(new SkeletonRenderer(glm::vec3(0.0, 0.0f, 0.0), astronautSkeleton));
+		if (!astronautSkeletonRenderer->initRenderer(m, s.getProgram("basic_program"))) { cin.get(); return -1; }
+		std::shared_ptr<RiggedModelRenderer> astronautRiggedModelRenderer(new RiggedModelRenderer(glm::vec3(0.0, 0.0f, 0.0), astronautSkeleton));
+		if (!astronautRiggedModelRenderer->initRenderer(astronaut, s.getProgram("animation_program"))) { cin.get(); return -1; }
+
+		scenes[5]->addObject(groundRenderer);
+		scenes[5]->addSkeleton(astronautSkeleton);
+		scenes[5]->addRiggedModelRenderer(astronautRiggedModelRenderer);
+		scenes[5]->addSkeletonRenderer(astronautSkeletonRenderer);
+		scenes[5]->addTerrain(terrain, groundRenderer);
+		scenes[5]->addTerrain(terrain2, ground2Renderer);
+		scenes[5]->addTerrain(terrain3, ground3Renderer);
+
+		astronautSkeleton->init();
+	}
+
+	if (scenesNum >= 7) {
+		std::shared_ptr<Skeleton> witchSkeleton(new Skeleton(terrain));
+		if (!f.loadModelAndSkeletonDae("resource/witch.dae", witch, *witchSkeleton.get())) { cin.get(); return -1; }
+		std::shared_ptr<SkeletonRenderer> witchSkeletonRenderer(new SkeletonRenderer(glm::vec3(0.0, 0.0f, 0.0), witchSkeleton));
+		if (!witchSkeletonRenderer->initRenderer(m, s.getProgram("basic_program"))) { cin.get(); return -1; }
+		std::shared_ptr<RiggedModelRenderer> witchRiggedModelRenderer(new RiggedModelRenderer(glm::vec3(0.0, 0.0f, 0.0), witchSkeleton));
+		if (!witchRiggedModelRenderer->initRenderer(witch, s.getProgram("animation_program"))) { cin.get(); return -1; }
+
+		scenes[6]->addObject(groundRenderer);
+		scenes[6]->addSkeleton(witchSkeleton);
+		scenes[6]->addRiggedModelRenderer(witchRiggedModelRenderer);
+		scenes[6]->addSkeletonRenderer(witchSkeletonRenderer);
+		scenes[6]->addTerrain(terrain, groundRenderer);
+		scenes[6]->addTerrain(terrain2, ground2Renderer);
+		scenes[6]->addTerrain(terrain3, ground3Renderer);
+
+		witchSkeleton->init();
 	}
 
 	/*std::shared_ptr<Skeleton> bloodwingSkeleton(new Skeleton);

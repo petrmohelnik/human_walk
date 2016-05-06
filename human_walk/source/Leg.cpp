@@ -261,40 +261,24 @@ void Leg::update(float dt)
 		float actRot = getFootAngleFromTerrain(foot->globalMat);
 		foot->localMat = glm::rotate(foot->localMat, actRot, glm::vec3(1.0f, 0.0f, 0.0f));
 		footRot -= actRot;
-
-		//updateToeGlobal();
-		//prevToePos = toePosInit + prevAnklePos - glm::vec3(foot->globalMat[3]); //save toe pos so we know where to put foot while raising heel later
 	}
 	else if (t < PRE_SWING) {
 		if (t - dt < MID_STANCE) {
 			toeOffPos = getHeelPos(prevAnklePos, foot->globalMat); //position from which we start swing phase
 			toePosInit = glm::vec3(toe->globalMat[3]) + prevAnklePos - glm::vec3(foot->globalMat[3]);
-			//float stepDist = glm::length(glm::vec3(nextHeelPos.x, 0.0, nextHeelPos.z) - glm::vec3(prevHeelPos.x, 0.0, prevHeelPos.z));
 			heelRiseCurve.setCoeffImmediately(pow(stepLength / 1.8f, 2.0f));
 		}
 
 		float preSwingT = (t - MID_STANCE) / (PRE_SWING - MID_STANCE);  //(t - TERMINAL_STANCE) / (PRE_SWING - TERMINAL_STANCE);
 
-		//prevToePos = toePosInit + prevAnklePos - glm::vec3(foot->globalMat[3]);
-		/*if (footRot > 0.35f) {
-			heelRiseCurve.setCoeffImmediately(heelRiseCurve.getActCoeff() * 1.5f);
-			heelRiseCurve.recountOnNext();
-		}*/
 		riseHeel(heelRiseCurve.YfromX(preSwingT));
-
-		//updateToeGlobal();
 	}
 	//pocatecni svih, mezisvih a konecny svih
 	else if (t < TERMINAL_SWING) {
 		if (t - dt < PRE_SWING) {
-			//nextHeelPos.y += 0.2;
-			//swingCurve.incrementAddCoeff(0.2);
-
 			//finish heel rise
-			//prevToePos = toePosInit + prevAnklePos - glm::vec3(foot->globalMat[3]);
 			riseHeel(heelRiseCurve.YfromX(1.0f));
 
-			//toeOffPos = (toeOffPos == -1.0 ? -0.4 : getHeelPos(prevAnklePos).z); //position from which we start swing phase
 			swingDist = glm::length(glm::vec3(nextHeelPos.x, 0.0, nextHeelPos.z) - glm::vec3(getHeelPos(prevAnklePos, foot->globalMat).x, 0.0, getHeelPos(prevAnklePos, foot->globalMat).z));
 			toeOffPos = getHeelPos(prevAnklePos, foot->globalMat);
 			swingForwardCurve.setCoeffImmediately(swingDist);
@@ -309,11 +293,6 @@ void Leg::update(float dt)
 
 		//rotate toe back to its original position
 		if (swingT <= 0.2f) {
-			/*float angle = toeRot / (((PRE_SWING + ((TERMINAL_SWING - PRE_SWING) * 0.2f)) - t) / dt);
-			if (angle != angle)
-				angle = 0.0;
-			toe->localMat = glm::rotate(toe->localMat, -angle, glm::vec3(1.0f, 0.0f, 0.0f));
-			toeRot -= angle;*/
 			float angle = lerp(terminalSwingInitToeRot, 0.0f, 5.0f * swingT) - toeRot;
 			toe->localMat = glm::rotate(toe->localMat, -angle, glm::vec3(1.0f, 0.0f, 0.0f));
 			toeRot += angle;
@@ -330,11 +309,6 @@ void Leg::update(float dt)
 		if (swingT >= 0.5) {
 			widthDisp = lerp(footWidth, root->localMat[3].x + thighWidth, swingWidthFixCurve.YfromX(swingT));
 		}
-
-		/*float widthFix = widthDisp; //after heel raise the heel is not in position he is expected, so we have to slowly get him there
-		if (swingT <= 0.2) {
-			widthFix = lerp(widthFix, getHeelPos(prevAnklePos).x, pow(1.0 - (5.0 * swingT), 2));
-		}*/
 
 		//rotate foot while being mid air
 		float angle = swingRotationCurve.YfromX(swingT) - footRot;//bezierCurve(swingRotControlPointsVec, swingT) - footRot;
@@ -628,7 +602,6 @@ void Leg::configureSwingRotation()
 	if (testAngle < 0.1f) {
 		swingRotationCurve.setAddCoeff(2, -testAngle + 0.1f);
 		swingRotationCurve.setAddCoeff(3, -testAngle + 0.1f);
-		//swingRotationCurve.setAddCoeff(0.5f - testAngle);
 	}
 }
 
@@ -655,9 +628,6 @@ void Leg::configureSwing()
 		float swingT = ((TERMINAL_SWING - PRE_SWING) * i) / (TERMINAL_SWING - PRE_SWING);
 		
 		//set pelvis to new position
-		//glm::vec3 testRootPos = *prevRootPos;
-		//testRootPos.z = prevRootPos->z + pelvisSpeedCurve->YfromX(pelvisT);
-		//testRootPos.y = pelvisVerticalCurve->YfromX(pelvisT) + *maxPelvisHeight;
 		glm::mat4 testRootLocal = *staticRootMat;
 		testRootLocal[3].z = prevRootPos->z + pelvisSpeedCurve(pelvisSpeed1Curve, pelvisSpeed2Curve, pelvisT);//pelvisSpeedCurve->YfromX(pelvisT);//glm::vec4(testRootPos, 1.0f);
 		testRootLocal[3].y = pelvisVerticalCurve->YfromX(pelvisT) + *maxPelvisHeight;
@@ -666,8 +636,6 @@ void Leg::configureSwing()
 		//glm::mat4 testThighLocal = thigh->localMat;
 		glm::mat4 testThighGlobal = testRootLocal * testThighLocal;
 		glm::mat4 testShinGlobal = testThighGlobal * testShinLocal;
-		//glm::mat4 testShinLocal = shin->localMat;
-		//float testKneeRot = kneeRot;
 		glm::mat4 testReferenceGlobal = testRootLocal * thighBindMat;
 		glm::vec3 testReferenceVec = glm::normalize(glm::vec3(glm::rotate(glm::rotate(testReferenceGlobal, -(PI * 0.5f), glm::vec3(1.0, 0.0, 0.0)), thighWidth >= 0.0 ? toeOutAngle : -toeOutAngle, glm::vec3(0.0, 0.0, 1.0)) * glm::vec4(0.0, 1.0, 0.0, 1.0) - testRootLocal[3]));
 
@@ -685,17 +653,12 @@ void Leg::configureSwing()
 		float testFootRot = swingRotationCurve.YfromX(swingT);
 		glm::mat4 testFootGlobal = testShinGlobal * glm::rotate(testFootLocal, -testFootRot, glm::vec3(1.0, 0.0, 0.0));
 
-		//glm::vec3 testDesiredPos = getAnklePosFromHeel(nextHeelPos, foot->globalMat);
 		glm::vec3 testDesiredPos = getAnklePosFromHeel(glm::vec3(widthDisp, heelY, heelZ), testFootGlobal);
-		//testThighGlobal[3].w = 1.0f;
-		//glm::vec3 direction(glm::normalize(glm::vec3(glm::inverse(testThighGlobal) * glm::vec4(testDesiredPos, 1.0))));
-		//glm::vec3 direction2(glm::normalize(glm::vec3(glm::inverse(thigh->globalMat) * glm::vec4(testDesiredPos, 1.0))));
 
 		int maxIter = 0;
 		while (1) {
 			float diff;
 			if ((diff = glm::length(testDesiredPos - glm::vec3(testThighGlobal[3])) - (thigh->scale + shin->scale - 0.0001f)) > 0.0f) {
-				//testDesiredPos = glm::vec3(testThighGlobal[3]) + glm::normalize(testDesiredPos - glm::vec3(testThighGlobal[3])) * (thigh->scale + shin->scale - 0.0001f);
 				swingCurve.increase(swingT, diff);
 			}
 			else
@@ -728,26 +691,8 @@ void Leg::configureSwing()
 			swingCurve.increase(swingT, -diff);
 	}
 
-	/*int maxIter = 0;
-	float diff2 = swingCurve.YfromX(0.5f) + footUpCoeff;
-	while (1) {
-
-		if ((diff = glm::length(testDesiredPos - glm::vec3(testThighGlobal[3])) - (thigh->scale + shin->scale - 0.0001f)) > 0.0f) {*/
-			//testDesiredPos = glm::vec3(testThighGlobal[3]) + glm::normalize(testDesiredPos - glm::vec3(testThighGlobal[3])) * (thigh->scale + shin->scale - 0.0001f);
-	//swingCurve.increase(0.5f, footUpCoeff);
 	swingCurve.controlPointUp(1, footUpCoeff);
 	swingCurve.controlPointUp(2, footUpCoeff);
-	/*	}
-		else
-			break;
-
-		heelY = swingCurve.YfromX(swingT);
-		testDesiredPos = getAnklePosFromHeel(glm::vec3(widthDisp, heelY, heelZ), testFootGlobal);
-
-		maxIter++;
-		if (maxIter > 10)
-			break;
-	}*/
 }
 
 glm::vec3 Leg::getToePos(glm::mat4 &footGlobal)
@@ -770,12 +715,10 @@ void Leg::riseHeel(float angle)
 {
 	//rotate foot to the correct angle with the ground
 	float phi = angle + getFootAngleFromTerrain(foot->globalMat);
-	//if (footRot < 0.65f && phi > 0.0f) {
-		foot->localMat = glm::rotate(foot->localMat, phi, glm::vec3(1.0f, 0.0f, 0.0f));
-		footRot -= phi;
-		updateFootGlobal();
-		updateToeGlobal();
-	//}
+	foot->localMat = glm::rotate(foot->localMat, phi, glm::vec3(1.0f, 0.0f, 0.0f));
+	footRot -= phi;
+	updateFootGlobal();
+	updateToeGlobal();
 
 	//move foot so fingers fit their previous position
 	solveIK(toePosInit - glm::vec3(toe->globalMat[3]) + glm::vec3(foot->globalMat[3]));
@@ -784,47 +727,10 @@ void Leg::riseHeel(float angle)
 
 	//rotate foot again because IK ruined our rotation with the ground
 	phi = angle + getFootAngleFromTerrain(foot->globalMat);
-	//if (footRot < 0.65f && phi > 0.0f) {
-		foot->localMat = glm::rotate(foot->localMat, phi, glm::vec3(1.0f, 0.0f, 0.0f));
-		footRot -= phi;
-		updateFootGlobal();
-		updateToeGlobal();
-	//}
-
-	/*int i = 0;
-	while (abs(glm::length(prevToePos - glm::vec3(toe->globalMat[3]))) > 0.001f && i < 10) {
-		solveIK(prevToePos - glm::vec3(toe->globalMat[3]) + glm::vec3(foot->globalMat[3]));
-		thigh->globalMat = root->localMat * thigh->localMat;
-		shin->globalMat = thigh->globalMat * shin->localMat;
-		updateFootGlobal();
-		updateToeGlobal();
-		i++;
-	}
-	std::cout << "i: " << i << std::endl;
-
-	glm::vec3 footVec = glm::normalize(getToePos() - getHeelPos(glm::vec3(foot->globalMat[3])));
-	baseVec = glm::normalize(glm::vec3(footVec.x, 0.0, footVec.z));
-	float phi = lerp(startAngle, endAngle, t) - getAngle(baseVec, footVec, foot->globalMat, glm::vec3(1.0, 0.0, 0.0));
-	if (phi > 0.0) {
-		foot->localMat = glm::rotate(foot->localMat, phi, glm::vec3(1.0f, 0.0f, 0.0f));
-		footRot -= phi;
-		updateFootGlobal();
-		updateToeGlobal();
-
-		//move foot so fingers fit their previous position
-		solveIK(prevToePos - glm::vec3(toe->globalMat[3]) + glm::vec3(foot->globalMat[3]));
-		updateFootGlobal();
-		updateToeGlobal();
-
-		//rotate foot again because IK ruined our rotation with the ground
-		footVec = glm::normalize(getToePos() - getHeelPos(glm::vec3(foot->globalMat[3])));
-		baseVec = glm::normalize(glm::vec3(footVec.x, 0.0, footVec.z));
-		phi = lerp(startAngle, endAngle, t) - getAngle(baseVec, footVec, foot->globalMat, glm::vec3(1.0, 0.0, 0.0));
-		foot->localMat = glm::rotate(foot->localMat, phi, glm::vec3(1.0f, 0.0f, 0.0f));
-		footRot -= phi;
-		updateFootGlobal();
-		updateToeGlobal();
-	}*/
+	foot->localMat = glm::rotate(foot->localMat, phi, glm::vec3(1.0f, 0.0f, 0.0f));
+	footRot -= phi;
+	updateFootGlobal();
+	updateToeGlobal();
 	
 	//rotate fingers so that overal rotation is the same as angle between ground and foot
 	phi = -getFootAngleFromTerrain(foot->globalMat) - toeRot;
@@ -859,15 +765,11 @@ glm::vec3 twoJointsIK(glm::vec3 desiredPos, glm::mat4 &sphericalJointGlobal, glm
 		direction.x, direction.y, direction.z, 0.0f,
 		up.x, up.y, up.z, 0.0f,
 		0.0, 0.0, 0.0, 1.0f);
-	//if (right.x < 0.0f)
-		//right = right;
 
 	sphericalJointLocal = sphericalJointLocal * mat;
 
 	//angles in triangle made of joints and line between spherical joint and desired pos
-	//float y = sphericalJointGlobal[3].y - desiredPos.y, z = desiredPos.z - sphericalJointGlobal[3].z;
 	float L = glm::length(glm::vec3(sphericalJointGlobal[3] - glm::vec4(desiredPos, 1.0)));
-	//float phi_t = atan(z / y);
 	float phi_1 = acos((pow(sphericalJointScale, 2) + L*L - pow(hingeJointScale, 2)) / (2 * sphericalJointScale*L));
 	float phi_2 = PI - acos((pow(sphericalJointScale, 2) + pow(hingeJointScale, 2) - L*L) / (2 * sphericalJointScale*hingeJointScale));
 

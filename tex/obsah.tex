@@ -14,7 +14,7 @@ Kostra je abstraktní model lidského, zvíøecího tìla nebo jiného objektu. Jedná s
 
 \begin{figure}[h]
 \begin{center}
-\scalebox{0.5}{\includegraphics{fig/skeleton_hierarchy.eps}}
+\scalebox{0.5}{\includegraphics{fig/skeleton_names.pdf}}
 \caption{Pøíklad hierarchie kostry.} \label{bone_structure}
 \end{center}
 \end{figure}
@@ -209,7 +209,7 @@ Lidská chùze \cite{gait_review} se skládá z opakujících se \textit{krokových cyk
 
 Stojná fáze, je fáze, kdy je noha v kontaktu se zemí. Zabírá 60\% dvojkroku a zaèíná s \textit{úderem paty} (\textit{poèáteèní kontakt}) a konèí s \textit{odrazem palce}. Je dále rozdìlena do podfází:
 \begin{itemize}
-\item \textit{stadium zatì¾ování}
+\item \textit{stádium zatì¾ování}
 \item \textit{mezistoj}
 \item \textit{koneèný stoj}
 \item \textit{pøed¹vihová fáze}
@@ -243,8 +243,8 @@ Nyní si popí¹eme nìkteré termíny a parametry specifikující chùzi (obr. \ref{step
 Tato sekce obsahuje podrobný popis jednotlivých fází krokového cyklu. Ka¾dá z osmi fází má funkèní objektiv. Sekvenèní kombinace fází umo¾òuje konèetinì dosáhnout tøí základních úkolù. Tìmi jsou pøesun hmotnosti tìla, jednooporová fáze a posun konèetiny ve ¹vihové fázi. Tato podkapitola byla pøevzata z \cite{gait_review}. 
 \subsection{Poèáteèní kontakt}
 V této fázi je kyèel ohnutá, koleno nata¾ené a kotník v neutrální poloze. Kontakt se zemí je dosa¾en pomocí paty, která se stává støedem otáèení. Druhá noha je na konci koneèného stoje. Tato fáze obsahuje moment kdy právì nastane dotyk nohy se zemí. Dr¾ení tìla v tuto chvíli urèuje pohyb konèetiny ve stadiu zatì¾ování. 
-\subsection{Stadium zatì¾ování}
-Stadium zatì¾ování je fáze, kde je váha tìla pøenesena na pøední nohu. Koleno je pokrèeno pro absorbci ¹oku. Chodidlo se dostává do plného kontaktu se zemí. Protilehlá noha je v pøed¹vihové fázi. Tato fáze je poèátkem fáze dvojí opory. Pokraèuje dokud nezaène být druhá noha zvedána ke ¹vihu. 
+\subsection{stádium zatì¾ování}
+stádium zatì¾ování je fáze, kde je váha tìla pøenesena na pøední nohu. Koleno je pokrèeno pro absorbci ¹oku. Chodidlo se dostává do plného kontaktu se zemí. Protilehlá noha je v pøed¹vihové fázi. Tato fáze je poèátkem fáze dvojí opory. Pokraèuje dokud nezaène být druhá noha zvedána ke ¹vihu. 
 \subsection{Mezistoj}
 V mezistoji dochází k posunutí dolní konèetiny pøes zafixované chodidlo, zatímco koleno a kotník se propínají. Protilehlá noha se nachází uprostøed mezi¹vihové fáze. Je to první polovina intervalu stoje na pouze jedné noze. Trvá od zvednutí druhé nohy dokud váha není pøesunuta po chodidle do oblasti pøedno¾í. 
 \subsection{Koneèný stoj}
@@ -402,6 +402,8 @@ Následuje zobrazení kostry. Pro ka¾dou kost se pou¾ije shodný model. Pro kosti s
 \end{figure}
 
 \section{Animace}
+Popis animace je rozdìlen na pohyb nohu, pánve a horní poloviny tìla. Ve v¹ech tìchto èástech je potøeba urèovat rotace a trajektorie kloubù. K tomu slou¾í Bézierovy køivky. Dále jsou v této kapitole popsány mo¾nosti nastavování parametrù.
+
 Pohyb koøene kostry, pánve, bude aproximován pomocí interpolaèního Catmull-Rom splinu, podobnì jako na obrázku \ref{chung_pelvis}. Pro rotaci a náklon pánve budou vyu¾ity grafy na obrázku \ref{pelvic kinematics}. Pozice paty a prstù nohy se urèí ze znalostí fází chùze. Bìhem stadia zatì¾ování je pata na zemi a chodidlo je zvednuté a postupnì se dotýká zemì. V mezistoji bude chodidlo nehybné. Bìhem koneèného stoje a pøed¹vihové fáze jsou prsty nehybnì na zemi a zvedá se pata, a¾ se nakonec zvednou i prsty. V následujících fázích se poloha chodidla pøesouvá postupnì do polohy, kterou bude mít v poèáteèním kontaktu. Rotace kotníku se aproximuje pomocí interpolaèních splinù, viz obr \ref{ankle_kinematics}. Rotace kyèle a kolene se dopoèítá pomocí inverzní kinematiky, pou¾ije se metoda CCD (kapitola \ref{ccd}). Horní konèetiny se budou hýbat opaènì k dolním konèetinám v rozsahu nastavitelným parametry.
 
 \begin{figure}[h]
@@ -419,6 +421,145 @@ Pohyb koøene kostry, pánve, bude aproximován pomocí interpolaèního Catmull-Rom s
 \caption{Kinematika hlezenního kloubu (kotníku). Pøevzato z \cite{biomechanika_chuze}.} \label{ankle_kinematics}
 \end{center}
 \end{figure}
+
+\subsection{Bézierovy køivky}
+Bézierovy køivky \cite{bezier_primer} jsou parametrické interpolaèní køivky. Ty nám umo¾ní pøesnou aproximaci s malým mno¾stvím kontrolních bodù. Zvolili jsme kubické Bézierovy køivky, které pou¾ívají ètyøi kontrolní body, kde køivka prochází pouze krajními. Dva prostøední body urèují tvar køivky. Segmenty tìchto køivek je mo¾né skládat za sebe. Jestli¾e chceme plynulou návaznost, je nutné zajistit aby tøetí bod pøedchozího segmentu a druhý následujícího byly kolineární. Máme-li parametr $t$ potom se pozice $\mathbf{B}$ na køivce urèí následovnì:
+\begin{eqnarray}
+\mathbf{B}(t) &=& (1 - t)^3\mathbf{P_0} + 3(1-t)^2 t\mathbf{P_1} + 3(1-t)t^2\mathbf{P_2} + t^3\mathbf{P_3}
+\label{r.bezier}
+\end{eqnarray}
+kde $0 \leq t \leq 1$ a $\mathbf{P_0}$, $\mathbf{P_1}$, $\mathbf{P_2}$ a $\mathbf{P_3}$ jsou kontrolní body køivky.
+
+Køivky, které chceme aproximovat jsou ve 2D prostoru. Potøebujeme pro konkrétní hodnotu $x$ získat odpovídající hodnotu $y$. Bézierovy køivky ale vrací hodnotu podle parametru $t$, který se nepohybuje po køivce lineárnì. Proto musíme pro na¹e $x$ urèit odpovídající $t$ a to poté pou¾ít pro získání $y$. To je mo¾né øe¹it tak, ¾e se urèí vìt¹í mno¾ství bodù na køivce (napø. 100) a pro ka¾dý se získá hodnota $x$. Kdy¾ je potom potøeba urèit $t$ pro nìjaké $x$  najde se vhodný interval a $t$ se urèí lineární interpolací. Proto¾e se ale na¹e køivky budou mìnit s nastavováním parametrù a nerovností terénu, toto øe¹ení není vhodné, proto¾e vy¾aduje pøi ka¾dé zmìnì pøepoèítat v¹echny hodnoty. Proto jsme zvolili øe¹ení numerickou metodou.
+
+Jako metodu jsme zvolili metodu pro øe¹ení jedné nelineární rovnice Regula Falsi. Ta konverguje v¾dy a v na¹em pøípadì kdy øe¹í hladké a monotónní køivky i velmi rychle. Funguje na principu dìlení intervalu $\langle a, b \rangle$ na dvì obecnì rùzné èásti. Dìlícím bodem $x_k$ intervalu je prùseèík osy $\mathbf{x}$ s úseèkou spojující $[a,f(a)]$ a $[b,f(b)]$ urèený následovnì:
+\begin{eqnarray}
+x_k &=& b_k - \frac{b_k-a_k}{f(b_k)-f(a_k)}f(b_k)
+\label{r.regula_falsi}
+\end{eqnarray}
+Výpoèet konèí jestli¾e $|x_k - x_{k-1}| < \epsilon$. Tato metoda najde v na¹em pøípadì odpovídající $t$ s dostateènou pøesností na cca 4 iterace.
+
+
+\subsection{Pohyb nohou}
+O pohyb nohou se stará tøída \texttt{Leg} její¾ hlavní metodou, která se volá ka¾dý snímek poté co je ji¾ pohnutá pánev je metoda \texttt{update}. Ta vyu¾ívá jediný parametr a tím je èas, o který se animace posunula. Jeden krokový cyklus nohy je nastaven na dobu trvání jedné vteøiny. Zrychlení nebo zpomalení kroku je dosa¾eno úpravou vstupního èasu. Tento vstupní èas je poté pøièten k promìnné \texttt{t}, která se pøi pøeteèení pøes 1 vteøinu vrací o vteøinu zpìt. Podle \texttt{t} se poté urèí v jaké fázi krokového cyklu se noha nachází a podle toho je urèen dal¹í postup.
+
+Nemusíme rozli¹ovat v¹ech sedm fází cyklu, ale budou nám staèit ètyøi. Stádium zatì¾ovaní a mezistoj jsou nezmìnìny. Koneèný stoj a pøed¹vihová fáze jsou spojeny do jedné, proto¾e z pohledu animace se tyto fáze neli¹í, v obou je provádìn stejný úkon -- zvedání paty. Poslední tøi fáze (poèáteèní ¹vih, mezi¹vih a koneèný ¹vih) jsou také spojeny do jedné, budeme ji øíkat pouze ¹vihová. Tyto fáze je mo¾né spojit, proto¾e se celá ¹vihová fáze dá popsat spojitì pomocí trajektorie od odrazu palce do poèáteèního kontaktu.
+
+Pro potøeby správného a pøesného urèování pohybu nohou potøebujeme znát pozici paty a prstù nohy. Pøesnì se tyto pozice nedají získat pouze z pozic kostí. Tyto pozice jsou závislé na pozici a rotaci chodidla. Potøebné informace o jejich pozici jsou získány z umístìní kostry pøed samotným provedením animace podle umístìní kostry v prostoru, viz obrázek \ref{pozice_paty}. Kdy¾ jsou získány paty a prstù nohy, jsou vynásobeny inverzní transformaèní maticí chodidla. Tím jsou získány relativní pozice vùèi chodidlu, z kterých je pozdìji mo¾né získat pøesnì pozici paty a prstù v závislosti na aktuální pozici chodila. Staèí vynásobit aktuální transformaèní maticí chodidla a tìchto relativních pozic.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.7\linewidth]{fig/pozice_paty.pdf}
+	\caption{Vstupní pozice modelu a jeho kostry. Pozice paty se nachází na ose $\mathbf{z}$ a $\mathbf{y}$. Pozice prstù nohy se nachází pod kloubem prstù nohy na ose z.}
+	\label{fig:pozice_paty}
+\end{figure}
+
+Dùle¾itou podmínkou pro chùzi po nerovném terénu je mo¾nost získat informace o terénu na kterém se noha nachází. Terén je objekt, který je sdílený v¹emi souèástmi tìla, kteøí s ním potøebují pracovat. Pro nohu je dùle¾ité získat vý¹ku terénu pod patou nohy a úhel mezi chodidlem a terénem. Tento úhel se urèí pomocí skalárního souèinu mezi vektorem smìøujícím od paty k prstùm nohy a vektorem mezi pozicemi na terénu pod patou a pod prsty. 
+
+\subsubsection{Stádium zatì¾ování}
+Stádium zatì¾ování nastane pro $t < 0.12$. Pøed prvním vykonáním této fáze se dokonèí ¹vihová fáze. Proto¾e pøedchozí snímek se vykonával pro nìjaké $t \leq 1.0$ a v aktuálním snímku se pøesunul z ¹vihové fáze do stadia zatì¾ování s nìjakým $t >= 0.0$ je potøeba prvnì dokonèit pøedchozí fázi jako by èas byl roven 1. Kdybychom to neudìlali animace by nebyla tolik pøesná a plynulá, jak moc by záviselo na velikosti èasového kroku. Také je získán poèáteèní úhel mezi chodidlem a terénem. 
+
+Poté se tato fáze zabývá zachováním pozice paty na terénu a sklápìním chodidla. Pozice a natoèení chodidla je závislé na pozici pánve. Pánev se v ka¾dém snímku pohne první, proto pøi øe¹ení nohy je noha na jiné pozici ne¾ byla v pøedchozím snímku. Pozice paty je závislá na rotaci chodidla. Rotace chodidla se v této fázi urèuje lineární interpolací mezi poèáteèním úhlem s terénem a nulovým úhlem. Poté co se urèí po¾adovaná rotace pro aktuální \texttt{t} je chodidlo do této pozice nastaveno. Nyní se mù¾e urèit rozdíl mezi aktuální pozicí paty a pøedchozí a z toho urèit po¾adovaná pozice kotníku, která je dosa¾ena pomocí inverzní kinematiky. Inverzní kinematika hýbe nohou a tím i mìní rotaci chodidla vùèi terénu. Proto je po jejím provedení potøeba znovu natoèit chodidlo do správného úhlu.
+
+\subsubsection{Mezistoj}
+Následující fáze mezistoj nastává pro $0.1 \leq t < 0.31$ a má za úkol udr¾et chodilo polo¾eno na zemi na stejné pozici. Je vykonávána podobnì jako pøedchozí fáze. Pøed prvním vykonáním je tedy prvnì dokonèeno stádium zatì¾ování. Rozdílem je, ¾e pohyb nevychází z paty, ale vychází z kotníku. Proto nám staèí si na zaèátku zapamatovat pozici kotníku a tu pou¾ít pro inverzní kinematiku. Není tedy pøed jejím provedením nutné nastavovat novou rotaci chodidla, ta je nastavena a¾ po provedení inverzní kinematiky tak, aby úhel mezi terénem byl nulový.
+
+\subsubsection{Zvedání paty}
+Zvedání paty nastává pro $0.31 \leq t < 0.62$. Pro èas do $t = 0.5$ pøi zvedání paty zùstává koleno pøevá¾nì propnuté, ve zbylém èase se zase koleno ohýbá. Aby tohoto bylo dosa¾eno není vhodné zvedat patu v celé fázi lineárnì. Také není vhodné ji rozdìlit na dvì samostatné èásti, zvedání paty by nepùsobilo plynule. Nejvhodnìj¹ím øe¹ení se zdá pou¾ití Bézierovy køivky, kde v první èásti se zvedá pata ménì a v druhé více, tak je celá fáze plynulá. Konkrétní tvar køivky (obr. \ref{heelRiseRot}) byl urèen experimentálnì tak aby tato fáze bylo dostateènì pøirozená. Také je u této køivky dùle¾itý sklon u konce fáze, který pøi vhodném zvolení zajistí co nejplynulej¹í pøechod do ¹vihové fáze, tzn. je dùle¾ité aby rychlost pohybu paty na konci této fáze a na zaèátku ¹vihové byly co nejpodobnìj¹í. Rychlost pohybu nohy ve ¹vihové fázi je závislá na délce kroku. Proto je celkový úhel o který je pata zvednutá zvìt¹ován se zvìt¹ující se délkou kroku. Mimo správnou návaznost je toto zvìt¹ování také nutné pro zvý¹ení efektivního dosahu nohy, aby vùbec del¹í krok byl umo¾nìn. Køivka úhlu zvedání paty je vytvoøena pro nejdel¹í mo¾ný dvojkrok, který je 1.8 metru dlouhý. Pro jiné délky kroku je vynásobena $c = (dvojkrok/1.8)^2$, tato hodnota byla také zji¹tìna experimentálnì, aby tato fáze vypadala pøirozenì.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.3\linewidth]{fig/heelRiseRot.pdf}
+	\caption{Rotace  chodidla vùèi zemi pøi fázi zvedání paty pro délku dvojkroku 1.8 metru.}
+	\label{fig:heelRiseRot}
+\end{figure}
+
+Samotné zvedání paty probíhá následovnì. Na zaèátku fáze se ulo¾í pozice prstù, která se bude udr¾ovat. Po zji¹tìní aktuální rotace chodidla se zemí se natoèí chodidlo do této polohy. Poté se pomocí inverzní kinematiky  posune kotník o rozdíl pùvodní a aktuální pozice prstù. Tím se kotník dostane do po¾adované polohy, ale prsty v pùvodní pozici nebudou, proto¾e inverzní kinematika zmìnila rotaci chodidla vùèi zemi a proto je chodidlo znovu natoèeno na správný úhel. Nakonec zbývá jenom natoèit prsty nohy, aby byly v nulovém úhlu se zemí, tzn. natoèit na rotaci odpovídající úhlu mezi chodidlem a zemí.
+
+\subsubsection{©vihová fáze}
+©vihová fáze nastává pro $0.62 \leq t \leq 1.0$. Jejím cílem je pøesunutí nohy z aktuální pozice na pozici dal¹ího kroku. V této fázi se vyu¾ívají ètyøi Bézierovy køivky. Pøi prvním vykonání této fáze se dokonèí fáze zvedání paty a zapamatuje se pozice paty, která bude slou¾it jako výchozí bod pro ¹vihovou fázi. V prùbìhu této fáze je také potøeba vrátit prsty na noze do pùvodní polohy, proto¾e pøi zvedání paty byly otoèeny. V první pìtinì ¹vihové fáze jsou prsty rotovány do pozice urèené lineární interpolací mezi otoèenou pozicí a pùvodní nata¾enou pozicí.
+
+Podle \cite{chung} se chodidlo pohybuje vpøed s mìnící se rychlostí.  Rychlost je nejvy¹¹í uprostøed ¹vihové fáze a nejpomalej¹í na zaèátku a na konci. K tomu slou¾í Bézierova køivka urèující posun chodidla v horizontální rovinì, viz obrázek \ref{fig:swingSpeed}. Tato køivka je vytvoøena pro posun o délce 1 metr. Potom pro rùzné délky staèí pøed pou¾itím køivky její kontrolní body vynásobit po¾adovanou délkou. Jako délku nemù¾eme pou¾ít aktuální délku dvojkroku, to by se noha pøesouvala pøed po¾adovanou pozici. Je nutné vzít v úvahu, ¾e pøi zvedání paty se ji¾  pata posunuje vpøed. Noha zná pozici paty na zaèátku aktuálního kroku a pozici na kterou chceme aby pata dopadla pøi konci kroku, tedy zaèátku dal¹ího. Pata zùstává na stejné pozici pøi stádiu zatì¾ování a pøi mezistoji. Ale pøi zvedání paty se ji¾ pohybuje v horizontální rovinì a délka tohoto pohybu se musí odeèíst od délky dvojkroku, abychom získali pøesný zbývající posun nohy na cílovou pozici pro vynásobení Bézierovy køivky. Pro posun vpøed v horizontální rovinì poté staèí zjistit hodnotu køivky a pøièíst ji k pozici po ukonèení zvedání paty.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=1.0\linewidth]{fig/leg_swing_speed.pdf}
+	\caption{Vlevo jsou namìøené grafy posunu chodidla v èase pro chùzi po rovinì, z kopce a do kopce pøevzté z èlánku \cite{chung}. Vpravo je vytvoøená generická Bézierova køivka, která je pou¾ita pro posun nohy v horizontální rovinì.}
+	\label{fig:swingSpeed}
+\end{figure}
+
+V prùbìhu chùze mù¾e být nastavena rùzná ¹íøka kroku. Není pøirozené, aby si chodidlo v prùbìhu celé ¹vihové fáze udr¾ovalo stejnou vzdálenost od ¹íøky od pánve. Pùsobí mnohem vìrohodnìji pokud se chodidlo po odrazu od zemì pøesune na ¹íøku kyèle, které dosáhne v polovinì ¹vihové fáze a poté se zaène pøesouvat zpìt na ¹íøku kroku, které dosáhne v okam¾iku dopadu paty. Toho by bylo mo¾né dosáhnout lineární interpolací mezi ¹íøkou kroku a pozicí kyèle. Tímto zpùsobem ale animace není plynulá kvùli náhlému zrychlení nohy pøi odrazu paty a zastavení pøi dopadu. Proto jsme vytvoøili dal¹í Bézierovu køivku, která se pou¾ije pro plynulé zrychlení a zpomalení tohoto pohybu, viz obrázek \ref{fig:widthStep}. Èasový parametr lineární interpolace se pou¾ije pro získání hodnoty této køivky, která se pou¾ije místo nìj.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.7\linewidth]{fig/svih_sirka_kroku.pdf}
+	\caption{Pøesun chodidla bìhem ¹vihové fáze v závislosti na ¹íøce kroku.}
+	\label{fig:widthStep}
+\end{figure}
+
+Takto jsou získány dva údaje ze ètyø, které jsou potøeba pro urèení pozice chodidla ve ¹vihové fázi. Máme pozici paty do ¹íøky, vpøed a dále potøebujeme vý¹ku a rotaci chodidla. Kdy¾ máme v¹echny tyto ètyøi údaje mù¾eme nastavit správnou rotaci v kotníku, poté z ní urèit novou pozici kotníku tak, aby pata byla na správné pozici podle na¹í urèené ¹íøky, vý¹ky a posunu vpøed. S touto novou pozicí kotníku se spoèítá inverzní kinematika. Zbylé dva údaje rotace a vý¹ky chodidla je ale nutné pøizpùsobit nerovnému terénu.
+
+Pro rotaci chodidla v prùbìhu ¹vihové fáze vycházíme z obrázku \ref{fig:ankleRot}, kde je uvedena rotace v kotníku v prùbìhu celého cyklu. Èást toho grafu ve ¹vihové fázi je aproximována pomocí Bézierovy køivky. Tato køivka zaèíná pro 15 stupòù plantární flexe, tedy propnutí kotníku z neutrální polohy, a konèí u pøibli¾nì neutrální polohy. Tuto køivku je tedy nutné pøizpùsobit propnutí kotníku na zaèátku ¹vihové fáze, které se mù¾e li¹it v závislosti na délce kroku a sklonu terénu. Kontrolní body køivky jsou proto vynásobeny koeficientem $c = aktRot / 15\degree$, kde $aktRot$ je aktuální propnutí v kotníku. 
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.9\linewidth]{fig/ankle_kinematics.png}
+	\caption{Rotace kotníku v prùbìhu krokového cyklu. Pøevzato z \cite{biomechanika_chuze}.}
+	\label{fig:ankleRot}
+\end{figure}
+
+Nyní je potøeba vyøe¹it úhel dopadu chodidla na terén.  Jedna mo¾nost je mít pevnì daný úhel, pod kterým bude chodidlo dopadat v¾dy. Zdá se ale pøirozenìj¹í nechat úhel podle na¹í køivky a upravit ho jenom v nevhodných pøípadech. Tímto pøípadem je mo¾nost prùchodu chodidla skrz terén pøi sklonu do kopce, viz obrázek \ref{fig:swingRotFix}. Poté je rotace upravena aby pøi dopadu byl sklon chodidla shodný s terénem. 
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.6\linewidth]{fig/foot_through_terrain.pdf}
+	\caption{Pozice chodidla na terénu pøi dopadu paty s pùvodní rotací a po úpravì rotace.}
+	\label{fig:swingRotFix}
+\end{figure}
+
+Kvùli tomu je pøed samotným provedením kroku vyzkou¹ena pozice na konci kroku pøi dopadu paty. To vy¾aduje urèení transformaèní rotace pánve pøi dopadu paty a posunutí nohy na cílovou pozici pomocí inverzní kinematiky. Poté je zkontrolován úhel mezi chodidlem a terénem a jestli¾e je záporný, tzn. chodidlo se nachází pod terénem je upravena køivka rotace. Potøebujeme upravit pouze koncový úhel propnutí kotníku a proto jsou o potøebný úhel posunuty poslední dva kontrolní body køivky.
+
+Poslední co je potøeba urèit je vý¹ka chodidla. K tomu slou¾í poslední Bézierova køivka pou¾itá pro pohyb nohy, viz obrázek \ref{fig:swingHeight}. Tato køivka urèuje vý¹ku paty a skládá se ze tøí segmentù, to nám umo¾òuje køivku dobøe tvarovat pøi pøizpùsobování se nerovnému terénu. Obdobnì jako pøi rotaci chodidla je tato køivka vytvoøena pro jeden pøípad a poté upravena. Konkrétnì je vytvoøena pro patu nacházející se 20 centimetrù nad terénem pøi poèátku ¹vihové fáze. Pro pøípady kdy se pata nachází vý¹e nebo ní¾e jsou v¹echny kontrolní body vynásobeny koeficientem, který zajistí aby vý¹ka paty odpovídala a ¹vihová fáze plynule navazovala na zvedání paty.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.5\linewidth]{fig/legSwingCurve_excel.pdf}
+	\caption{Trajektorie paty pøi ¹vihové fázi pro chùzi po rovném terénu.}
+	\label{fig:swingHeight}
+\end{figure}
+
+\subsubsection{Inverzní kinematika}
+Jak je nastven ref. vektor.-
+
+Kinematický øetìzec který potøebujeme øe¹it obsahuje pouze dva klouby -- kyèel a koleno. Pro takový øetìzec existuje rychlé analytické øe¹ení. Pozici kyèle známe a po¾adovanou cílovou pozici koncového efektoru (kotníku) také. Kromì toho známe i délku stehenní a holenní kosti. Rotace kyèle a kolene se poté dopoèítá jako úhly v trojúhelníku pomocí kosinové vìty.
+
+Tímto je¹tì není inverzní kinematika vyøe¹ená, proto¾e mù¾e být nekoneènì mnoho øe¹ení s rùznými rotacemi okolo osy mezi kyèlí a kotníkem, viz obrázek \ref{fig:analytical_IK}. K tomu abychom urèili výslednou rotaci okolo této osy slou¾í referenèní vektor \cite{analytic_IK}. Výsledné øe¹ení se poté vybere takové, aby úhel $\delta$ mezi referenèním vektorem a stehenní kostí byl co nejmen¹í. Proto budeme rotovat vektor $\mathbf{v}$ o úhel $\theta$ do nového vektoru $\mathbf{v}'$. Minimalizace úhlu $\delta$ je ekvivalentní maximalizaci $\cos\delta$ (resp. $\mathbf{v}'\cdot \mathbf{k}$) a to nastane kdy¾ je první derivace rovna nule:
+\begin{eqnarray}
+\frac{d}{d\theta}\mathbf{v}'\cdot \mathbf{k} &=& 0
+\label{r.IK_derivation}
+\end{eqnarray}
+Po úpravì dostaneme:
+\begin{eqnarray}
+\theta = \tan^{-1}\frac{2 B}{C-A} &\vee & \theta = \pi + \tan^{-1}\frac{2 B}{C-A}
+\label{r.IK_derivation2}
+\end{eqnarray}
+kde $A = (\mathbf{a}\cdot \mathbf{v})\mathbf{a} \cdot \mathbf{k} - ((\mathbf{a} \times \mathbf{v})\times \mathbf{a})\cdot \mathbf{k})$, $B = (\mathbf{a} \times \mathbf{v})\cdot \mathbf{k}$ a $C = \mathbf{v}\cdot \mathbf{k}$. Abychom urèili, které ze dvou øe¹ení maximalizuje $\cos\delta$ musíme urèit druhou derivaci $\cos\delta$:
+\begin{eqnarray}
+\frac{d^2}{d\theta^2}\cos\delta &=& \frac{A-C}{2} \cos\theta - B\sin\theta
+\label{r.IK_derivation3}
+\end{eqnarray}
+Úhel $\delta$ je minimální, kdy¾ je druhá derivace men¹í ne¾ nula.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.4\linewidth]{fig/analytical_IK.pdf}
+	\caption{Pro dosa¾ení cílové pozice v kotníku se pomocí kosinové vìty urèí úhly v kyèli a v koleni. Rotace okolo osy mezi kyèlí a kotníkem se urèí tak, aby úhel  $\delta$ byl co nejmen¹í.}
+	\label{fig:analytical_IK}
+\end{figure}
+
+Pomocí kosinové vìty jsme pro stehenní kost urèili úhel $\alpha_1$, který urèuje rotaci mezi vektorem $\mathbf{a}$ a stehenní kostí $\mathbf{v}$. Abychom nastavili kost do správné pozice, je potøeba vektor $\mathbf{v}$ natoèit do $\mathbf{a}$. K tomu je sestavena transformaèní matice, jejím¾ vynásobením se $\mathbf{v}$ dostane do $\mathbf{a}$. Poté je ji¾ mo¾né rotovat kyèel o úhel $\alpha_1$. Nyní u¾ je pouze rotována holeò do úhlu $\alpha_2$ a stehno rotováno o $\theta$ okolo vektoru $\mathbf{a}$.
+
+Øe¹ení inverzní kinematiky rotuje holeò okolo osy $\mathbf{x}$ a tedy aby  výsledná pozice kotníku odpovídala té po¾adované, noha nemù¾e být libovolnì natoèena vùèi své rodièovské kosti (stehna). Vstupní model mù¾e mít koleno rùznì natoèené a proto pøed samotným zaèátkem animace je nutné lokální matici holenì zbavit v¹ech rotací a zachovat pouze translaci.
 
 
 \chapter{Závìr}

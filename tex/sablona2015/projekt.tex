@@ -1,0 +1,339 @@
+%============================================================================
+% tento soubor pouzijte jako zaklad
+% (c) 2008 Michal Bidlo
+% E-mail: bidlom AT fit vutbr cz
+%============================================================================
+% kodovaní: UTF-8 (zmena prikazem iconv, recode nebo cstocs)
+%----------------------------------------------------------------------------
+% zpracování: make, make pdf, make desky, make clean
+%============================================================================
+% Šablonu upravil: Ing. Jaroslav Dytrych, idytrych@fit.vutbr.cz
+%============================================================================
+\documentclass[]{fitthesis} % bez zadání - pro začátek práce, aby nebyl problém s překladem
+%\documentclass[zadani]{fitthesis} % odevzdani do wisu - odkazy jsou barevné
+%\documentclass[zadani,print]{fitthesis} % pro tisk - odkazy jsou černé
+%\documentclass[english,print]{fitthesis} % pro tisk - odkazy jsou černé
+% * Je-li prace psana v anglickem jazyce, je zapotrebi u tridy pouzit 
+%   parametr english nasledovne:
+%      \documentclass[english]{fitthesis}
+% * Je-li prace psana ve slovenskem jazyce, je zapotrebi u tridy pouzit 
+%   parametr slovak nasledovne:
+%      \documentclass[slovak]{fitthesis}
+
+\usepackage[czech,slovak,english]{babel}
+\usepackage[utf8]{inputenc} %kodovani
+\usepackage[T1]{fontenc}
+\usepackage{cmap}
+\usepackage{url}
+\DeclareUrlCommand\url{\def\UrlLeft{<}\def\UrlRight{>} \urlstyle{tt}}
+
+%zde muzeme vlozit vlastni balicky
+\usepackage{listings}
+\usepackage[toc,page,header]{appendix}
+\RequirePackage{titletoc}
+\ifczech
+  \usepackage{ae}
+\fi
+\usepackage{subfig}
+\usepackage{epstopdf}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{gensymb}
+\usepackage{float}
+\captionsetup[lstlisting]{position=bottom}
+\renewcommand{\lstlistingname}{Kód}% Listing -> Kód
+%http://tex.stackexchange.com/a/11134
+\usepackage{color}
+\definecolor{gray}{rgb}{0.4,0.4,0.4}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.6}
+\definecolor{cyan}{rgb}{0.0,0.6,0.6}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\lstset{
+  basicstyle=\ttfamily,
+  columns=fullflexible,
+  captionpos=b,
+  showstringspaces=false,
+  commentstyle=\color{gray}\upshape,
+    keywordstyle=\color{darkblue},       % keyword style
+  stringstyle=\color{mymauve},     % string literal style
+  frame=single, % adds a frame around the code
+  rulecolor=\color{gray},
+}
+
+\lstdefinelanguage{XML}
+{
+  morestring=[b]",
+ % morestring=[s]{>}{<},
+  morecomment=[s]{<!--}{-->},
+  stringstyle=\color{black},
+  identifierstyle=\color{darkblue},
+  keywordstyle=\color{cyan},
+  morekeywords={xmlns,version,type}% list your attributes here
+}
+
+\lstdefinelanguage{GLSL}
+{
+sensitive=true,
+morekeywords=[1]{
+attribute, const, uniform, varying,
+layout, centroid, flat, smooth,
+noperspective, break, continue, do,
+for, while, switch, case, default, if,
+else, in, out, inout, float, int, void,
+bool, true, false, invariant, discard,
+return, mat2, mat3, mat4, mat2x2, mat2x3,
+mat2x4, mat3x2, mat3x3, mat3x4, mat4x2,
+mat4x3, mat4x4, vec2, vec3, vec4, ivec2,
+ivec3, ivec4, bvec2, bvec3, bvec4, uint,
+uvec2, uvec3, uvec4, lowp, mediump, highp,
+precision, sampler1D, sampler2D, sampler3D,
+samplerCube, sampler1DShadow,
+sampler2DShadow, samplerCubeShadow,
+sampler1DArray, sampler2DArray,
+sampler1DArrayShadow, sampler2DArrayShadow,
+isampler1D, isampler2D, isampler3D,
+isamplerCube, isampler1DArray,
+isampler2DArray, usampler1D, usampler2D,
+usampler3D, usamplerCube, usampler1DArray,
+usampler2DArray, sampler2DRect,
+sampler2DRectShadow, isampler2DRect,
+usampler2DRect, samplerBuffer,
+isamplerBuffer, usamplerBuffer, sampler2DMS,
+isampler2DMS, usampler2DMS,
+sampler2DMSArray, isampler2DMSArray,
+usampler2DMSArray, struct},
+morekeywords=[2]{
+radians,degrees,sin,cos,tan,asin,acos,atan,
+atan,sinh,cosh,tanh,asinh,acosh,atanh,pow,
+exp,log,exp2,log2,sqrt,inversesqrt,abs,sign,
+floor,trunc,round,roundEven,ceil,fract,mod,modf,
+min,max,clamp,mix,step,smoothstep,isnan,isinf,
+floatBitsToInt,floatBitsToUint,intBitsToFloat,
+uintBitsToFloat,length,distance,dot,cross,
+normalize,faceforward,reflect,refract,
+matrixCompMult,outerProduct,transpose,
+determinant,inverse,lessThan,lessThanEqual,
+greaterThan,greaterThanEqual,equal,notEqual,
+any,all,not,textureSize,texture,textureProj,
+textureLod,textureOffset,texelFetch,
+texelFetchOffset,textureProjOffset,
+textureLodOffset,textureProjLod,
+textureProjLodOffset,textureGrad,
+textureGradOffset,textureProjGrad,
+textureProjGradOffset,texture1D,texture1DProj,
+texture1DProjLod,texture2D,texture2DProj,
+texture2DLod,texture2DProjLod,texture3D,
+texture3DProj,texture3DLod,texture3DProjLod,
+textureCube,textureCubeLod,shadow1D,shadow2D,
+shadow1DProj,shadow2DProj,shadow1DLod,
+shadow2DLod,shadow1DProjLod,shadow2DProjLod,
+dFdx,dFdy,fwidth,noise1,noise2,noise3,noise4,
+EmitVertex,EndPrimitive},
+morekeywords=[3]{
+gl_VertexID,gl_InstanceID,gl_Position,
+gl_PointSize,gl_ClipDistance,gl_PerVertex,
+gl_Layer,gl_ClipVertex,gl_FragCoord,
+gl_FrontFacing,gl_ClipDistance,gl_FragColor,
+gl_FragData,gl_MaxDrawBuffers,gl_FragDepth,
+gl_PointCoord,gl_PrimitiveID,
+gl_MaxVertexAttribs,gl_MaxVertexUniformComponents,
+gl_MaxVaryingFloats,gl_MaxVaryingComponents,
+gl_MaxVertexOutputComponents,
+gl_MaxGeometryInputComponents,
+gl_MaxGeometryOutputComponents,
+gl_MaxFragmentInputComponents,
+gl_MaxVertexTextureImageUnits,
+gl_MaxCombinedTextureImageUnits,
+gl_MaxTextureImageUnits,
+gl_MaxFragmentUniformComponents,
+gl_MaxDrawBuffers,gl_MaxClipDistances,
+gl_MaxGeometryTextureImageUnits,
+gl_MaxGeometryOutputVertices,
+gl_MaxGeometryOutputVertices,
+gl_MaxGeometryTotalOutputComponents,
+gl_MaxGeometryUniformComponents,
+gl_MaxGeometryVaryingComponents,gl_DepthRange},
+morecomment=[l]{//},
+morecomment=[s]{/*}{*/},
+morecomment=[l][keywordstyle4]{\#},
+}
+
+\input{pisma.tex}
+
+% vypne funkci nové šablony, která automaticky nahrazuje uvozovky,
+% aby nebyly prováděny nevhodné náhrady v popisech API apod.
+\csdoublequotesoff
+
+% =======================================================================
+% balíček "hyperref" vytváří klikací odkazy v pdf, pokud tedy použijeme pdflatex
+% problém je, že balíček hyperref musí být uveden jako poslední, takže nemůže
+% být v šabloně
+\ifWis
+\ifx\pdfoutput\undefined % nejedeme pod pdflatexem
+\else
+  \usepackage{color}
+  \usepackage[unicode,colorlinks,hyperindex,plainpages=false,pdftex]{hyperref}
+  \definecolor{links}{rgb}{0.4,0.5,0}
+  \definecolor{anchors}{rgb}{1,0,0}
+  \def\AnchorColor{anchors}
+  \def\LinkColor{links}
+  \def\pdfBorderAttrs{/Border [0 0 0] }  % bez okrajů kolem odkazů
+  \pdfcompresslevel=9
+\fi
+\else % pro tisk budou odkazy, na které se dá klikat, černé
+\ifx\pdfoutput\undefined % nejedeme pod pdflatexem
+\else
+  \usepackage{color}
+  \usepackage[unicode,colorlinks,hyperindex,plainpages=false,pdftex,urlcolor=black,linkcolor=black,citecolor=black]{hyperref}
+  \definecolor{links}{rgb}{0,0,0}
+  \definecolor{anchors}{rgb}{0,0,0}
+  \def\AnchorColor{anchors}
+  \def\LinkColor{links}
+  \def\pdfBorderAttrs{/Border [0 0 0] } % bez okrajů kolem odkazů
+  \pdfcompresslevel=9
+\fi
+\fi
+
+%Informace o praci/projektu
+%---------------------------------------------------------------------------
+\projectinfo{
+  %Prace
+  project=DP,            %typ prace BP/SP/DP/DR
+  year=2016,             %rok
+  date=\today,           %datum odevzdani
+  %Nazev prace
+  title.cs={Procedurální animace lidské chůze},  %nazev prace v cestine ci slovenstine
+  title.en={Procedural Animation of Human Walk}, %nazev prace v anglictine
+  %Autor
+  author={Petr Mohelník},   %cele jmeno a prijmeni autora
+  author.name={Petr},   %jmeno autora (pro citaci)
+  author.surname={Mohelník},   %prijmeni autora (pro citaci)
+  author.title.p=Bc., %titul pred jmenem (nepovinne)
+  %author.title.a=PhD, %titul za jmenem (nepovinne)
+  %Ustav
+  department=UPGM, % doplnte prislusnou zkratku dle ustavu na zadani: UPSY/UIFS/UITS/UPGM
+  %Skolitel
+  supervisor=Lukáš Polok, %cele jmeno a prijmeni skolitele
+  supervisor.name={Lukáš},   %jmeno skolitele (pro citaci)
+  supervisor.surname={Polok},   %prijmeni skolitele (pro citaci)
+  supervisor.title.p=Ing.,   %titul pred jmenem (nepovinne)
+  %supervisor.title.a={Ph.D.},    %titul za jmenem (nepovinne)
+  %Klicova slova, abstrakty, prohlaseni a podekovani je mozne definovat 
+  %bud pomoci nasledujicich parametru nebo pomoci vyhrazenych maker (viz dale)
+  %===========================================================================
+  %Klicova slova
+  keywords.cs={počítačová grafika, skeletální animace, lidská chůze, inverzní kinematika}, %klicova slova v ceskem ci slovenskem jazyce
+  keywords.en={computer graphics, skeletal animation, human walk, inverse kinematics}, %klicova slova v anglickem jazyce
+  %Abstract
+  abstract.cs={Animace lidské chůze má velké využití v interaktivních aplikacích, převážně počítačových hrách. Existuje mnoho způsobů tvorby této animace, které se liší v kompromisu mezi přirozeností, kontrolou nad animací a výpočetním časem. Tato práce se zabývá implementací procedurální animace, která je vhodná pro chůzi po nerovném terénu. Pro manipulaci s modelem lidského těla se využívá skeletální animace. Dále je popsána a implementována inverzní kinematika, díky čemu může být animace přizpůsobována pomocí parametrů. V práci jsou také popsány některé existující implementace procedurální animace lidské chůze. A nechybí ani popis fází lidské chůze, abychom je mohli co nejvěrněji napodobit.}, % abstrakt v ceskem ci slovenskem jazyce
+  abstract.en={Animation of human walk is employed in many interactive applications, mostly in computer games. There are many ways to create such animation which differ in compromise among naturalness, control over animation and computing time. This work implements procedural animation which is applicable for walking on uneven terrain. Skeletal animation is used for maniulation with model of human body. Furthermore inverse kinematics is described and implemented. That allows for customization of animation using parameters. This work also describes some existing implementations of procedural animtion of human walk. It also describes phases of human walk, so we accurately aproximate them.}, % abstrakt v anglickem jazyce
+  %Prohlaseni
+  declaration={Prohlašuji, že jsem tento semestrální projekt vypracoval samostatně pod vedením Ing. Lukáše Poloka.},
+  %Podekovani (nepovinne)
+  acknowledgment={Děkuji svému vedoucímu práce Ing. Lukáši Polokovi za odbornou pomoc poskytnutou při řešení tohoto projektu.} % nepovinne
+}
+
+%Abstrakt (cesky, slovensky ci anglicky)
+%\abstract[cs]{Do tohoto odstavce bude zapsán výtah (abstrakt) práce v českém (slovenském) jazyce.}
+%\abstract[en]{Do tohoto odstavce bude zapsán výtah (abstrakt) práce v anglickém jazyce.}
+
+%Klicova slova (cesky, slovensky ci anglicky)
+%\keywords[cs]{Sem budou zapsána jednotlivá klíčová slova v českém (slovenském) jazyce, oddělená čárkami.}
+%\keywords[en]{Sem budou zapsána jednotlivá klíčová slova v anglickém jazyce, oddělená čárkami.}
+
+%Prohlaseni (u anglicky psane prace anglicky, u slovensky psane prace slovensky)
+%\declaration{Prohlašuji, že jsem tuto bakalářskou práci vypracoval samostatně pod vedením pana X...
+%Další informace mi poskytli...
+%Uvedl jsem všechny literární prameny a publikace, ze kterých jsem čerpal.}
+
+%Podekovani (nepovinne, nejlepe v jazyce prace)
+%\acknowledgment{V této sekci je možno uvést poděkování vedoucímu práce a těm, kteří poskytli odbornou pomoc
+%(externí zadavatel, konzultant, apod.).}
+
+\begin{document}
+  % Vysazeni titulnich stran
+  % ----------------------------------------------
+  \maketitle
+  % Obsah
+  % ----------------------------------------------
+  \tableofcontents
+  
+  % Seznam obrazku a tabulek (pokud prace obsahuje velke mnozstvi obrazku, tak se to hodi)
+\ifczech
+  \renewcommand\listfigurename{Seznam obrázků}
+\fi
+\ifslovak
+  \renewcommand\listfigurename{Zoznam obrázkov}
+\fi
+
+  % \listoffigures
+\ifczech
+  \renewcommand\listtablename{Seznam tabulek}
+\fi
+\ifslovak
+  \renewcommand\listtablename{Zoznam tabuliek}
+\fi
+
+  % \listoftables 
+
+  % Text prace
+  % ----------------------------------------------
+  \input{obsah} % viz. obsah.tex
+
+  % Pouzita literatura
+  % ----------------------------------------------
+\ifslovak
+  \makeatletter
+  \def\@openbib@code{\addcontentsline{toc}{chapter}{Literatúra}}
+  \makeatother
+  \bibliographystyle{czechiso}
+\else
+  \ifczech
+    \makeatletter
+    \def\@openbib@code{\addcontentsline{toc}{chapter}{Literatura}}
+    \makeatother
+    \bibliographystyle{czechiso}
+  \else 
+    \makeatletter
+    \def\@openbib@code{\addcontentsline{toc}{chapter}{Bibliography}}
+    \makeatother
+    \bibliographystyle{plain}
+  %  \bibliographystyle{alpha}
+  \fi
+\fi
+  \begin{flushleft}
+  \bibliography{literatura} % viz. literatura.bib
+  \end{flushleft}
+
+  % Prilohy
+  % ---------------------------------------------
+  \appendix
+\ifczech
+  \renewcommand{\appendixpagename}{Přílohy}
+  \renewcommand{\appendixtocname}{Přílohy}
+  \renewcommand{\appendixname}{Příloha}
+\fi
+\ifslovak
+  \renewcommand{\appendixpagename}{Prílohy}
+  \renewcommand{\appendixtocname}{Prílohy}
+  \renewcommand{\appendixname}{Príloha}
+\fi
+  \appendixpage
+
+\ifslovak
+  \section*{Zoznam príloh}
+  \addcontentsline{toc}{section}{Zoznam príloh}
+\else
+  \ifczech
+    \section*{Seznam příloh}
+    \addcontentsline{toc}{section}{Seznam příloh}
+  \else
+    \section*{List of Appendices}
+    \addcontentsline{toc}{section}{List of Appendices}
+  \fi
+\fi
+  \startcontents[chapters]
+  \printcontents[chapters]{l}{0}{\setcounter{tocdepth}{2}}
+  \input{prilohy} % viz. prilohy.tex
+\end{document}

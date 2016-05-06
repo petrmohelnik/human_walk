@@ -1,0 +1,126 @@
+
+%---rm---------------
+\renewcommand{\rmdefault}{lmr}%zavede Latin Modern Roman jako rm
+%---sf---------------
+\renewcommand{\sfdefault}{qhv}%zavede TeX Gyre Heros jako sf
+%---tt------------
+\renewcommand{\ttdefault}{lmtt}% zavede Latin Modern tt jako tt
+
+%-----------------------------------------------------------------------------
+
+
+% Níže jsou deklarace fontů pro testování a ladění JVS 
+% - doporučuje se NEPOUŽÍVAT
+% Deklarace nejsou doladěné !!!
+% Times New Roman není dle JVS povolený (je tu na ukázku)
+%-----------------------------------------------------------------------------
+
+\ifOPEN
+  \pdfmapfile{=OpenSansfontspdf.map}
+  \DeclareFontFamily{T1}{OpenSans}{}
+  \DeclareFontShape{T1}{OpenSans}{b}{n}{<->recOpenSans-Bold}{}
+  \DeclareFontShape{T1}{OpenSans}{b}{it}{<->recOpenSans-BoldItalic}{}
+  \DeclareFontShape{T1}{OpenSans}{eb}{n}{<->recOpenSans-ExtraBold}{}
+  \DeclareFontShape{T1}{OpenSans}{eb}{it}{<->recOpenSans-ExtraBoldItalic}{}
+  \DeclareFontShape{T1}{OpenSans}{m}{it}{<->recOpenSans-Italic}{}
+  \DeclareFontShape{T1}{OpenSans}{l}{n}{<->recOpenSans-Light}{}
+  \DeclareFontShape{T1}{OpenSans}{l}{it}{<->recOpenSans-LightItalic}{}
+  \DeclareFontShape{T1}{OpenSans}{m}{n}{<->recOpenSans-Regular}{}
+  \DeclareFontShape{T1}{OpenSans}{sb}{n}{<->recOpenSans-Semibold}{}
+  \DeclareFontShape{T1}{OpenSans}{sb}{it}{<->recOpenSans-SemiboldItalic}{}
+  \renewcommand{\rmdefault}{OpenSans}
+  \renewcommand{\sfdefault}{OpenSans}
+\else
+  \iftoggle{declare_open}{
+    \pdfmapfile{=OpenSansfontspdf.map}
+    \DeclareFontFamily{T1}{OpenSans}{}
+    \DeclareFontShape{T1}{OpenSans}{b}{n}{<->recOpenSans-Bold}{}
+    \DeclareFontShape{T1}{OpenSans}{b}{it}{<->recOpenSans-BoldItalic}{}
+    \DeclareFontShape{T1}{OpenSans}{eb}{n}{<->recOpenSans-ExtraBold}{}
+    \DeclareFontShape{T1}{OpenSans}{eb}{it}{<->recOpenSans-ExtraBoldItalic}{}
+    \DeclareFontShape{T1}{OpenSans}{m}{it}{<->recOpenSans-Italic}{}
+    \DeclareFontShape{T1}{OpenSans}{l}{n}{<->recOpenSans-Light}{}
+    \DeclareFontShape{T1}{OpenSans}{l}{it}{<->recOpenSans-LightItalic}{}
+    \DeclareFontShape{T1}{OpenSans}{m}{n}{<->recOpenSans-Regular}{}
+    \DeclareFontShape{T1}{OpenSans}{sb}{n}{<->recOpenSans-Semibold}{}
+    \DeclareFontShape{T1}{OpenSans}{sb}{it}{<->recOpenSans-SemiboldItalic}{}
+  }
+\fi
+
+
+\ifVAFLE
+  \pdfmapfile{=Vafle_VUT_fontspdf.map}
+  \DeclareFontFamily{T1}{VafleVUT}{}
+  \DeclareFontShape{T1}{VafleVUT}{m}{n}{<->recVafle_VUT_Regular}{}
+  \DeclareFontShape{T1}{VafleVUT}{b}{n}{<->recVafle_VUT_Bold}{}
+  \DeclareFontShape{T1}{VafleVUT}{l}{n}{<->recVafle_VUT_Light}{}
+  \renewcommand{\rmdefault}{VafleVUT}
+  \renewcommand{\sfdefault}{VafleVUT}
+  % Tohle je škaredý hack - Vafle nemá it a když se s tím nic neudělá, kurzíva
+  % se nijak neprojeví (jen varováním při překladu). Nicméně "doplňkový" font 
+  % OpenSans kurzívu má a v semibold to dle mého názoru vypadá pro demonstrační
+  % účely při ladění JVS přijatelně.
+  \let\oldit\it
+  \renewcommand{\it}{\usefont{T1}{OpenSans}{sb}{it}}
+\else
+  \ifTVAFLE
+    \pdfmapfile{=Vafle_VUT_fontspdf.map}
+    \DeclareFontFamily{T1}{VafleVUT}{}
+    \DeclareFontShape{T1}{VafleVUT}{m}{n}{<->recVafle_VUT_Regular}{}
+    \DeclareFontShape{T1}{VafleVUT}{b}{n}{<->recVafle_VUT_Bold}{}
+    \DeclareFontShape{T1}{VafleVUT}{l}{n}{<->recVafle_VUT_Light}{}
+    \pdfmapfile{=OpenSansfontspdf.map}
+    \DeclareFontFamily{T1}{OpenSans}{}
+    \DeclareFontShape{T1}{OpenSans}{b}{n}{<->recOpenSans-Bold}{}
+    \DeclareFontShape{T1}{OpenSans}{b}{it}{<->recOpenSans-BoldItalic}{}
+    \DeclareFontShape{T1}{OpenSans}{eb}{n}{<->recOpenSans-ExtraBold}{}
+    \DeclareFontShape{T1}{OpenSans}{eb}{it}{<->recOpenSans-ExtraBoldItalic}{}
+    \DeclareFontShape{T1}{OpenSans}{m}{it}{<->recOpenSans-Italic}{}
+    \DeclareFontShape{T1}{OpenSans}{l}{n}{<->recOpenSans-Light}{}
+    \DeclareFontShape{T1}{OpenSans}{l}{it}{<->recOpenSans-LightItalic}{}
+    \DeclareFontShape{T1}{OpenSans}{m}{n}{<->recOpenSans-Regular}{}
+    \DeclareFontShape{T1}{OpenSans}{sb}{n}{<->recOpenSans-Semibold}{}
+    \DeclareFontShape{T1}{OpenSans}{sb}{it}{<->recOpenSans-SemiboldItalic}{}
+  \fi
+\fi
+
+\ifARIAL
+  \pdfmapfile{=arialfontspdf.map}
+  \DeclareFontFamily{T1}{arial}{}
+  \DeclareFontShape{T1}{arial}{b}{n}{<->recarialbd}{}
+  \DeclareFontShape{T1}{arial}{b}{sl}{<->recarialbdo}{}
+  \DeclareFontShape{T1}{arial}{b}{it}{<->recarialbi}{}
+  \DeclareFontShape{T1}{arial}{m}{n}{<->recarial}{}
+  \DeclareFontShape{T1}{arial}{m}{sl}{<->recarialo}{}
+  \DeclareFontShape{T1}{arial}{m}{it}{<->recariali}{}
+  \DeclareFontShape{T1}{arial}{bx}{n}{<->ssub * arial/b/n}{}
+  \DeclareFontShape{T1}{arial}{bx}{sl}{<->ssub * arial/b/sl}{}
+  \DeclareFontShape{T1}{arial}{bx}{it}{<->ssub * arial/b/it}{}
+  \renewcommand{\rmdefault}{arial}
+  \renewcommand{\sfdefault}{arial}
+\else
+  \ifTARIAL
+    \pdfmapfile{=arialfontspdf.map}
+    \DeclareFontFamily{T1}{arial}{}
+    \DeclareFontShape{T1}{arial}{b}{n}{<->recarialbd}{}
+    \DeclareFontShape{T1}{arial}{b}{sl}{<->recarialbdo}{}
+    \DeclareFontShape{T1}{arial}{b}{it}{<->recarialbi}{}
+    \DeclareFontShape{T1}{arial}{m}{n}{<->recarial}{}
+    \DeclareFontShape{T1}{arial}{m}{sl}{<->recarialo}{}
+    \DeclareFontShape{T1}{arial}{m}{it}{<->recariali}{}
+    \DeclareFontShape{T1}{arial}{bx}{n}{<->ssub * arial/b/n}{}
+    \DeclareFontShape{T1}{arial}{bx}{sl}{<->ssub * arial/b/sl}{}
+    \DeclareFontShape{T1}{arial}{bx}{it}{<->ssub * arial/b/it}{}
+  \fi
+\fi
+
+\ifTIMES
+  \pdfmapfile{=timesfontspdf.map}
+  \DeclareFontFamily{T1}{times}{}
+  \DeclareFontShape{T1}{times}{m}{n}{<->rectimes}{}
+  \DeclareFontShape{T1}{times}{m}{it}{<->rectimesi}{}
+  \DeclareFontShape{T1}{times}{b}{n}{<->rectimesbd}{}
+  \DeclareFontShape{T1}{times}{b}{it}{<->rectimesbi}{}
+  \renewcommand{\rmdefault}{times}
+  \renewcommand{\sfdefault}{times}
+\fi

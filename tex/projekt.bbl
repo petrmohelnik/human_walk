@@ -9,7 +9,7 @@
 \providecommand{\eprint}[2][]{\url{#2}}
 
 \bibitem{biomechanika_chuze}
-Biomechanika chùze. [online].
+Biomechanika chï¿½ze. [online].
 \newline\urlprefix\url{{http://ftk.upol.cz/fileadmin/user_upload/FTK-katedry/biomechanika/BIAP_Chuze.pdf}}
 
 \bibitem{envelopes}
@@ -19,6 +19,10 @@ Blender Wiki: Skinning to Shapes. [online].
 \bibitem{bindPose}
 Vertex Skinning. [online].
 \newline\urlprefix\url{{http://ruh.li/AnimationVertexSkinning.html}}
+
+\bibitem{analytic_IK}
+Inverse Kinematics (two joints) for foot placement. [online], 2012.
+\newline\urlprefix\url{{http://www.gamasutra.com/view/news/129168/Inverse_Kinematics_two_joints_for_foot_placement.php}}
 
 \bibitem{venom}
 Venom joker rigged. [online], 2012.
@@ -56,6 +60,10 @@ Chung, S.-k.; Hahn, J.~K.: Animation of Human Walking in Virtual Environments.
 \bibitem{skinningMethods}
 Jacobson, A.; Deng, Z.; Kavan, L.; aj.: Skinning: Real-time Shape Deformation.
   In \emph{ACM SIGGRAPH 2014 Courses}, 2014.
+
+\bibitem{bezier_primer}
+Kamermans, M.: A Primer on BÃ©zier Curves. [online], 2011-2016.
+\newline\urlprefix\url{{http://pomax.github.io/bezierinfo/}}
 
 \bibitem{dualQuat}
 Kavan, L.; Collins, S.; Zara, J.; aj.: Geometric Skinning with Approximate Dual

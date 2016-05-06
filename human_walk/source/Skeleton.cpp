@@ -341,174 +341,7 @@ void Skeleton::configurePelvis(Leg &stanceLeg, Leg &swingLeg)
 	//	}
 	//}
 
-	/*std::vector<AngleDifferences> angleDifferences1, angleDifferences2;
-	angleDifferences1.reserve(PELVIS_CONFIGURATION_STEPS + 1); angleDifferences2.reserve(PELVIS_CONFIGURATION_STEPS + 1);
-	int lowestI = -1;
-	float lowestAcceleration = 100000000.0f;
-	int lowestErrorI = -1;
-	float lowestError = 100000000.0f;
-	for (unsigned int i = 0; i < 10; i++)
-	{
-		angleDifferences1.resize(0); angleDifferences2.resize(0);
-		float angleAcceleration = 0.0f;
-		//*nextRootPos += glm::vec3(0.0, 0.0, stepLength * 0.5f);
 
-		glm::mat4 testThighLocal = stanceLeg.getThigh()->localMat;
-		glm::mat4 testShinLocal = stanceLeg.getShin()->localMat;
-		float testKneeRot = stanceLeg.getKneeRot();
-		glm::mat4 testFootLocal = stanceLeg.getFoot()->localMat;
-		
-		//pelvisSpeed1Curve->setCoeffImmediately(actCoeff);
-		//pelvisSpeed1Curve->setCoeff(stanceLeg.getPelvisMidStancePos().z - (*nextRootPos).z);
-		pelvisSpeed1Curve->setAddCoeff(2, stanceLeg.getPelvisMidStancePos().z - (*nextRootPos).z - pelvisSpeed1Curve->getNextCoeff());
-		pelvisSpeed1Curve->setAddCoeff(3, stanceLeg.getPelvisMidStancePos().z - (*nextRootPos).z - pelvisSpeed1Curve->getNextCoeff());
-		pelvisSpeed1Curve->recountOnNext();
-		//pelvisSpeed2Curve->setCoeffImmediately(pelvisSpeed1Curve->getNextCoeff());
-		float range = swingLeg.getPelvisMidStancePos().z - stanceLeg.getPelvisMidStancePos().z;
-		//pelvisSpeed2Curve->setCoeff(lerp(range * 0.25f, range * 0.75f, i * (1.0f / 9)));
-		//pelvisSpeed2Curve->setCoeff(stepLength * 0.37f);
-		pelvisSpeed2Curve->setAddCoeff(2, lerp(range * 0.4f, range * 0.6f, i * (1.0f / 9)) - pelvisSpeed2Curve->getNextCoeff());
-		pelvisSpeed2Curve->setAddCoeff(3, lerp(range * 0.4f, range * 0.6f, i * (1.0f / 9)) - pelvisSpeed2Curve->getNextCoeff());
-		pelvisSpeed2Curve->recountOnNext();
-
-		float heightDiff = stanceLeg.getNextPosition().y - swingLeg.getPrevPosition().y;
-		pelvisVerticalCurve->setAddCoeff(actVerticalAddCoeff);
-		pelvisVerticalCurve->resetPelvisAddCoeff(lastVerticalAddCoeff);
-		if (heightDiff > 0.0f) {
-			pelvisVerticalCurve->pelvisUp(heightDiff);
-		}
-		heightDiff = swingLeg.getNextPosition().y - stanceLeg.getPrevPosition().y;
-		if (heightDiff < 0.0)
-			pelvisVerticalCurve->pelvisDown(heightDiff);
-
-		float pelvicVerticalT = 0.5f;
-		float error = 0.0f;
-		glm::mat4 testRootLocal = *staticRootMat;
-		//rotace zatim zanedbam i lateral
-		//testRootLocal[3].x = pelvisLateralCurve.YfromX(pelvicLateralT);
-		testRootLocal[3].y = pelvisVerticalCurve->YfromX(pelvicVerticalT) + *maxPelvisHeight;
-		testRootLocal[3].z = prevRootPos->z + pelvisSpeedCurve(pelvicVerticalT);
-
-		glm::mat4 testThighGlobal = testRootLocal * testThighLocal;
-
-		stanceLeg.pelvisConfigurationInitMidSwing(testThighGlobal, testThighLocal, testShinLocal,
-			testKneeRot, testFootLocal, testRootLocal);
-		for (; pelvicVerticalT <= 1.0f; pelvicVerticalT += 0.5f / PELVIS_CONFIGURATION_STEPS)
-		{
-			testRootLocal = *staticRootMat;
-			//rotace zatim zanedbam i lateral
-			//testRootLocal[3].x = pelvisLateralCurve.YfromX(pelvicLateralT);
-			testRootLocal[3].y = pelvisVerticalCurve->YfromX(pelvicVerticalT) + *maxPelvisHeight;
-			testRootLocal[3].z = prevRootPos->z + pelvisSpeedCurve(pelvicVerticalT);
-
-			testThighGlobal = testRootLocal * testThighLocal;
-			//glm::mat4 testShinGlobal = testThighGlobal * testShinLocal;
-			//reference vec se urci v noze
-			//glm::mat4 testFootGlobal = testShinGlobal * testFootLocal;
-			//predam noze chodidlo a ono se tam srovna a urci se uhel o kolik se otocil
-
-			//co tomu budu predavat a co se vlastne pocita
-
-			error += stanceLeg.solveIKStanceLegPelvisConfiguration(pelvicVerticalT * 0.5f, testThighGlobal, testThighLocal, testShinLocal,
-				testKneeRot, testFootLocal, testRootLocal, angleDifferences1);
-				
-		}
-
-		//pro svihovou nohu
-
-		//nova vertical curve a speed curva1
-		//....
-		glm::mat4 testRootLocalHeelStrike = *staticRootMat;
-		testRootLocalHeelStrike[3].y = pelvisVerticalCurve->YfromX(1.0f - LOADING_RESPONSE) + *maxPelvisHeight;
-		testRootLocalHeelStrike[3].z = prevRootPos->z + pelvisSpeedCurve(1.0f - LOADING_RESPONSE);
-		testThighGlobal = testRootLocalHeelStrike * testThighLocal;
-
-		testRootLocal = *staticRootMat;
-		testRootLocal[3].y = pelvisVerticalCurve->YfromX(1.0f) + *maxPelvisHeight;
-		testRootLocal[3].z = prevRootPos->z + pelvisSpeedCurve(1.0f);
-
-		//pelvisSpeed1Curve->setCoeffImmediately(pelvisSpeed2Curve->getNextCoeff());
-		//pelvisSpeed1Curve->setCoeff(swingLeg.getPelvisMidStancePos().z - (stanceLeg.getPelvisMidStancePos().z + pelvisSpeed2Curve->getNextCoeff()));
-		pelvisSpeed1Curve->setAddCoeff(2, swingLeg.getPelvisMidStancePos().z - 
-			(stanceLeg.getPelvisMidStancePos().z + pelvisSpeed2Curve->getNextCoeff() + pelvisSpeed2Curve->getLastAddCoeff()) - pelvisSpeed1Curve->getNextCoeff());
-		pelvisSpeed1Curve->setAddCoeff(3, swingLeg.getPelvisMidStancePos().z - 
-			(stanceLeg.getPelvisMidStancePos().z + pelvisSpeed2Curve->getNextCoeff() + pelvisSpeed2Curve->getLastAddCoeff()) - pelvisSpeed1Curve->getNextCoeff());
-		pelvisSpeed1Curve->recountOnNext();
-
-		pelvisVerticalCurve->resetPelvisAddCoeff();
-		heightDiff = swingLeg.getNextPosition().y - stanceLeg.getPrevPosition().y;
-		if (heightDiff > 0.0)
-			pelvisVerticalCurve->pelvisUp(heightDiff);
-		
-		pelvicVerticalT = 0.0f;
-		testThighLocal = swingLeg.getThigh()->localMat;
-		testShinLocal = swingLeg.getShin()->localMat;
-		testKneeRot = swingLeg.getKneeRot();
-		testFootLocal = swingLeg.getFoot()->localMat;
-		swingLeg.pelvisConfigurationInitMidStance(testThighGlobal, testThighLocal, testShinLocal,
-			testKneeRot, testFootLocal, testRootLocal, testRootLocalHeelStrike);
-		for (; pelvicVerticalT <= 0.5f; pelvicVerticalT += 0.5f / PELVIS_CONFIGURATION_STEPS)
-		{
-			testRootLocal = *staticRootMat;
-			testRootLocal[3].y = pelvisVerticalCurve->YfromX(pelvicVerticalT) + *maxPelvisHeight;
-			testRootLocal[3].z = stanceLeg.getPelvisMidStancePos().z + pelvisSpeed2Curve->getNextCoeff() + 
-				pelvisSpeed2Curve->getLastAddCoeff() + pelvisSpeedCurve(pelvicVerticalT);
-
-			testThighGlobal = testRootLocal * testThighLocal;
-			//glm::mat4 testShinGlobal = testThighGlobal * testShinLocal;
-			//reference vec se urci v noze
-			//glm::mat4 testFootGlobal = testShinGlobal * testFootLocal;
-			//predam noze chodidlo a ono se tam srovna a urci se uhel o kolik se otocil
-
-			//co tomu budu predavat a co se vlastne pocita
-
-			error += swingLeg.solveIKStanceLegPelvisConfiguration(pelvicVerticalT * 0.5f, testThighGlobal, testThighLocal, testShinLocal,
-				testKneeRot, testFootLocal, testRootLocal, angleDifferences2);
-
-		}
-		//////
-
-		for (unsigned int j = 1; j < angleDifferences1.size(); j++) {
-			angleAcceleration += jointWeights.x * abs(angleDifferences1[j].hip - angleDifferences1[j - 1].hip);
-		}
-		for (unsigned int j = 1; j < angleDifferences1.size(); j++) {
-			angleAcceleration += jointWeights.y * abs(angleDifferences1[j].knee - angleDifferences1[j - 1].knee);
-		}
-		for (unsigned int j = 1; j < angleDifferences1.size(); j++) {
-			angleAcceleration += jointWeights.z * abs(angleDifferences1[j].ankle - angleDifferences1[j - 1].ankle);
-		}
-		for (unsigned int j = 1; j < angleDifferences2.size(); j++) {
-			angleAcceleration += jointWeights.x * abs(angleDifferences2[j].hip - angleDifferences2[j - 1].hip);
-		}
-		for (unsigned int j = 1; j < angleDifferences2.size(); j++) {
-			angleAcceleration += jointWeights.y * abs(angleDifferences2[j].knee - angleDifferences2[j - 1].knee);
-		}
-		for (unsigned int j = 1; j < angleDifferences2.size(); j++) {
-			angleAcceleration += jointWeights.z * abs(angleDifferences2[j].ankle - angleDifferences2[j - 1].ankle);
-		}
-		//angleAcceleration = abs(angleAcceleration);
-
-		if (error != 0.0f && error < lowestError) {
-			lowestError = error;
-			lowestErrorI = i;
-		}
-		if (error == 0.0f && angleAcceleration < lowestAcceleration) {
-			lowestAcceleration = angleAcceleration;
-			lowestI = i;
-		}
-	}*/
-
-	/*pelvisSpeedCurve->setCoeffImmediately(actCoeff);
-	pelvisSpeedCurve->setCoeff(stepLength * 0.5f);// (lowestI < 0 ? lowestErrorI : lowestI) * (1.0f / 49)));
-
-	*nextRootPos += glm::vec3(0.0, 0.0, pelvisSpeedCurve->getNextCoeff());*/
-	//pelvisSpeed1Curve->setCoeffImmediately(actCoeff);
-	//pelvisSpeed1Curve->setCoeff(stanceLeg.getPelvisMidStancePos().z - (*nextRootPos).z);
-	//pelvisSpeed2Curve->setCoeffImmediately(pelvisSpeed1Curve->getNextCoeff());
-	//pelvisSpeed2Curve->setCoeff(stepLength * 0.37f);
-
-	//setPelvisMidStanceOffset(lowestJ);
-	//std::cout << "lowestJ:" << lowestJ << std::endl;
  	pelvisSpeed1Curve->setAddCoeff(2, stanceLeg.getPelvisMidStancePos().z - (*nextRootPos).z - pelvisSpeed1Curve->getNextCoeff());
 	pelvisSpeed1Curve->setAddCoeff(3, stanceLeg.getPelvisMidStancePos().z - (*nextRootPos).z - pelvisSpeed1Curve->getNextCoeff());
 	pelvisSpeed1Curve->recountOnNext();
@@ -557,71 +390,19 @@ void Skeleton::onUpdate(float dt)
 	//std::cout << bones[HIPS].localMat[3].z << std::endl;
 
 	if (t >= LOADING_RESPONSE * 0.5f && t - dt < LOADING_RESPONSE * 0.5f) {
-		/*float fixedStepLength = stepLength;
-		*prevRootPos = *nextRootPos;
-		*nextRootPos += glm::vec3(0.0, 0.0, fixedStepLength * 0.5f);*/
-
 		float distToStance = rightLeg.getStepLengthSum() - leftLeg.getStepLengthSum();
 		leftLeg.setNextPosition(distToStance + stepLength * 0.5f); // , heightTestHeight);
 		rightLeg.setStepLength(stepLength);
-		
-		/*float minMaxPelvisHeight = (-2.0f * (distToStance + stepLength * 0.5f) / 20.0f + 0.055f);
-		minMaxPelvisHeight = (minMaxPelvisHeight > 0.0f) ? 0.0f : minMaxPelvisHeight;
-		if ((*maxPelvisHeight - defaultPelvisHeight) > minMaxPelvisHeight)
-			*maxPelvisHeight = minMaxPelvisHeight + defaultPelvisHeight;*/
 
 		configurePelvis(rightLeg, leftLeg);
-		/*
-		float heightDiff = rightLeg.getNextPosition().y - leftLeg.getPrevPosition().y;
-		nextRootPos->y += heightDiff;
-
-		pelvisVerticalCurve->resetPelvisAddCoeff();
-		if (heightDiff > 0.0f) {
-			//pelvisVerticalCurve->incrementAddCoeff(heightDiff);
-			//leftLeg.swingCurveIncrease(heightDiff);
-			pelvisVerticalCurve->pelvisUp(heightDiff);
-		}
-
-		heightDiff = leftLeg.getNextPosition().y - rightLeg.getPrevPosition().y;
-		if (heightDiff < 0.0)
-			//pelvisVerticalCurve->incrementAddCoeff(heightDiff);
-			pelvisVerticalCurve->pelvisDown(heightDiff);*/
 	}
 
-	/*if (t >= 0.10 && t - dt < 0.10) {
-		float heightDiff = leftLeg.getNextPosition().y - rightLeg.getPrevPosition().y;
-		if (heightDiff < 0.0)
-			pelvisVerticalCurve->incrementAddCoeff(heightDiff);
-	}*/
-
 	if (t >= 0.5 + LOADING_RESPONSE * 0.5 && t - dt < 0.5 + LOADING_RESPONSE * 0.5) {
-		/*float fixedStepLength = stepLength;// leftLeg.getStepLengthSum() - rightLeg.getStepLengthSum() + stepLength * 0.5f - abs(rightLeg.getPrevPosition().y - heightTestHeight);
-		*prevRootPos = *nextRootPos;
-		*nextRootPos += glm::vec3(0.0, 0.0, fixedStepLength * 0.5f);*/
-//		pelvisVerticalCurve.incrementAddCoeff(0.2);
 		float distToStance = leftLeg.getStepLengthSum() - rightLeg.getStepLengthSum();
 		rightLeg.setNextPosition(distToStance + stepLength * 0.5f);// , heightTestHeight);
 		leftLeg.setStepLength(stepLength);
 
-		/*float minMaxPelvisHeight = (-2.0f * (distToStance + stepLength * 0.5f) / 20.0f + 0.055f);
-		minMaxPelvisHeight = (minMaxPelvisHeight > 0.0f) ? 0.0f : minMaxPelvisHeight;
-		if ((*maxPelvisHeight - defaultPelvisHeight) > minMaxPelvisHeight)
-			*maxPelvisHeight = minMaxPelvisHeight + defaultPelvisHeight;*/
-
 		configurePelvis(leftLeg, rightLeg);
-
-		/*float heightDiff = leftLeg.getNextPosition().y - rightLeg.getPrevPosition().y;
-		nextRootPos->y += heightDiff;
-		
-		pelvisVerticalCurve->resetPelvisAddCoeff();
-		if (heightDiff > 0.0) {
-			pelvisVerticalCurve->pelvisUp(heightDiff);
-			//rightLeg.swingCurveIncrease(heightDiff);
-		}
-
-		heightDiff = rightLeg.getNextPosition().y - leftLeg.getPrevPosition().y;
-		if (heightDiff < 0.0)
-			pelvisVerticalCurve->pelvisDown(heightDiff);*/
 	}
 
 	/*if (t >= 0.60 && t - dt < 0.60) {

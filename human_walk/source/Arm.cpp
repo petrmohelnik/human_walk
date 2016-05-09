@@ -37,11 +37,7 @@ void Arm::init(float time, float actRot, float actTilt)
 
 void Arm::move(float prevRot, float actRot, float prevTilt, float actTilt)
 {
-	float armT = t;/* +TERMINAL_SWING - LOADING_RESPONSE;
-	armT -= static_cast<int>(armT);
-	armT = armT > 0.5 ? 1.0 - 2.0 * (armT - 0.5) : 2.0 * armT;
-	armT = bezierCurve(smoothCurveControlPointsVec, armT);*/
-
+	float armT = t;
 	
 	forearm->localMat = glm::rotate(forearm->localMat, -elbowRot, glm::vec3(1.0, 0.0, 0.0));
 	upperArm->localMat = glm::rotate(upperArm->localMat, -shoulderRot, glm::vec3(1.0, 0.0, 0.0));
@@ -56,10 +52,6 @@ void Arm::move(float prevRot, float actRot, float prevTilt, float actTilt)
 	upperArm->localMat = glm::rotate(upperArm->localMat, -actTilt, glm::vec3(0.0, 0.0, 1.0));
 	forearm->localMat = glm::rotate(forearm->localMat, elbowRot, glm::vec3(1.0, 0.0, 0.0));
 	upperArm->localMat = glm::rotate(upperArm->localMat, shoulderRot, glm::vec3(1.0, 0.0, 0.0));
-
-	/*solveIK(glm::vec3(bezierCurve(xControlPointsVec, armT) * 1.6 * upperArm->globalMat[3].x,
-		bezierCurve(yControlPointsVec, armT) - armLength + upperArm->globalMat[3].y,
-		bezierCurve(zControlPointsVec, armT) + upperArm->globalMat[3].z));*/
 }
 
 void Arm::update(float dt, float prevRot, float actRot, float prevTilt, float actTilt)

@@ -13,10 +13,10 @@ bool SDLHandler::init()
 		return false;
 	}
 
-	//request 4.5 OpenGL context nad core funcionality
+	//request 4.5 OpenGL context and core funcionality
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 5);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 
 	//create window
 	mainwindow = SDL_CreateWindow("human_walk", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,

@@ -158,33 +158,9 @@ float BezierCurve::YfromX(float X) const
 
 	return solve(&constY[0], t);
 }
-/*
-float BezierCurve::YfromXSwingFoot(float X)
-{
-	int i = 0;
-	float t = 0.0;
 
-	for (auto segment : x) {
-		if (X <= segment[3]) {
-			t = solveForT(&segment[0], X);
-			break;
-		}
-		i++;
-	}
-
-	if (prevSegment != i || X < prevX) {
-		for (int j = 0; j < 4; j++) {
-			y[i][j] = refY[i * 4 + j] * actCoeff + addCoeff[i * 4 + j];
-		}
-	}
-
-	return solve(&y[i][0], t);
-}
-*/
 void BezierCurve::stepDown(float down)
 {
-//	addCoeff[10] -= down;
-//	addCoeff[11] -= down;
 	for (unsigned int i = 0; i < refX.size(); i++) {
 		addCoeff[i] = down * refX[i];
 	}
@@ -222,8 +198,6 @@ void BezierCurve::pelvisDown(float down)
 
 void BezierCurve::stepUp(float up)
 {
-//	for (unsigned int i = 6; i < addCoeff.size(); i++)
-//		addCoeff[i] += c;
 	for (unsigned int i = 0; i < refX.size(); i++) {
 		addCoeff[i] = up * refX[i];
 	}
@@ -255,17 +229,6 @@ void BezierCurve::increase(float pos, float up)
 			controlPointUp(2, up);
 		}
 	}
-	/*else if (pos <= refX[11]) {
-		float halfPos = refX[7] + (refX[11] - refX[7]) * 0.5f;
-		if (pos <= halfPos) {
-			controlPointUp(2, up);
-			controlPointUp(3, ((pos - refX[7]) / (halfPos - refX[7])) * up);
-		}
-		else {
-			controlPointUp(2, ((pos - refX[11]) / (halfPos - refX[11])) * up);
-			controlPointUp(3, up);
-		}
-	}*/
 	else {
 		controlPointUp(2, up);
 		controlPointUp(3, up);

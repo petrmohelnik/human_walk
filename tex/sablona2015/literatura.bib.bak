@@ -53,6 +53,17 @@
     year = {2009}
 }
 
+@Article{ceccato2009comparison,
+  author =    {Ceccato, Jean-Charles and De S{\`e}ze, Mathieu and Azevedo, Christine and Cazalets, Jean-Ren{\'e}},
+  title =     {Comparison of trunk activity during gait initiation and walking in humans},
+  journal =   {PLoS One},
+  year =      {2009},
+  volume =    {4},
+  number =    {12},
+  pages =     {e8193},
+  publisher = {Public Library of Science}
+}
+
 @inproceedings{chung,
  author = {Chung, Shih-kai and Hahn, James K.},
  title = {Animation of Human Walking in Virtual Environments},
@@ -72,6 +83,19 @@
       howpublished=  "{\tt http://www.cstug.cz}",
    }
 
+@Article{DadashiMarianiRochatEtAl2014,
+  author =   {Dadashi, Farzin and Mariani, Benoit and Rochat, Stephane and BĂĽla, Christophe J. and Santos-Eggimann, Brigitte and Aminian, Kamiar},
+  title =    {Gait and Foot Clearance Parameters Obtained Using Shoe-Worn Inertial Sensors in a Large-Population Sample of Older Adults},
+  journal =  {Sensors},
+  year =     {2014},
+  volume =   {14},
+  number =   {1},
+  pages =    {443},
+  doi =      {10.3390/s140100443},
+  issn =     {1424-8220},
+  pubmedid = {24379049}
+}
+
 @ARTICLE{dualQuat,
   AUTHOR       = {Ladislav Kavan and Steven Collins and Jiri Zara and Carol O'Sullivan},
   TITLE        = {Geometric Skinning with Approximate Dual Quaternion Blending},
@@ -84,26 +108,10 @@
   ADDRESS      = {New York, NY, USA},
 }
 
-    @BOOK{Eikh,
-      author =       "Victor Eikhout",
-      title =        "{\TeX}by Topics, a {\TeX}nitian's Reference ",
-      publisher =    "Addison-Wesley UK",
-      year =         "2001",
-      note =         "ISBN~0-201-56882-9",
-    }
-
  @MISC{envelopes,
   title = "Blender Wiki: Skinning to Shapes",
 	howpublished = "[online]",
       url=  "{http://wiki.blender.org/index.php/Doc:2.4/Manual/Rigging/Skinning/ObData}",
-   }
-
-   @MISC{fitWeb,
-      author =       "Z. R?bov? and P. Han??ek and P. Peringer and P. P?ikryl and B. K?ena",  
-      title =        "U?ite?n? rady pro psan? odborn?ho textu [online]",
-      publisher =    "FIT VUT v Brn?",
-      year =         "2008-11-01 [cit. 2008-11-28]",
-      howpublished=  "{\tt http://www.fit.vutbr.cz/info/statnice/psani\_textu.html}",
    }
 
  @MISC{gait_img,
@@ -121,14 +129,6 @@ howpublished = "[online]",
 	volume = "13",
 	pages = "78-83",
 }
-    
-    @BOOK{Knuth,
-      author =       "Donald E. Knuth",
-      title =        "The {\TeX}book",
-      publisher =    "Addison-Wesley Publishing Company",
-      year =         "1996",
-      note =         "ISBN~0-201-13447-0",
-    }
 
  @online{male_mesh,
       author =       "{Paul Chen}",  
@@ -137,6 +137,13 @@ howpublished = "[online]",
 year = "2015",
       url=  "{http://tf3dm.com/3d-model/male-base-mesh-6682.html}",
    }
+
+@Misc{midPoint,
+  author =       {Paul Martz},
+  title =        {Generating Random Fractal Terrain},
+  howpublished = {[online]},
+  url =          {{http://www.gameprogrammer.com/fractal.html}}
+}
 
 @INPROCEEDINGS{motion_capture, 
 author={Kirk, A.G. and O'Brien, J.F. and Forsyth, D.A.}, 
@@ -149,26 +156,21 @@ doi={10.1109/CVPR.2005.327},
 ISSN={1063-6919}, 
 month={June},}
 
-    @BOOK{Olsak,
-      author =       "Petr Ol??k",
-      title =        "{\TeX}book naruby",
-      publisher =    "Konvoj",
-      year =         "2001",
-      note =         "ISBN~80-7302-0007-6",
-    }    @BOOK{Pravidla,
+@Article{orendurff2004effect,
+  author =    {Orendurff, Michael S and Segal, Ava D and Klute, Glenn K and Berge, Jocelyn S and others},
+  title =     {The effect of walking speed on center of mass displacement},
+  journal =   {Journal of rehabilitation research and development},
+  year =      {2004},
+  volume =    {41},
+  number =    {6A},
+  pages =     {829},
+  publisher = {Superintendent of Documents}
+}    @BOOK{Pravidla,
       author =       "{Kolektiv autor?}",
       title =        "Pravidla ?esk?ho pravopisu",
       publisher =    "Academia",
       year =         "2005",
       note =         "ISBN~80-200-1327-X",
-    }
-    
-    @BOOK{Rybicka,
-      author =       "Ji?? Rybi?ka",
-      title =        "{\LaTeX} pro za??te?n?ky",
-      publisher =    "Konvoj",
-      year =         "1999",
-      note =         "ISBN~80-85615-77-0",
     }
 
 @inproceedings{skinningMethods,

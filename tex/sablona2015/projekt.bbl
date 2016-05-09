@@ -52,10 +52,21 @@ Buss, S.~R.: Introduction to inverse kinematics with Jacobian transpose,
 Cain, A.: Physiopedia: Gait in prosthetic rehabilitation. [online].
 \newline\urlprefix\url{{http://www.physio-pedia.com/Gait_in_prosthetic_rehabilitation}}
 
+\bibitem{ceccato2009comparison}
+Ceccato, J.-C.; De~S{\`e}ze, M.; Azevedo, C.; aj.: Comparison of trunk activity
+  during gait initiation and walking in humans. \emph{PLoS One}, ročník~4,
+  č.~12, 2009: str. e8193.
+
 \bibitem{chung}
 Chung, S.-k.; Hahn, J.~K.: Animation of Human Walking in Virtual Environments.
   In \emph{Proceedings of the Computer Animation}, CA '99, Washington, DC, USA:
   IEEE Computer Society, 1999, ISBN 0-7695-0167-2, s. 4--.
+
+\bibitem{DadashiMarianiRochatEtAl2014}
+Dadashi, F.; Mariani, B.; Rochat, S.; aj.: Gait and Foot Clearance Parameters
+  Obtained Using Shoe-Worn Inertial Sensors in a Large-Population Sample of
+  Older Adults. \emph{Sensors}, ročník~14, č.~1, 2014: str. 443, ISSN
+  1424-8220, \doi{10.3390/s140100443}.
 
 \bibitem{skinningMethods}
 Jacobson, A.; Deng, Z.; Kavan, L.; aj.: Skinning: Real-time Shape Deformation.
@@ -76,9 +87,23 @@ Kirk, A.; O'Brien, J.; Forsyth, D.: Skeletal parameter estimation from optical
   CVPR 2005. IEEE Computer Society Conference on}, ročník~2, June 2005, ISSN
   1063-6919, s. 1185 vol. 2--, \doi{10.1109/CVPR.2005.327}.
 
+\bibitem{lin2014quantitative}
+Lin, Y.-C.; Gfoehler, M.; Pandy, M.~G.: Quantitative evaluation of the major
+  determinants of human gait. \emph{Journal of biomechanics}, ročník~47,
+  č.~6, 2014: s. 1324--1331.
+
+\bibitem{midPoint}
+Martz, P.: Generating Random Fractal Terrain. [online].
+\newline\urlprefix\url{{http://www.gameprogrammer.com/fractal.html}}
+
 \bibitem{surveyWalk}
 Multon, F.; France, L.; Cani-Gascuel, M.-P.; aj.: Computer Animation of Human
   Walking: a Survey. 1999.
+
+\bibitem{orendurff2004effect}
+Orendurff, M.~S.; Segal, A.~D.; Klute, G.~K.; aj.: The effect of walking speed
+  on center of mass displacement. \emph{Journal of rehabilitation research and
+  development}, ročník~41, č.~6A, 2004: str. 829.
 
 \bibitem{male_mesh}
 {Paul Chen}: Male Base Mesh. [online], 2015.

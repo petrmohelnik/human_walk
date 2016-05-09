@@ -342,9 +342,7 @@ float Leg::solveIKStanceLegPelvisConfiguration(float time, glm::mat4 &thighGloba
 	static float lastT = 0.0;
 	static glm::vec3 testToePosInit;
 	static glm::vec3 testPrevAnklePos;
-	//glm::vec3 testPrevToePos;
 	float testHeelRiseAngle = 0.0f;
-	//float error = 0.0f;
 
 	glm::mat4 footGlobal = rootLocal * thighLocal * shinLocal * footLocal;
 
@@ -358,10 +356,7 @@ float Leg::solveIKStanceLegPelvisConfiguration(float time, glm::mat4 &thighGloba
 	else if (testT >= MID_STANCE) {
 		if (lastT < MID_STANCE) {
 			testToePosInit = glm::vec3((footGlobal * toe->localMat)[3]);
-			//testPrevAnklePos = glm::vec3(footGlobal[3]);
 		}
-
-		//testPrevToePos = testToePosInit + testPrevAnklePos - glm::vec3(footGlobal[3]);
 
 		testHeelRiseAngle = heelRiseCurve.YfromX((testT - MID_STANCE) / (PRE_SWING - MID_STANCE));
 
@@ -369,14 +364,6 @@ float Leg::solveIKStanceLegPelvisConfiguration(float time, glm::mat4 &thighGloba
 		footLocal = glm::rotate(footLocal, phi, glm::vec3(1.0f, 0.0f, 0.0f));
 		footGlobal = rootLocal * thighLocal * shinLocal * footLocal;
 		testFootRot += phi;
-	/*	if (testT >= 0.559f) {
-			float dot = glm::dot(glm::normalize(glm::vec3(foot->localMat * glm::vec4(0.0, 1.0, 0.0, 1.0) - foot->localMat[3])),
-				glm::normalize(glm::vec3(footLocal * glm::vec4(0.0, 1.0, 0.0, 1.0) - footLocal[3])));
-			float diff = footRot - acos(dot > 1.0f ? 1.0f : dot);
-
-			if (diff > 0.35f)
-				return 1000000.0 * (diff - 0.35f);
-		}*/
 	}
 
 	//////////////////

@@ -1,4 +1,55 @@
-%\chapter{Obsah CD}
+\chapter{Obsah CD}
+\paragraph{Adresář \texttt{tex}}
+Obsahuje zdrojový tvar písemné zprávy v \LaTeX u. Překlad je možný pomocí \texttt{\$make}. Případně v Texmakeru pomocí pdflatex + bibtex + pdflatex + pdflatex. Adresář \texttt{fig} obsahuje obrázky použité v písemné zprávě.
+
+\paragraph{\texttt{proceduralni\_animace\_lidske\_chuze.pdf}}
+Přeložená písemná zpráva ve formátu pdf.
+
+\paragraph{Adresář \texttt{human\_walk}}
+Obsahuje solution pro Visual Studio 2013 se zdrojovými kódy aplikace. Ve Visual studiu se aplikace přeloží pomocí Build/Build Solution (F7) a spustí pomocí Debug/Start Debugging (F5). Aplikace vyžaduje podporu OpenGL 3.1. Zdrojové kódy jsou v podadresáři \texttt{human\_walk/source}. V rámci práce nebyly vytvořeny soubory \texttt{imconfig}, \texttt{imgui}, \texttt{imgui\_demo}, \texttt{imgui\_draw}, \texttt{imgui\_impl\_sdl\_gl3}, \texttt{imgui\_internal}, \texttt{stb\_rect\_pack}, \texttt{stb\_textedit}, \texttt{stb\_truetype} a \texttt{lodepng}.
+
+\paragraph{Adresář \texttt{Release}}
+Obsahuje přeloženou aplikaci pro Windows spustitelnou pomocí \texttt{human\_walk.exe} a další soubory potřebné pro její běh.
+
+\paragraph{\texttt{video.mp4}}
+Video s prezentací projektu. Dostupné také z \url{https://youtu.be/Z5Qckdr9yDI}
+
+\chapter{Manuál}
+
+\paragraph{Ovládání aplikace}
+\begin{itemize} \itemsep1pt \parskip0pt \parsep0pt
+\item[] \textbf{L} - vypnutí/zapnutí úrovně detailu
+\item[] \textbf{F} - přepínání mezi flat a smooth stínováním
+\item[] \textbf{B} - vypnutí/zapnutí skyboxu
+\item[] \textbf{T} - vypnutí/zapnutí terénu
+\item[] \textbf{C} - zapnutí/vypnutí zobrazení křivky definující dráhu
+\item[] \textbf{V} - zapnutí/vypnutí zobrazení rozdělení křivky na segmenty
+\item[] \textbf{K} - zapnutí/vypnutí barevného odlišení úrovní detailu
+\item[] \textbf{E} - zapnutí/vypnutí zobrazení dráhy jako drátového modelu
+\item[] \textbf{N} - spustí normovaný průchod
+\item[] \textbf{O} - zapnutí/vypnutí zobrazení dráhy pomocí přechodů mezi úrovněmi. Od nejvyšší úrovně k nejnižší a zpět k nejvyšší, bez ohledu na pozici kamery.
+\item[] \textbf{$\uparrow$ / $\downarrow$} - pohyb po dráze vpřed/vzad
+\item[] \textbf{WSAD} - volný pohyb kamerou
+\item[] \textbf{+/-} - oddálení/přiblížení kamery
+\item[] \textbf{2/8} - rotace kamery okolo osy X
+\item[] \textbf{4/6} - rotace kamery okolo osy Y
+\item[] \textbf{SHIFT} - Urychlí pohyb kamery při souběžném držení s klávesou pro pohyb kamery 
+\end{itemize}
+
+\paragraph{Změna parametrů aplikace}
+Parametry je možné měnit v souboru \texttt{params.txt}. Je nutné zadat všechny níže popsané parametry. Tvar je \textbf{parametr=hodnota} bez mezer.
+\begin{itemize} \itemsep1pt \parskip0pt \parsep0pt
+\item[] \textbf{SEED} - seed pro generování náhodných čísel
+\item[] \textbf{MAP\_SIZE} - velikost mapy
+\item[] \textbf{MAP\_VERTICES} - počet vrcholů mapy
+\item[] \textbf{SPEED} - rychlost pohybu kamery po dráze
+\item[] \textbf{TRIANGLES\_1} - počet trojúhelníků původního modelu
+\item[] \textbf{TRIANGLES\_2/3/4} - počet trojúhelníků pro vytvoření nižších úrovní detailu
+\item[] \textbf{MAX\_TRIANGLES} - maximální počet trojúhelníků při použití úrovně detailu
+\item[] \textbf{INCREMENT\_1/2/3} - inkrementy pro určení intervalů vzdáleností jednotlivých úrovní detailu
+\item[] \textbf{N} - počet oblastí v jednom kvadrantu pro generování dráhy
+\end{itemize}
+
 %\chapter{Manual}
 %\chapter{Konfigrační soubor}
 %\chapter{RelaxNG Schéma konfiguračního soboru}

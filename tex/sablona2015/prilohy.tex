@@ -1,54 +1,40 @@
 \chapter{Obsah CD}
-\paragraph{Adresář \texttt{tex}}
-Obsahuje zdrojový tvar písemné zprávy v \LaTeX u. Překlad je možný pomocí \texttt{\$make}. Případně v Texmakeru pomocí pdflatex + bibtex + pdflatex + pdflatex. Adresář \texttt{fig} obsahuje obrázky použité v písemné zprávě.
+\begin{itemize}
 
-\paragraph{\texttt{proceduralni\_animace\_lidske\_chuze.pdf}}
+\item \textbf{tex/ - } 
+Obsahuje zdrojový tvar písemné zprávy v \LaTeX u. Překlad je možný pomocí \texttt{\$make}. Případně v Texmakeru pomocí pdflatex + bibtex + pdflatex + pdflatex. Adresář \texttt{fig/} obsahuje obrázky použité v písemné zprávě.
+
+\item \textbf{proceduralni\_animace\_lidske\_chuze.pdf - }
 Přeložená písemná zpráva ve formátu pdf.
 
-\paragraph{Adresář \texttt{human\_walk}}
-Obsahuje solution pro Visual Studio 2013 se zdrojovými kódy aplikace. Ve Visual studiu se aplikace přeloží pomocí Build/Build Solution (F7) a spustí pomocí Debug/Start Debugging (F5). Aplikace vyžaduje podporu OpenGL 3.1. Zdrojové kódy jsou v podadresáři \texttt{human\_walk/source}. V rámci práce nebyly vytvořeny soubory \texttt{imconfig}, \texttt{imgui}, \texttt{imgui\_demo}, \texttt{imgui\_draw}, \texttt{imgui\_impl\_sdl\_gl3}, \texttt{imgui\_internal}, \texttt{stb\_rect\_pack}, \texttt{stb\_textedit}, \texttt{stb\_truetype} a \texttt{lodepng}.
+\item \textbf{human\_walk/ - }
+Obsahuje \textit{solution} pro Visual Studio 2013 se zdrojovými kódy aplikace. Ve Visual studiu se aplikace přeloží pomocí Build/Build Solution (ctrl + F7) a spustí pomocí Debug/Start Debugging (F5). Aplikace vyžaduje podporu OpenGL 3.1. Zdrojové kódy jsou v podadresáři \texttt{human\_walk/source/}. V rámci práce nebyly vytvořeny soubory \texttt{imconfig}, \texttt{imgui}, \texttt{imgui\_demo}, \texttt{imgui\_draw}, \texttt{imgui\_impl\_sdl\_gl3}, \texttt{imgui\_internal}, \texttt{stb\_rect\_pack}, \texttt{stb\_textedit}, \texttt{stb\_truetype} a \texttt{lodepng}.
 
-\paragraph{Adresář \texttt{Release}}
-Obsahuje přeloženou aplikaci pro Windows spustitelnou pomocí \texttt{human\_walk.exe} a další soubory potřebné pro její běh.
+\item \textbf{Release/ - }
+Obsahuje přeloženou aplikaci pro Windows a další soubory potřebné pro její běh.
 
-\paragraph{\texttt{video.mp4}}
+\item \textbf{video.mp4 - }
 Video s prezentací projektu. Dostupné také z \url{https://youtu.be/Z5Qckdr9yDI}
 
+\item \textbf{skeleton.dae - }
+Kostra nad kterou aplikace pracuje.
+
+\end{itemize}
+
 \chapter{Manuál}
-
-\paragraph{Ovládání aplikace}
+Po načtení aplikace se zobrazí první model na nerovném terénu. Pro změnu parametrů je možné použít grafické uživatelské rozhraní, jehož okna je možné skrýt dvojklikem na jejich lišty. Pomocí tlačítka \texttt{Next terrain} je možné přepínat mezi nerovným, schodovitým a rovným terénem. Tlačítko \texttt{Next model} přepne na další scénu s  jiným modelem.
+Rotace kamery se ovládá pravým tlačítkem myši. Kolečkem myši je možné přibližovat a oddalovat kameru. Kamera se pohybuje spolu s modelem.
+Některé funkce je také možné ovládat pomocí tlačítek na klávesnici: 
 \begin{itemize} \itemsep1pt \parskip0pt \parsep0pt
-\item[] \textbf{L} - vypnutí/zapnutí úrovně detailu
-\item[] \textbf{F} - přepínání mezi flat a smooth stínováním
-\item[] \textbf{B} - vypnutí/zapnutí skyboxu
-\item[] \textbf{T} - vypnutí/zapnutí terénu
-\item[] \textbf{C} - zapnutí/vypnutí zobrazení křivky definující dráhu
-\item[] \textbf{V} - zapnutí/vypnutí zobrazení rozdělení křivky na segmenty
-\item[] \textbf{K} - zapnutí/vypnutí barevného odlišení úrovní detailu
-\item[] \textbf{E} - zapnutí/vypnutí zobrazení dráhy jako drátového modelu
-\item[] \textbf{N} - spustí normovaný průchod
-\item[] \textbf{O} - zapnutí/vypnutí zobrazení dráhy pomocí přechodů mezi úrovněmi. Od nejvyšší úrovně k nejnižší a zpět k nejvyšší, bez ohledu na pozici kamery.
-\item[] \textbf{$\uparrow$ / $\downarrow$} - pohyb po dráze vpřed/vzad
-\item[] \textbf{WSAD} - volný pohyb kamerou
-\item[] \textbf{+/-} - oddálení/přiblížení kamery
-\item[] \textbf{2/8} - rotace kamery okolo osy X
-\item[] \textbf{4/6} - rotace kamery okolo osy Y
-\item[] \textbf{SHIFT} - Urychlí pohyb kamery při souběžném držení s klávesou pro pohyb kamery 
+\item[] \textbf{mezerník} - pozastavení/spuštění animace
+\item[] \textbf{tabulátor} - přepínání mezi scénami s různými modely
+\item[] \textbf{1} - vypnutí/zapnutí zobrazení kostry
+\item[] \textbf{2} - vypnutí/zapnutí zobrazení modelu
+\item[] \textbf{+} - přiblížení kamery
+\item[] \textbf{-} - oddálení kamery
 \end{itemize}
 
-\paragraph{Změna parametrů aplikace}
-Parametry je možné měnit v souboru \texttt{params.txt}. Je nutné zadat všechny níže popsané parametry. Tvar je \textbf{parametr=hodnota} bez mezer.
-\begin{itemize} \itemsep1pt \parskip0pt \parsep0pt
-\item[] \textbf{SEED} - seed pro generování náhodných čísel
-\item[] \textbf{MAP\_SIZE} - velikost mapy
-\item[] \textbf{MAP\_VERTICES} - počet vrcholů mapy
-\item[] \textbf{SPEED} - rychlost pohybu kamery po dráze
-\item[] \textbf{TRIANGLES\_1} - počet trojúhelníků původního modelu
-\item[] \textbf{TRIANGLES\_2/3/4} - počet trojúhelníků pro vytvoření nižších úrovní detailu
-\item[] \textbf{MAX\_TRIANGLES} - maximální počet trojúhelníků při použití úrovně detailu
-\item[] \textbf{INCREMENT\_1/2/3} - inkrementy pro určení intervalů vzdáleností jednotlivých úrovní detailu
-\item[] \textbf{N} - počet oblastí v jednom kvadrantu pro generování dráhy
-\end{itemize}
+Pro připravení modelu pro běh v aplikaci je potřeba k němu připojit přiloženou kostru např. pomocí automatického přiřazení vah a vyexportovat v Blenderu do formátu COLLADA.
 
 %\chapter{Manual}
 %\chapter{Konfigrační soubor}

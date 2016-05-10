@@ -1,4 +1,4 @@
-#version 140
+#version 450
 
 uniform mat4 mvp;
 uniform mat3 m;

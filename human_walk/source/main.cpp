@@ -107,7 +107,7 @@ int main(int argc, char **argv)
 
 	Model main, lara, venom, astronaut, deadpool, witch, bolter;
 	std::shared_ptr<Skeleton> skeleton(new Skeleton(terrain));
-	if (!f.loadModelAndSkeletonDae("resource/riggedFixed2.dae", main, *skeleton.get())) { cin.get(); return -1; }
+	if (!f.loadModelAndSkeletonDae("resource/male_mesh.dae", main, *skeleton.get())) { cin.get(); return -1; }
 	std::shared_ptr<SkeletonRenderer> skeletonRenderer(new SkeletonRenderer(glm::vec3(0.0, 0.0f, 0.0), skeleton));
 	if (!skeletonRenderer->initRenderer(m, s.getProgram("basic_program"))) { cin.get(); return -1; }
 	std::shared_ptr<RiggedModelRenderer> riggedModelRenderer(new RiggedModelRenderer(glm::vec3(0.0, 0.0f, 0.0), skeleton));
@@ -125,7 +125,7 @@ int main(int argc, char **argv)
 
 	if (scenesNum >= 2) {
 		std::shared_ptr<Skeleton> venomSkeleton(new Skeleton(terrain));
-		if (!f.loadModelAndSkeletonDae("resource/venom_ref.dae", venom, *venomSkeleton.get())) { cin.get(); return -1; }
+		if (!f.loadModelAndSkeletonDae("resource/venom.dae", venom, *venomSkeleton.get())) { cin.get(); return -1; }
 		std::shared_ptr<SkeletonRenderer> venomSkeletonRenderer(new SkeletonRenderer(glm::vec3(0.0, 0.0f, 0.0), venomSkeleton));
 		if (!venomSkeletonRenderer->initRenderer(m, s.getProgram("basic_program"))) { cin.get(); return -1; }
 		std::shared_ptr<RiggedModelRenderer> venomRiggedModelRenderer(new RiggedModelRenderer(glm::vec3(0.0, 0.0f, 0.0), venomSkeleton));
@@ -144,7 +144,7 @@ int main(int argc, char **argv)
 	
 	if (scenesNum >= 3) {
 		std::shared_ptr<Skeleton> laraSkeleton(new Skeleton(terrain));
-		if (!f.loadModelAndSkeletonDae("resource/lara3.dae", lara, *laraSkeleton.get())) { cin.get(); return -1; }
+		if (!f.loadModelAndSkeletonDae("resource/lara.dae", lara, *laraSkeleton.get())) { cin.get(); return -1; }
 		std::shared_ptr<SkeletonRenderer> laraSkeletonRenderer(new SkeletonRenderer(glm::vec3(0.0, 0.0f, 0.0), laraSkeleton));
 		if (!laraSkeletonRenderer->initRenderer(m, s.getProgram("basic_program"))) { cin.get(); return -1; }
 		std::shared_ptr<RiggedModelRenderer> laraRiggedModelRenderer(new RiggedModelRenderer(glm::vec3(0.0, 0.0f, 0.0), laraSkeleton));

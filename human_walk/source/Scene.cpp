@@ -116,7 +116,7 @@ void MainScene::onKeyDown(SDL_Keycode key)
 			camera.translate(glm::vec3(-dir.x, dir.y, dir.z));
 		}
 		break;
-	case SDLK_t:
+	/*case SDLK_t:
 		skeleton->setPelvicTiltCoeff(skeleton->getPelvicTiltCoeff() + 0.2f);
 		std::cout << "coeff: " << skeleton->getPelvicTiltCoeff() << std::endl;
 		break;
@@ -155,7 +155,7 @@ void MainScene::onKeyDown(SDL_Keycode key)
 	case SDLK_s:
 		skeleton->setPelvisVerticalCoeff(skeleton->getPelvisVerticalCoeff() - 0.2f);
 		std::cout << "coeff: " << skeleton->getPelvisVerticalCoeff() << std::endl;
-		break;
+		break;*/
 	/*case SDLK_q:
 		skeleton->increaseMaxPelvisHeight(0.01f);
 		std::cout << "height up" << std::endl;
@@ -164,7 +164,7 @@ void MainScene::onKeyDown(SDL_Keycode key)
 		skeleton->increaseMaxPelvisHeight(-0.01f);
 		std::cout << "height down" << std::endl;
 		break;*/
-	case SDLK_u:
+	/*case SDLK_u:
 		skeleton->increaseStepWidth(0.01f);
 		std::cout << "step width up" << std::endl;
 		break;
@@ -187,7 +187,7 @@ void MainScene::onKeyDown(SDL_Keycode key)
 	case SDLK_l:
 		skeleton->setElbowCoeff(skeleton->getElbowCoeff() - 0.2f);
 		std::cout << "elbow coeff down" << skeleton->getElbowCoeff() << std::endl;
-		break;
+		break;*/
 /*	case SDLK_p:
 		skeleton->increaseArmWidth(0.05f);
 		std::cout << "arm width up" << std::endl;
@@ -215,14 +215,14 @@ void MainScene::onKeyDown(SDL_Keycode key)
 	case SDLK_SPACE:
 		pause = !pause;
 		break;
-	case SDLK_3:
+	/*case SDLK_3:
 		speedCoeff += 0.1f;
 		break;
 	case SDLK_4:
 		speedCoeff -= 0.1f;
 		if (speedCoeff < 0.0f)
 			speedCoeff = 0.0f;
-		break;
+		break;*/
 	}
 }
 

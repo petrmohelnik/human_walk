@@ -45,8 +45,4 @@
 \contentsline {section}{\numberline {6.5}M\IeC {\v e}\IeC {\v r}en\IeC {\'\i } rychlosti}{38}{section.6.5}
 \contentsline {chapter}{\numberline {7}Z\IeC {\'a}v\IeC {\v e}r}{40}{chapter.7}
 \contentsline {chapter}{Literatura}{41}{chapter*.44}
-\contentsline {chapter}{P\IeC {\v r}\IeC {\'\i }lohy}{43}{section*.45}
-\contentsline {section}{Seznam p\IeC {\v r}\IeC {\'\i }loh}{44}{section*.46}
-\contentsline {chapter}{\numberline {A}Obsah CD}{45}{appendix.A}
-\contentsline {chapter}{\numberline {B}Manu\IeC {\'a}l}{46}{appendix.B}
 \contentsfinish 

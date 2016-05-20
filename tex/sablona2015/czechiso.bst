@@ -1,4 +1,75 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% -------------------------------------------------------------------------- %%
+%% *** Modifed by Radim Loskot, xlosko01@stud.fit.vutbr.cz                *** %%
+%% *** Modification takes charge only of these basic publication types:   *** %%
+%% *** @Book, @InBook, @Proceedings, @InProceedings, @MastersThesis       *** %%
+%% *** A new publication types were created: @OnlineWeb,@MediaProceedings,*** %%
+%% ***                                       @InMediaProceedings          *** %%
+%% *** Other publication types are unchanged and keeps rules from         *** %%
+%% *** previous authors listed bellow                                     *** %%
+%% *** Known issues: - warnings without booktitle in InProceedings        *** %%
+%% ************************************************************************** %%
+%%      SEZNAM ZMĚNĚNÝCH TYPŮ PUBLIKACÍ A VÝČET MOŽNÝCH POLOŽEK K CITACI      %%
+%% ************************************************************************** %%
+%% ----------------------------- MONOGRAFIE --------------------------------- %%                       
+%% Type: @Book
+%% Attributes: 
+%% author. title : subtitle. editor, translator, illustrator, redactor, others. 
+%% edition. address: publisher, year. pages. editiontitle, 
+%% editionsubtitle, voledition. notes. url. ISBN, doi.
 %%
+%% ************************************************************************** %%
+%% ---------------------- ČÁSTI MONOGRAFIÍ - KAPITOLY ----------------------- %%     
+%% Type: @InBook
+%% Attributes: 
+%% author. title : subtitle. editor, translator, illustrator, redactor, others. 
+%% edition. address: publisher, year. chapter, citpages. editiontitle, 
+%% editionsubtitle, voledition. notes. url. isbn, doi.
+%%
+%% ************************************************************************** %%
+%% ------------------------------- SERIÁLY ---------------------------------- %%                          
+%% Type: @Proceedings                                                         
+%% Attributes:
+%% journaltitle : journalsubtitle. address: publisher, year. notes. url. issn, doi.
+%%
+%% ************************************************************************** %%
+%% ------------------------ ČÁSTI SERIÁLŮ - ČLÁNKY -------------------------- %%
+%% Type: @InProceedings
+%% author. title : subtitle. translator, illustrator, others.
+%% journaltitle : journalsubtitle. date/year, volume, number, citpages. notes. url. issn, doi.
+%%
+%% ************************************************************************** %%
+%% ------------------------- KVALIFIKAČNÍ PRÁCE ----------------------------- %%
+%% Type: @MastersThesis
+%% author. title : subtitle (publishtype). address : publisher"school", 
+%% year. pages, attachs. supervisor. notes. url. isbn, doi.
+%%
+%% ************************************************************************** %%
+%% --------------------------- WEBOVÁ STRÁNKA ------------------------------- %%                   
+%% Type: @OnlineWeb
+%% Attributes: 
+%% author. title : subtitle [online]. editor, translator, illustrator, redactor, others. 
+%% edition. address: publisher, date/year, refresh [cited]. notes. citpages. 
+%% postedition, postsubedition, voledition.  url. isbn, issn, doi.
+%%
+%% ************************************************************************** %%
+%% ------------------------- ELEKTRONICKÝ SERIÁL ---------------------------- %%
+%% Type: @MediaProceedings
+%% Attributes: 
+%% journaltitle : journalsubtitle [howpublished]. address: publisher, year [cited]. 
+%% notes. url. issn, doi.
+%%
+%% ************************************************************************** %%
+%% -------------------------- ELEKTRONICKÝ ČLÁNEK --------------------------- %%              
+%% Type: @InMediaProceedings
+%% Attributes: 
+%% author. title : subtitle. translator, illustrator, others.
+%% journaltitle : journalsubtitle [howpublished]. date/year, volume, number, 
+%% refresh [cited]. citpages. notes. url. issn, doi.
+%% -----------------------------------------------------------------------------
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% This is file `czechiso.bst',
 %% generated with the docstrip utility.
 %%
@@ -9,7 +80,9 @@
 %% merlin.mbs  (with options: `tail,exlang,lang,vonx,nm-rev,jnrlst,aunm-semi,nmlm,x3,m3,atit-u,vnum-nr,volp-sp,jwdpg,pp-last,jwdvol,num-xser,ser-vol,ser-ed,pg-bk,add-pub,isbn,issn,doi,edpar,edby,blk-tit,au-col,čeština,pp,and-xcom,xand,eprint,url,url-nl,nfss,,{}')
 %% ----------------------------------------
 %% *** Styl snažící se být v souladu s normou ISO 690. Pomocí latex makebst vytvořil David Martinek. ***
-%% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Copyright 1994-2004 Patrick W Daly
  % ===============================================================
  % IMPORTANT NOTICE:
@@ -37,37 +110,57 @@
  % The order in the reference list is alphabetical by authors.
  %---------------------------------------------------------------------
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                 VYSVĚTLENÍ MNOU POUŽÍVANÝCH CITAČNÍCH POLOŽEK              %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ENTRY
-  { address
+  { address             %% Místo-město vydání        % Brno nebo Praha 
+    attachs             %% Počet/typ příloh          % 2 CD, mapa nebo 2 grafy
+    cited               %% Datum citace              % 2008-02-01 nebo 22.1.2009  
     archive
-    author
+    author              %% Autoři         % Jmeno1 PRIJMENI1 and Jmeno2 Primeni2
     booktitle
-    chapter
-    doi
-    edition
-    editor
+    chapter             %% Název kapitoly       
+    citpages            %% Citované stránka(y)          % 10-25 nebo 10 
+    doi                 %% Jiné ID knížky               % je třeba zapsat celé
+    edition             %% Číslo vydání                 % 3. vyd. nebo 3rd ed.
+    editiontitle        %% Nýzev edice
+    editionsubtitle     %% Podnázev edice
+    editor              %% Editor
     eid
     eprint
-    howpublished
+    howpublished        %% Typ publikování               % CD-ROM nebo online
+    illustrator         %% Ilustrátor
     institution
-    isbn
-    issn
+    isbn                %% Book number
+    issn                %% Serial number
     journal
-    key
+    journaltitle        %% Název deníku/časopisu/svazku       
+    journalsubtitle     %% Podnázev deníku/časopisu 
+    key                 %% Doplňující klíč řazení
     language
     month
-    note
-    number
+    note                
+    notes               %% Poznámky
+    number              %% Číslo časopisu    
     organization
-    pages
-    publisher
-    school
+    others              %% Další lidé podílející se na vydání
+    pages               %% Počet stránek - udává se pouze číslo
+    publisher           %% Nakladatelství
+    publishtype         %% Typ publikace (diplomka/bakalářka atd.)
+    redactor            %% Redactor
+    refresh
     series
-    title
+    supervisor          %% Vedoucí práce
+    title               %% Titul knížky
+    translator          %% Překladatel
+    subtitle            %% Podtitul knížky
     type
-    url
-    volume
-    year
+    url                 %% Dostupný na url
+    voledition          %% Číslo svazku edice
+    volume              %% Svazek
+    year                %% Rok vydání
   }
   {}
   { label }
@@ -141,7 +234,7 @@ FUNCTION {add.blank}
 FUNCTION {add.colon}
 { duplicate$ empty$
     'skip$
-    { ":" * add.blank }
+    { add.blank ":" * add.blank }
   if$
 }
 
@@ -241,10 +334,10 @@ FUNCTION {bbl.edby}
 { "editace" }
 
 FUNCTION {bbl.edition}
-{ "vydání" }
+{ "vyd" }
 
 FUNCTION {bbl.volume}
-{ "ročník" }
+{ "roč." }
 
 FUNCTION {bbl.of}
 { "" }
@@ -259,7 +352,7 @@ FUNCTION {bbl.in}
 { "in" }
 
 FUNCTION {bbl.pages}
-{ "s." }
+{ "s" }
 
 FUNCTION {bbl.page}
 { "str." }
@@ -420,7 +513,7 @@ FUNCTION {format.eprint}
 FUNCTION {write.url}
 { url empty$
     { skip$ }
-    { "\newline\urlprefix\url{" url * "}" * write$ newline$ }
+    { "\urlprefix\url{" url * "}\urlsuffix" * write$ newline$ }
   if$
 }
 
@@ -538,14 +631,14 @@ FUNCTION {format.editors}
 FUNCTION {format.book.pages}
 { pages "pages" bibinfo.check
   duplicate$ empty$ 'skip$
-    { " " * bbl.pages * }
+    { "~" * bbl.pages * }
   if$
 }
 FUNCTION {format.isbn}
 { isbn "isbn" bibinfo.check
   duplicate$ empty$ 'skip$
     {
-      "ISBN " swap$ *
+      "ISBN~" swap$ *
     }
   if$
 }
@@ -563,7 +656,7 @@ FUNCTION {format.doi}
 { doi "doi" bibinfo.check
   duplicate$ empty$ 'skip$
     {
-      "\doi{" swap$ * "}" *
+      "" swap$ * "" *
     }
   if$
 }
@@ -739,45 +832,286 @@ FUNCTION {extract.num}
   if$
 }
 
-FUNCTION {convert.edition}
-{ extract.num "l" change.case$ 's :=
-  s "first" = s "1" = or
-    { bbl.first 't := }
-    { s "second" = s "2" = or
-        { bbl.second 't := }
-        { s "third" = s "3" = or
-            { bbl.third 't := }
-            { s "fourth" = s "4" = or
-                { bbl.fourth 't := }
-                { s "fifth" = s "5" = or
-                    { bbl.fifth 't := }
-                    { s #1 #1 substring$ is.num
-                        { s bbl.th * 't := }
-                        { edition 't := }
-                      if$
-                    }
-                  if$
-                }
-              if$
-            }
-          if$
-        }
-      if$
+FUNCTION {format.subtitle}
+{ 
+  
+  subtitle "subtitle" bibinfo.check
+  duplicate$ empty$ 'skip$
+    {
+      "\emph{" add.colon swap$ * "}" *
     }
   if$
-  t
 }
+
+FUNCTION {format.onlinesubtitle}
+{ 
+  subtitle empty$
+  { add.blank " [online]." }
+  {    
+  subtitle "subtitle" bibinfo.check
+  duplicate$ empty$ 'skip$ 
+    {
+      "\emph{" add.colon swap$ * "} [online]." *
+    }
+  if$
+  }
+  if$ 
+}
+
+FUNCTION {format.redactor}
+{     
+  redactor "redactor" bibinfo.check
+  duplicate$ empty$ 'skip$
+    {
+      "" swap$ *
+    }
+  if$
+}
+
+FUNCTION {format.illustrator}
+{   
+  illustrator "illustrator" bibinfo.check
+  duplicate$ empty$ 'skip$
+    {
+      "" swap$ *
+    }
+  if$
+}
+
+FUNCTION {format.translator}
+{ 
+  translator "translator" bibinfo.check
+  duplicate$ empty$ 'skip$
+    {
+      "" swap$ *
+    }
+  if$
+}
+
+FUNCTION {format.others}
+{ 
+  others "others" bibinfo.check
+  duplicate$ empty$ 'skip$
+    {
+      "" swap$ *
+    }
+  if$
+}
+
+FUNCTION {format.editiontitle}
+{ 
+  editiontitle "editiontitle" bibinfo.check
+  duplicate$ empty$ 'skip$
+    {
+      "" swap$ *
+    }
+  if$
+}
+
+FUNCTION {format.editionsubtitle}
+{ 
+  editionsubtitle "editionsubtitle" bibinfo.check
+  duplicate$ empty$ 'skip$
+    {
+      "" swap$ *
+    }
+  if$
+}
+
+FUNCTION {format.voledition}
+{ 
+  voledition "voledition" bibinfo.check
+  duplicate$ empty$ 'skip$
+    {
+      "" swap$ *
+    }
+  if$
+}
+
+FUNCTION {format.notes}
+{ 
+  notes "notes" bibinfo.check
+  duplicate$ empty$ 'skip$
+    {
+      "" swap$ *
+    }
+  if$
+  new.sentence
+}
+
+FUNCTION {format.url}
+{ 
+  url "url" bibinfo.check
+  duplicate$ empty$ 'skip$
+    {                     
+      "\urlprefix\url{" swap$ * "}\urlsuffix" *
+    }
+  if$
+}
+
+FUNCTION {format.editor}
+{ 
+  editor "editor" bibinfo.check
+  duplicate$ empty$ 'skip$
+    {
+      "" swap$ * 
+    }
+  if$
+}
+
+FUNCTION {format.chapter}
+{ 
+  chapter "chapter" bibinfo.check
+  duplicate$ empty$ 'skip$
+    {
+      "" swap$ * 
+    }
+  if$
+}
+
+FUNCTION {format.citpages}
+{ 
+  citpages "citpages" bibinfo.check
+  duplicate$ empty$ 'skip$
+    {
+      "s.~" swap$ * 
+    }
+  if$
+}
+
+FUNCTION {format.journaltitle}
+{ 
+  journaltitle "journaltitle" bibinfo.check
+  duplicate$ empty$ 'skip$
+    {
+      "\emph{" swap$ * "}" *
+    }
+  if$
+}
+
+FUNCTION {format.journalsubtitle}
+{ 
+  journalsubtitle "journalsubtitle" bibinfo.check
+  duplicate$ empty$ 'skip$
+    {
+      "\emph{" add.colon swap$ * "}" *
+    }
+  if$
+}
+
+FUNCTION {format.volume}
+{ 
+  volume "volume" bibinfo.check
+  duplicate$ empty$ 'skip$
+    {
+      "" swap$ * 
+    }
+  if$
+}
+
+FUNCTION {format.number}
+{ 
+  number "number" bibinfo.check
+  duplicate$ empty$ 'skip$
+    {
+      "" swap$ * 
+    }
+  if$
+}
+
+FUNCTION {format.titlenorm}
+{ 
+  title "titlenorm" bibinfo.check
+  duplicate$ empty$ 'skip$
+    {
+      "" swap$ * 
+    }
+  if$
+}
+
+FUNCTION {format.subtitlenorm}
+{ 
+  
+  subtitle "subtitlenorm" bibinfo.check
+  duplicate$ empty$ 'skip$
+    {   
+      " : " add.blank swap$ *
+    }
+  if$
+}
+
+FUNCTION {format.publishtype}
+{ 
+  add.blank
+  publishtype "publishtype" bibinfo.check
+  duplicate$ empty$ 'skip$
+    {
+      " (" swap$ * ")" *
+    }
+  if$
+}
+
+FUNCTION {format.attachs}
+{ 
+  attachs "attachs" bibinfo.check
+  duplicate$ empty$ 'skip$
+    {
+      "" swap$ * 
+    }
+  if$
+}
+
+FUNCTION {format.supervisor}
+{ 
+  supervisor "supervisor" bibinfo.check
+  duplicate$ empty$ 'skip$
+    {
+      "Vedoucí práce " swap$ * 
+    }
+  if$
+}
+
+FUNCTION {format.refresh}
+{ 
+  refresh "refresh" bibinfo.check
+  duplicate$ empty$ 'skip$
+    {
+      "" swap$ * 
+    }
+  if$
+}
+
+FUNCTION {format.cited}
+{ 
+  add.blank
+  cited "cited" bibinfo.check
+  duplicate$ empty$ 'skip$
+    {
+      " [cit. " swap$ * "]" * 
+    }
+  if$
+}
+
+FUNCTION {format.howpublished}
+{ 
+  add.blank
+  howpublished "howpublished" bibinfo.check
+  duplicate$ empty$ 'skip$
+    {
+      " [" swap$ * "]." * 
+    }
+  if$
+}      
 
 FUNCTION {format.edition}
 { edition duplicate$ empty$ 'skip$
     {
-      convert.edition
       output.state mid.sentence =
         { "l" }
         { "t" }
       if$ change.case$
       "edition" bibinfo.check
-      " " * bbl.edition *
+      
     }
   if$
 }
@@ -1089,42 +1423,284 @@ FUNCTION {article}
   fin.entry
   write.url
 }
-FUNCTION {book}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% BLOCK OF EDITED STYLES %%$$$$$$$$$$$%%%%%%%%%$$$$$$$
+
+FUNCTION {book}                                                    %% MONOGRAFIE
 { output.bibitem
-  author empty$
-    { format.editors "author and editor" output.check
-      add.colon
-    }
-    { format.authors output.nonnull
-      add.colon
-      crossref missing$
-        { "author and editor" editor either.or.check }
-        'skip$
-      if$
-    }
-  if$
+  format.authors output
+  new.sentence   
   format.btitle "title" output.check
+  format.subtitle output
+  new.sentence
+  format.editor output 
+  format.translator output
+  format.illustrator output
+  format.redactor output
+  format.others output
+  new.sentence
+  format.edition output
+  new.sentence
   crossref missing$
     { format.bvolume output
-  new.sentence
       format.number.series output
       format.publisher.address output
     }
     {
-  new.sentence
       format.book.crossref output.nonnull
     }
   if$
-  format.edition output
   format.date "year" output.check
-  format.isbn output
+  new.sentence
   format.book.pages output
+  new.sentence
+  format.editiontitle output
+  format.editionsubtitle output
+  format.voledition output
+  new.sentence
+  format.notes output
+  format.url output
+  new.sentence
+  format.isbn output
   format.doi output
-  format.note output
-  format.eprint output
+  new.sentence
   fin.entry
-  write.url
 }
+
+FUNCTION {inbook}                                 %% ČÁSTI MONOGRAFIÍ - KAPITOLY 
+{  output.bibitem
+  format.authors output
+  new.sentence   
+  format.btitle "title" output.check
+  format.subtitle output
+  new.sentence
+  format.editor output 
+  format.translator output
+  format.illustrator output
+  format.redactor output
+  format.others output
+  new.sentence
+  format.edition output
+  new.sentence
+  crossref missing$
+    { format.bvolume output
+      format.number.series output
+      format.publisher.address output
+    }
+    {
+      format.book.crossref output.nonnull
+    }
+  if$
+  format.date "year" output.check
+  new.sentence
+  format.chapter output
+  format.citpages output
+  new.sentence
+  format.editiontitle output
+  format.editionsubtitle output
+  format.voledition output
+  new.sentence
+  format.notes output
+  format.url output
+  new.sentence
+  format.isbn output
+  format.doi output
+  new.sentence
+  fin.entry
+}
+
+FUNCTION {proceedings}                                                %% SERIÁLY
+{ output.bibitem
+  format.journaltitle output
+  format.journalsubtitle output
+  new.sentence
+  crossref missing$
+    { format.bvolume output
+      format.number.series output
+      format.publisher.address output
+    }
+    {
+      format.book.crossref output.nonnull
+    }
+  if$
+  format.date "year" output.check
+  new.sentence
+  format.notes output
+  format.url output
+  new.sentence
+  format.issn output
+  format.doi output
+  new.sentence
+  fin.entry
+}
+
+FUNCTION {inproceedings}                               %% ČÁSTI SERIÁLŮ - ČLÁNKY
+{ output.bibitem
+  format.authors output
+  new.sentence 
+  format.titlenorm output
+  format.subtitlenorm output
+  new.sentence
+  format.translator output
+  format.illustrator output
+  format.others output
+  new.sentence
+  format.journaltitle output
+  format.journalsubtitle output
+  new.sentence
+  format.date "year" output.check
+  format.volume output
+  format.number output
+  format.citpages output
+  new.sentence
+  format.notes output
+  format.url output
+  new.sentence
+  format.issn output
+  format.doi output
+  new.sentence
+  fin.entry
+}
+
+FUNCTION {mastersthesis}                                   %% KVALIFIKAČNÍ PRÁCE
+{ output.bibitem
+  format.authors output
+  new.sentence   
+  format.btitle "title" output.check
+  format.subtitle output
+  format.publishtype output
+  new.sentence
+  crossref missing$
+    { format.bvolume output
+      format.number.series output
+      format.publisher.address output
+    }
+    {
+      format.book.crossref output.nonnull
+    }
+  if$
+  format.date "year" output.check
+  new.sentence
+  format.book.pages output
+  format.attachs output
+  new.sentence
+  format.supervisor output 
+  new.sentence
+  format.notes output
+  format.url output
+  new.sentence
+  format.isbn output
+  format.doi output
+  new.sentence
+  fin.entry
+}
+
+FUNCTION {onlineweb}                                           %% WEBOVÁ STRÁNKA
+{ output.bibitem
+  format.authors output
+  new.sentence   
+  format.btitle "title" output.check
+  format.onlinesubtitle output
+  format.editor output 
+  format.translator output
+  format.illustrator output
+  format.redactor output
+  format.others output
+  new.sentence
+  format.edition output
+  new.sentence
+  crossref missing$
+    { format.bvolume output
+      format.number.series output
+      format.publisher.address output
+    }
+    {
+      format.book.crossref output.nonnull
+    }
+  if$
+  format.date "year" output.check
+  format.refresh output
+  format.cited output
+  new.sentence
+  format.citpages output
+  new.sentence
+  format.editiontitle output
+  format.editionsubtitle output
+  format.voledition output
+  new.sentence
+  format.notes output
+  format.url output
+  new.sentence
+  format.isbn output
+  format.issn output
+  format.doi output
+  new.sentence
+  fin.entry
+}
+
+FUNCTION {mediaproceedings}                               %% ELEKTRONICKÝ SERIÁL
+{ output.bibitem
+  format.journaltitle output
+  format.journalsubtitle output
+  format.howpublished output
+  new.sentence
+  crossref missing$
+    { format.bvolume output
+      format.number.series output
+      format.publisher.address output
+    }
+    {
+      format.book.crossref output.nonnull
+    }
+  if$
+  format.date "year" output.check
+  format.cited output
+  new.sentence
+  format.notes output
+  new.sentence
+  format.url output
+  new.sentence
+  format.issn output
+  format.doi output
+  new.sentence
+  fin.entry
+}
+
+FUNCTION {inmediaproceedings}                             %% ELEKTRONICKÝ ČLÁNEK
+{ output.bibitem
+  format.authors output
+  new.sentence 
+  format.titlenorm output
+  format.subtitlenorm output
+  new.sentence
+  format.translator output
+  format.illustrator output
+  format.others output
+  new.sentence
+  format.journaltitle output
+  format.journalsubtitle output
+  format.howpublished output
+  new.sentence
+  format.date "year" output.check
+  format.volume output
+  format.number output
+  format.refresh output
+  format.cited output
+  new.sentence
+  format.citpages output
+  new.sentence
+  format.notes output
+  new.sentence
+  format.url output
+  new.sentence
+  format.issn output
+  format.doi output
+  new.sentence
+  fin.entry
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% END OF BLOCK  %%%%%%%%$$$$$$$$$$$%%%%%%%%%$$$$$$$
+
 FUNCTION {booklet}
 { output.bibitem
   format.authors output
@@ -1143,48 +1719,7 @@ FUNCTION {booklet}
   write.url
 }
 
-FUNCTION {inbook}
-{ output.bibitem
-  author empty$
-    { format.editors "author and editor" output.check
-      add.colon
-    }
-    { format.authors output.nonnull
-      add.colon
-      crossref missing$
-        { "author and editor" editor either.or.check }
-        'skip$
-      if$
-    }
-  if$
-  format.btitle "title" output.check
-  crossref missing$
-    {
-      format.bvolume output
-      format.chapter.pages "chapter and pages" output.check
-  new.sentence
-      format.number.series output
-      format.publisher.address output
-    }
-    {
-      format.chapter.pages "chapter and pages" output.check
-  new.sentence
-      format.book.crossref output.nonnull
-    }
-  if$
-  format.edition output
-  format.date "year" output.check
-  crossref missing$
-    { format.isbn output }
-    'skip$
-  if$
-  format.pages "pages" output.check
-  format.doi output
-  format.note output
-  format.eprint output
-  fin.entry
-  write.url
-}
+
 
 FUNCTION {incollection}
 { output.bibitem
@@ -1212,35 +1747,7 @@ FUNCTION {incollection}
   fin.entry
   write.url
 }
-FUNCTION {inproceedings}
-{ output.bibitem
-  format.authors "author" output.check
-  add.colon
-  format.title "title" output.check
-  new.sentence
-  crossref missing$
-    { format.in.ed.booktitle "booktitle" output.check
-      format.number.series output
-      publisher empty$
-        { format.organization.address output }
-        { organization "organization" bibinfo.check output
-          format.publisher.address output
-        }
-      if$
-      format.date "year" output.check
-      format.isbn output
-      format.issn output
-    }
-    { format.incoll.inproc.crossref output.nonnull
-    }
-  if$
-  format.pages "pages" output.check
-  format.doi output
-  format.note output
-  format.eprint output
-  fin.entry
-  write.url
-}
+
 FUNCTION {conference} { inproceedings }
 FUNCTION {manual}
 { output.bibitem
@@ -1279,24 +1786,6 @@ FUNCTION {manual}
   write.url
 }
 
-FUNCTION {mastersthesis}
-{ output.bibitem
-  format.authors "author" output.check
-  add.colon
-  format.btitle
-  "title" output.check
-  new.sentence
-  bbl.mthesis format.thesis.type output.nonnull
-  school "school" bibinfo.warn output
-  address "address" bibinfo.check output
-  format.date "year" output.check
-  format.doi output
-  format.note output
-  format.eprint output
-  fin.entry
-  write.url
-}
-
 FUNCTION {misc}
 { output.bibitem
   format.authors output
@@ -1320,48 +1809,8 @@ FUNCTION {phdthesis}
   "title" output.check
   new.sentence
   bbl.phdthesis format.thesis.type output.nonnull
-  school "school" bibinfo.warn output
   address "address" bibinfo.check output
   format.date "year" output.check
-  format.doi output
-  format.note output
-  format.eprint output
-  fin.entry
-  write.url
-}
-
-FUNCTION {proceedings}
-{ output.bibitem
-  editor empty$
-    { organization "organization" bibinfo.check output
-    }
-    { format.editors output.nonnull }
-  if$
-  add.colon
-  format.btitle "title" output.check
-  format.bvolume output
-  format.number.series output
-  editor empty$
-    { publisher empty$
-        'skip$
-        {
-          format.publisher.address output
-        }
-      if$
-    }
-    { publisher empty$
-        {
-          format.organization.address output }
-        {
-          organization "organization" bibinfo.check output
-          format.publisher.address output
-        }
-      if$
-     }
-  if$
-      format.date "year" output.check
-  format.isbn output
-  format.issn output
   format.doi output
   format.note output
   format.eprint output
@@ -1576,7 +2025,9 @@ FUNCTION {begin.bib}
   write$ newline$
   "\providecommand{\url}[1]{\texttt{#1}}"
   write$ newline$
-  "\providecommand{\urlprefix}{URL }"
+  "\providecommand{\urlprefix}{Dostupné z: \textless}"
+  write$ newline$
+  "\providecommand{\urlsuffix}{\textgreater}"
   write$ newline$
   "\expandafter\ifx\csname urlstyle\endcsname\relax"
   write$ newline$
@@ -1585,6 +2036,8 @@ FUNCTION {begin.bib}
   "  \providecommand{\doi}{doi:\discretionary{}{}{}\begingroup \urlstyle{rm}\Url}\fi"
   write$ newline$
   "\providecommand{\selectlanguage}[1]{\relax}"
+  write$ newline$
+  "\providecommand{\tg}[1]{\textgreater .}"
   write$ newline$
   "\providecommand{\eprint}[2][]{\url{#2}}"
   write$ newline$

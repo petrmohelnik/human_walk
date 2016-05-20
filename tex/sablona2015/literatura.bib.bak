@@ -77,11 +77,11 @@
  address = {Washington, DC, USA},
 }
 
-   @MISC{cstugWeb,
-      author =       "{WWW str?nky}",  
-      title =        "?eskoslovensk? sdru?en? u?ivatel? {\TeX}u",
-      howpublished=  "{\tt http://www.cstug.cz}",
-   }
+@Online{collada,
+  howpublished = {[online]},
+  title =        {Khronos: COLLADA},
+  url =          {https://www.khronos.org/collada/}
+}
 
 @Article{DadashiMarianiRochatEtAl2014,
   author =   {Dadashi, Farzin and Mariani, Benoit and Rochat, Stephane and BĂĽla, Christophe J. and Santos-Eggimann, Brigitte and Aminian, Kamiar},
@@ -130,6 +130,17 @@ howpublished = "[online]",
 	pages = "78-83",
 }
 
+@Article{lin2014quantitative,
+  author =    {Lin, Yi-Chung and Gfoehler, Margit and Pandy, Marcus G},
+  title =     {Quantitative evaluation of the major determinants of human gait},
+  journal =   {Journal of biomechanics},
+  year =      {2014},
+  volume =    {47},
+  number =    {6},
+  pages =     {1324--1331},
+  publisher = {Elsevier}
+}
+
  @online{male_mesh,
       author =       "{Paul Chen}",  
   title = "Male Base Mesh",
@@ -165,13 +176,7 @@ month={June},}
   number =    {6A},
   pages =     {829},
   publisher = {Superintendent of Documents}
-}    @BOOK{Pravidla,
-      author =       "{Kolektiv autor?}",
-      title =        "Pravidla ?esk?ho pravopisu",
-      publisher =    "Academia",
-      year =         "2005",
-      note =         "ISBN~80-200-1327-X",
-    }
+}
 
 @inproceedings{skinningMethods,
   author = {Alec Jacobson and Zhigang Deng and Ladislav Kavan and JP Lewis},

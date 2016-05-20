@@ -10,8 +10,8 @@
 % Šablonu upravil: Ing. Jaroslav Dytrych, idytrych@fit.vutbr.cz
 %============================================================================
 %\documentclass[]{fitthesis} % bez zadání - pro začátek práce, aby nebyl problém s překladem
-\documentclass[zadani]{fitthesis} % odevzdani do wisu - odkazy jsou barevné
-%\documentclass[zadani,print]{fitthesis} % pro tisk - odkazy jsou černé
+%\documentclass[zadani]{fitthesis} % odevzdani do wisu - odkazy jsou barevné
+\documentclass[zadani,print]{fitthesis} % pro tisk - odkazy jsou černé
 %\documentclass[english,print]{fitthesis} % pro tisk - odkazy jsou černé
 % * Je-li prace psana v anglickem jazyce, je zapotrebi u tridy pouzit 
 %   parametr english nasledovne:
@@ -228,12 +228,12 @@ morecomment=[l][keywordstyle4]{\#},
   keywords.cs={počítačová grafika, procedurální animace, skeletální animace, lidská chůze, inverzní kinematika}, %klicova slova v ceskem ci slovenskem jazyce
   keywords.en={computer graphics, procedural animation, skeletal animation, human walk, inverse kinematics}, %klicova slova v anglickem jazyce
   %Abstract
-  abstract.cs={Animace lidské chůze má velké využití v interaktivních aplikacích, převážně počítačových hrách. Existuje mnoho způsobů tvorby této animace, které se liší v kompromisu mezi přirozeností, kontrolou nad animací a výpočetním časem. Tato práce se zabývá implementací procedurální animace, která je vhodná pro chůzi po nerovném terénu. Pro manipulaci s modelem lidského těla se využívá skeletální animace. Dále je popsána a implementována inverzní kinematika, díky čemu může být animace přizpůsobována nerovnému terénu. A nechybí ani popis fází lidské chůze, abychom je mohli co nejvěrněji napodobit. Vytvořené řešení umožňuje změnu chůze jednoduše pomocí množství parametrů a je schopné se přizpůsobit okolnímu terénu. Výsledek má mít využití při tvorbě počítačových her a umožnit rychlé přidání specifické animace lidské chůze bez nutnosti takovou animaci ručně vytvářet.}, % abstrakt v ceskem ci slovenskem jazyce
-  abstract.en={Animation of human walk is employed in many interactive applications, mostly in computer games. There are many ways to create such animation which differ in compromise among naturalness, control over animation and computing time. This work implements procedural animation which is applicable for walking on uneven terrain. Skeletal animation is used for maniulation with model of human body. Furthermore inverse kinematics is described and implemented. That allows for adaptation to uneven terrain. It also describes phases of human walk, so we can accurately aproximate them. Proposed solution enables specification of walk using number of parameters and is able to adapt to surrounding terrain. The result should be usable in creation of computer games and should allow for creation of specific animation of human walk without need to create such animation manually.}, % abstrakt v anglickem jazyce
+  abstract.cs={Animace lidské chůze má velké využití v interaktivních aplikacích, převážně počítačových hrách. Existuje mnoho způsobů tvorby této animace, které se liší v kompromisu mezi přirozeností, kontrolou nad animací a výpočetním časem. Tato práce se zabývá implementací procedurální animace, která je vhodná pro chůzi po nerovném terénu. Pro manipulaci s~modelem lidského těla se využívá skeletální animace. Dále je popsána a implementována inverzní kinematika, díky čemu může být animace přizpůsobována nerovnému terénu. A~nechybí ani popis fází lidské chůze, abychom je mohli co nejvěrněji napodobit. Vytvořené řešení umožňuje změnu chůze jednoduše pomocí množství parametrů a je schopné se přizpůsobit okolnímu terénu. Výsledek má mít využití při tvorbě počítačových her a umožnit rychlé přidání specifické animace lidské chůze bez nutnosti takovou animaci ručně vytvářet.}, % abstrakt v ceskem ci slovenskem jazyce
+  abstract.en={Animation of human walk is employed in many interactive applications, mostly in computer games. There are many ways to create such animation which differ in compromise among naturalness, control over animation and computing time. This work implements procedural animation which is applicable for walking on uneven terrain. Skeletal animation is used for manipulation with model of human body. Furthermore, inverse kinematics is described and implemented. That allows for adaptation to uneven terrain. It also describes phases of human walk, so we can accurately aproximate them. Proposed solution enables specification of walk using number of parameters and is able to adapt to surrounding terrain. The result should be usable in creation of computer games and should allow for creation of specific animation of human walk without need to create such animation manually.}, % abstrakt v anglickem jazyce
   %Prohlaseni
-  declaration={Prohlašuji, že jsem tento semestrální projekt vypracoval samostatně pod vedením Ing. Lukáše Poloka a uvedl jsem všechny zdroje, ze kterých jsem čerpal..},
+  declaration={Prohlašuji, že jsem tuto diplomovou práci vypracoval samostatně pod vedením pana Ing. Lukáše Poloka. Uvedl jsem všechny literární prameny a publikace, ze kterých jsem čerpal.},
   %Podekovani (nepovinne)
-  acknowledgment={Děkuji svému vedoucímu práce Ing. Lukáši Polokovi za odbornou pomoc poskytnutou při řešení této práce.} % nepovinne
+  acknowledgment={Děkuji mému vedoucímu práce panu Ing. Lukáši Polokovi za odbornou pomoc poskytnutou při řešení této práce.} % nepovinne
 }
 
 %Abstrakt (cesky, slovensky ci anglicky)
@@ -311,32 +311,5 @@ morecomment=[l][keywordstyle4]{\#},
 
   % Prilohy
   % ---------------------------------------------
-  \appendix
-\ifczech
-  \renewcommand{\appendixpagename}{Přílohy}
-  \renewcommand{\appendixtocname}{Přílohy}
-  \renewcommand{\appendixname}{Příloha}
-\fi
-\ifslovak
-  \renewcommand{\appendixpagename}{Prílohy}
-  \renewcommand{\appendixtocname}{Prílohy}
-  \renewcommand{\appendixname}{Príloha}
-\fi
-  \appendixpage
 
-\ifslovak
-  \section*{Zoznam príloh}
-  \addcontentsline{toc}{section}{Zoznam príloh}
-\else
-  \ifczech
-    \section*{Seznam příloh}
-    \addcontentsline{toc}{section}{Seznam příloh}
-  \else
-    \section*{List of Appendices}
-    \addcontentsline{toc}{section}{List of Appendices}
-  \fi
-\fi
-  \startcontents[chapters]
-  \printcontents[chapters]{l}{0}{\setcounter{tocdepth}{2}}
-  \input{prilohy} % viz. prilohy.tex
 \end{document}

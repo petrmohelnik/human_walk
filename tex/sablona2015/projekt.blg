@@ -5,12 +5,15 @@ Warning--entry type for "analytic_IK" isn't style-file defined
 --line 3 of file literatura.bib
 Warning--entry type for "bezier_primer" isn't style-file defined
 --line 19 of file literatura.bib
+Warning--entry type for "collada" isn't style-file defined
+--line 80 of file literatura.bib
 Warning--entry type for "male_mesh" isn't style-file defined
---line 138 of file literatura.bib
+--line 144 of file literatura.bib
 Warning--to sort, need author or key in bindPose
 Warning--to sort, need author or key in venom
 Warning--to sort, need author or key in envelopes
+Warning--to sort, need author or key in collada
 Warning--to sort, need author or key in biomechanika_chuze
 Warning--to sort, need author or key in analytic_IK
-Warning--empty pages in skinningMethods
-(There were 9 warnings)
+Warning--missing publisher in welman
+(There were 11 warnings)

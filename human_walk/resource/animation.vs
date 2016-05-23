@@ -1,9 +1,9 @@
-#version 450
+#version 140
 
 uniform mat4 mvp;
 uniform mat3 m;
-uniform mat4 T[100];
-uniform mat3 ti_T[100];
+uniform mat4 T[25];
+uniform mat3 ti_T[25];
 
 in vec3 v_pos;
 in vec3 v_norm;

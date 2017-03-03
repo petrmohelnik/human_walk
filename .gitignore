@@ -93,7 +93,6 @@ artifacts/
 *_i.h
 *.ilk
 *.meta
-*.obj
 *.pch
 *.pdb
 *.pgc
@@ -272,5 +271,3 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
-
-!human_walk/resources/*.obj
